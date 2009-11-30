@@ -1,0 +1,145 @@
+---
+name: SDL
+version: 2.3_1
+author:
+  - 'Kartik Thakore <KTHAKORE@cpan.org>'
+abstract: SDL bindings to Perl
+license: lgpl
+resources:
+  license: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt
+build_requires:
+  IO::CaptureOutput: 0
+  Test::Most: 0.21
+  Test::Simple: 0.88
+configure_requires:
+  Alien::SDL: v0.07.2
+  ExtUtils::CBuilder: 0.260301
+  Module::Build: 0.35
+  YAML: 0.68
+provides:
+  SDL:
+    file: lib/SDL.pm
+    version: 2.3_1
+  SDL::App:
+    file: lib/SDL/App.pm
+  SDL::Audio:
+    file: lib/SDL/Audio.pm
+  SDL::AudioCVT:
+    file: lib/SDL/AudioCVT.pm
+  SDL::AudioSpec:
+    file: lib/SDL/AudioSpec.pm
+  SDL::CD:
+    file: lib/SDL/CD.pm
+  SDL::CDROM:
+    file: lib/SDL/CDROM.pm
+  SDL::CDTrack:
+    file: lib/SDL/CDTrack.pm
+  SDL::Color:
+    file: lib/SDL/Color.pm
+  SDL::Constants:
+    file: lib/SDL/Constants.pm
+  SDL::Cursor:
+    file: lib/SDL/Cursor.pm
+  SDL::Event:
+    file: lib/SDL/Event.pm
+  SDL::Events:
+    file: lib/SDL/Events.pm
+  SDL::Font:
+    file: lib/SDL/Font.pm
+  SDL::Game::Event:
+    file: lib/SDL/Game/Event.pm
+  SDL::Game::Palette:
+    file: lib/SDL/Game/Palette.pm
+  SDL::Game::Rect:
+    file: lib/SDL/Game/Rect.pm
+    version: 0.01
+  SDL::Joystick:
+    file: lib/SDL/Joystick.pm
+  SDL::MPEG:
+    file: lib/SDL/MPEG.pm
+  SDL::Mixer:
+    file: lib/SDL/Mixer.pm
+  SDL::Mixer::MixChunk:
+    file: lib/SDL/Mixer/MixChunk.pm
+  SDL::Mixer::MixMusic:
+    file: lib/SDL/Mixer/MixMusic.pm
+  SDL::Mouse:
+    file: lib/SDL/Mouse.pm
+  SDL::MultiThread:
+    file: lib/SDL/MultiThread.pm
+  SDL::Music:
+    file: lib/SDL/Music.pm
+  SDL::OpenGL:
+    file: lib/SDL/OpenGL.pm
+  SDL::OpenGL::Constants:
+    file: lib/SDL/OpenGL/Constants.pm
+  SDL::Overlay:
+    file: lib/SDL/Overlay.pm
+  SDL::Palette:
+    file: lib/SDL/Palette.pm
+  SDL::PixelFormat:
+    file: lib/SDL/PixelFormat.pm
+  SDL::RWOps:
+    file: lib/SDL/RWOps.pm
+  SDL::Rect:
+    file: lib/SDL/Rect.pm
+  SDL::SFont:
+    file: lib/SDL/SFont.pm
+  SDL::SMPEG:
+    file: lib/SDL/SMPEG.pm
+  SDL::Sound:
+    file: lib/SDL/Sound.pm
+  SDL::Surface:
+    file: lib/SDL/Surface.pm
+  SDL::TTF_Font:
+    file: lib/SDL/TTF_Font.pm
+  SDL::TTFont:
+    file: lib/SDL/TTFont.pm
+  SDL::Time:
+    file: lib/SDL/Time.pm
+  SDL::Timer:
+    file: lib/SDL/Timer.pm
+  SDL::Tool::Font:
+    file: lib/SDL/Tool/Font.pm
+  SDL::Tool::Graphic:
+    file: lib/SDL/Tool/Graphic.pm
+  SDL::Tutorial:
+    file: lib/SDL/Tutorial.pm
+  SDL::Tutorial::Animation:
+    file: lib/SDL/Tutorial/Animation.pm
+  SDL::Tutorial::Drawing:
+    file: lib/SDL/Tutorial/Drawing.pm
+  SDL::Tutorial::Images:
+    file: lib/SDL/Tutorial/Images.pm
+  SDL::Tutorial::Images::Walker:
+    file: lib/SDL/Tutorial/Images.pm
+  SDL::Tutorial::LunarLander:
+    file: lib/SDL/Tutorial/LunarLander.pm
+  SDL::Tutorial::Pong::Ball:
+    file: lib/SDL/Tutorial/Pong.pm
+  SDL::Version:
+    file: lib/SDL/Version.pm
+  SDL::Video:
+    file: lib/SDL/Video.pm
+  SDL::VideoInfo:
+    file: lib/SDL/VideoInfo.pm
+  SDL_perl:
+    file: lib/SDL_perl.pm
+generated_by: Module::Build version 0.35
+meta-spec:
+  url: http://module-build.sourceforge.net/META-spec-v1.4.html
+  version: 1.4
+no_index:
+  file:
+    - make/lib/SDL/Build.pm
+    - make/lib/SDL/Utility.pm
+    - make/lib/SDL/Build/Cygwin.pm
+    - make/lib/SDL/Build/Darwin.pm
+    - make/lib/SDL/Build/Freebsd.pm
+    - make/lib/SDL/Build/Gnukfreebsd.pm
+    - make/lib/SDL/Build/Linux.pm
+    - make/lib/SDL/Build/MSWin32.pm
+    - make/lib/SDL/Build/Netbsd.pm
+    - make/lib/SDL/Build/Openbsd.pm
+    - make/lib/SDL/Build/Solaris.pm
+    - make/lib/ExtUtils/CBuilder/Platform/Windows.pm
