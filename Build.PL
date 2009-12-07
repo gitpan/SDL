@@ -63,6 +63,48 @@ my %subsystems =
 		},
 		libraries => [qw( SDL )],
 	},
+	BlitFunc => {
+		file      => {
+			from  => 'src/GFX/BlitFunc.xs',
+			to    => 'lib/SDL/GFX/BlitFunc.xs',
+		},
+		libraries => [qw( SDL SDL_gfx_blit )],
+	},
+	Framerate => {
+		file      => {
+			from  => 'src/GFX/Framerate.xs',
+			to    => 'lib/SDL/GFX/Framerate.xs',
+		},
+		libraries => [qw( SDL SDL_gfx )],
+	},
+	FPSManager => {
+		file      => {
+			from  => 'src/GFX/FPSManager.xs',
+			to    => 'lib/SDL/GFX/FPSManager.xs',
+		},
+		libraries => [qw( SDL SDL_gfx )],
+	},
+	ImageFilter => {
+		file      => {
+			from  => 'src/GFX/ImageFilter.xs',
+			to    => 'lib/SDL/GFX/ImageFilter.xs',
+		},
+		libraries => [qw( SDL SDL_gfx )],
+	},
+	Primitives => {
+		file      => {
+			from  => 'src/GFX/Primitives.xs',
+			to    => 'lib/SDL/GFX/Primitives.xs',
+		},
+		libraries => [qw( SDL SDL_gfx )],
+	},
+	Rotozoom => {
+		file      => {
+			from  => 'src/GFX/Rotozoom.xs',
+			to    => 'lib/SDL/GFX/Rotozoom.xs',
+		},
+		libraries => [qw( SDL SDL_gfx )],
+	},
 	MultiThread => {
 		file      => {
 			from  => 'src/Core/MultiThread.xs',
@@ -240,6 +282,14 @@ my %subsystems =
 		},
 		libraries => [qw( SDL SDL_ttf )],
 	},	
+	Image => {
+		file	=> {
+			from => 'src/Image.xs',
+			to   =>	'lib/SDL/Image.xs',
+		},
+		libraries => [qw( SDL SDL_image )],
+	},	
+
 );
 
 my %libraries = (
@@ -266,6 +316,11 @@ my %libraries = (
 	SDL_gfx     => {
 		define => 'HAVE_SDL_GFX',     
 		header => 'SDL_gfxPrimitives.h'
+	},
+	SDL_gfx_blit     => {
+		define => 'HAVE_SDL_GFX_BLIT',     
+		header => 'SDL_gfxBlitFunc.h',
+		library => 'SDL_gfx' 
 	},
 	png         => {
 		define    => 'HAVE_PNG',
@@ -295,6 +350,8 @@ my $arch          = SDL::Build->get_arch( $^O );
 
 # see which subsystems can be built -- do we have headers for them?
 my $build_systems = $arch->find_subsystems( \%subsystems, \%libraries );
+# This is called in make/lib/SDL/Build.pm as it is the base of arch
+
 
 # now write SDL::Config
 $arch->write_sdl_config( $build_systems );

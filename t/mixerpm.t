@@ -8,9 +8,16 @@ use SDL::TestTool;
 
 if ( !SDL::TestTool->init(SDL_INIT_AUDIO) ) {
     plan( skip_all => 'Failed to init sound' );
-} else {
+}
+elsif( !SDL::Config->has('SDL_mixer') )
+{
+    plan( skip_all => 'SDL_mixer support not compiled' );
+}
+else
+{
     plan( tests => 3 );
 }
+
 
 
 
@@ -58,4 +65,4 @@ can_ok ('SDL::Mixer', qw/
 # these are exported by default, so main:: should know them:
 my $mixer = SDL::Mixer->new();
 isa_ok($mixer, 'SDL::Mixer', 'Checking if mixer can be build');
-
+sleep(2);

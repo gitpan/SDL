@@ -26,10 +26,5 @@ my $overlay = SDL::Overlay->new( 100, 100, SDL_YV12_OVERLAY, $display);
 
 isa_ok( $overlay, 'SDL::Overlay');
 
-$overlay = undef;
-
-$display = undef;
-
-
-
+sleep(2)
 

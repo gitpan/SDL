@@ -1,6 +1,6 @@
 ---
 name: SDL
-version: 2.3_1
+version: 2.3_2
 author:
   - 'Kartik Thakore <KTHAKORE@cpan.org>'
 abstract: SDL bindings to Perl
@@ -19,7 +19,7 @@ configure_requires:
 provides:
   SDL:
     file: lib/SDL.pm
-    version: 2.3_1
+    version: 2.3_2
   SDL::App:
     file: lib/SDL/App.pm
   SDL::Audio:
@@ -46,6 +46,18 @@ provides:
     file: lib/SDL/Events.pm
   SDL::Font:
     file: lib/SDL/Font.pm
+  SDL::GFX::BlitFunc:
+    file: lib/SDL/GFX/BlitFunc.pm
+  SDL::GFX::FPSManager:
+    file: lib/SDL/GFX/FPSManager.pm
+  SDL::GFX::Framerate:
+    file: lib/SDL/GFX/Framerate.pm
+  SDL::GFX::ImageFilter:
+    file: lib/SDL/GFX/ImageFilter.pm
+  SDL::GFX::Primitives:
+    file: lib/SDL/GFX/Primitives.pm
+  SDL::GFX::Rotozoom:
+    file: lib/SDL/GFX/Rotozoom.pm
   SDL::Game::Event:
     file: lib/SDL/Game/Event.pm
   SDL::Game::Palette:
@@ -53,6 +65,8 @@ provides:
   SDL::Game::Rect:
     file: lib/SDL/Game/Rect.pm
     version: 0.01
+  SDL::Image:
+    file: lib/SDL/Image.pm
   SDL::Joystick:
     file: lib/SDL/Joystick.pm
   SDL::MPEG:

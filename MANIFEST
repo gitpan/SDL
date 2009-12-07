@@ -49,6 +49,7 @@ lib/pods/SDL/Event.pod
 lib/pods/SDL/Events.pod
 lib/pods/SDL/Font.pod
 lib/pods/SDL/Game/Palette.pod
+lib/pods/SDL/Image.pod
 lib/pods/SDL/Joystick.pod
 lib/pods/SDL/Mixer.pod
 lib/pods/SDL/Mixer/MixChunk.pod
@@ -97,6 +98,13 @@ lib/SDL/Font.pm
 lib/SDL/Game/Event.pm
 lib/SDL/Game/Palette.pm
 lib/SDL/Game/Rect.pm
+lib/SDL/GFX/BlitFunc.pm
+lib/SDL/GFX/FPSManager.pm
+lib/SDL/GFX/Framerate.pm
+lib/SDL/GFX/ImageFilter.pm
+lib/SDL/GFX/Primitives.pm
+lib/SDL/GFX/Rotozoom.pm
+lib/SDL/Image.pm
 lib/SDL/Joystick.pm
 lib/SDL/Mixer.pm
 lib/SDL/Mixer/MixChunk.pm
@@ -144,6 +152,7 @@ make/lib/SDL/Build/Openbsd.pm
 make/lib/SDL/Build/Solaris.pm
 make/lib/SDL/Utility.pm
 MANIFEST			This list of files
+META.yml
 README
 src/Core/Audio.xs
 src/Core/CDROM.xs
@@ -172,6 +181,14 @@ src/Core/SDL.xs
 src/Core/Time.xs
 src/Core/Video.xs
 src/defines.h
+src/GFX/BlitFunc.xs
+src/GFX/FPSManager.xs
+src/GFX/Framerate.xs
+src/GFX/ImageFilter.xs
+src/GFX/Primitives.xs
+src/GFX/README
+src/GFX/Rotozoom.xs
+src/Image.xs
 src/Mixer/Channels.xs
 src/Mixer/Effects.xs
 src/Mixer/Groups.xs
@@ -224,6 +241,10 @@ t/core_video.t
 t/eventpm.t
 t/extendingrect.t
 t/fontpm.t
+t/gfx_fpsmanager.t
+t/gfx_primitives.t
+t/image.t
+t/image_xpm_array.t
 t/intergation1.t
 t/lib/SDL/TestTool.pm
 t/manifest.t
@@ -257,4 +278,3 @@ test/data/logo.png
 test/data/menu.png
 test/data/sample.wav
 typemap
-META.yml

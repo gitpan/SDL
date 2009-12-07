@@ -67,3 +67,5 @@ SKIP:
 	sleep(1);
 	pass 'App inited';
   }
+
+sleep(2);

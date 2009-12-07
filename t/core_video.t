@@ -17,7 +17,7 @@ if ( !SDL::TestTool->init(SDL_INIT_VIDEO) ) {
 }
 else
 {
-	  plan( tests => 61);
+	  plan( tests => 64);
 }
 
 my @done =
@@ -132,19 +132,28 @@ SDL::Video::update_rects($display, SDL::Rect->new(0, 10, 20, 20));
 my $value = SDL::Video::flip($display);
 is( ($value == 0)  ||  ($value == -1), 1,  '[flip] returns 0 or -1'  );
 
+SKIP:
+{
+	skip( "These negative test may cause older versions of SDL to crash", 2) unless $ENV{NEW_SDL};
 $value = SDL::Video::set_colors($display, 0, SDL::Color->new(0,0,0));
 is(  $value , 0,  '[set_colors] returns 0 trying to write to 32 bit display'  );
-
-$value = SDL::Video::set_palette($display, SDL_LOGPAL|SDL_PHYSPAL, 0);
-
+	
+	$value = SDL::Video::set_palette($display, SDL_LOGPAL|SDL_PHYSPAL, 0);
+ 
 is(  $value , 0,  '[set_palette] returns 0 trying to write to 32 bit surface'  );
+}
+SDL::delay(100);
 
 my $zero = [0,0,0,0]; 
 SDL::Video::set_gamma_ramp($zero, $zero, $zero);  pass '[set_gamma_ramp] ran';
 
 my($r, $g, $b) = ([], [], []);
 SDL::Video::get_gamma_ramp($r, $g, $b);
-pass '[get_gamma_ramp] ran';
+pass '[get_gamma_ramp] ran got '. @{$r} ;
+is(@{$r}, 256, '[get_gamma_ramp] got 256 gamma ramp red back');
+is(@{$g}, 256, '[get_gamma_ramp] got 256 gamma ramp green back');
+is(@{$b}, 256, '[get_gamma_ramp] got 256 gamma ramp blue back');
+
 
 SDL::Video::set_gamma( 1.0, 1.0, 1.0 ); pass '[set_gamma] ran ';
 
@@ -281,4 +290,5 @@ TODO:
 
 pass 'Are we still alive? Checking for segfaults';
 
+sleep(2);
 
