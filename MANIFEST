@@ -204,6 +204,15 @@ src/Mixer/objects/music.xs
 src/Mixer/objects/musicType.xs
 src/Mixer/README
 src/Mixer/Samples.xs
+src/Net/Net.xs
+src/Net/objects/GenericSocket.xs
+src/Net/objects/IPaddress.xs
+src/Net/objects/SocketSet.xs
+src/Net/objects/TCPsocket.xs
+src/Net/objects/UDPpacket.xs
+src/Net/objects/UDPsocket.xs
+src/Net/TCP.xs
+src/Net/UDP.xs
 src/OpenGL.xs
 src/SDL.xs
 src/SFont.h

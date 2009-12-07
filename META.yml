@@ -1,6 +1,6 @@
 ---
 name: SDL
-version: 2.3_2
+version: 2.3_3
 author:
   - 'Kartik Thakore <KTHAKORE@cpan.org>'
 abstract: SDL bindings to Perl
@@ -19,7 +19,7 @@ configure_requires:
 provides:
   SDL:
     file: lib/SDL.pm
-    version: 2.3_2
+    version: 2.3_3
   SDL::App:
     file: lib/SDL/App.pm
   SDL::Audio:
