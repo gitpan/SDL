@@ -2,31 +2,7 @@
 #
 # App.pm
 #
-# Copyright (C) 2005 David J. Goehrig <dgoehrig@cpan.org>
-#
-# ------------------------------------------------------------------------------
-#
-# This library is free software; you can redistribute it and/or
-# modify it under the terms of the GNU Lesser General Public
-# License as published by the Free Software Foundation; either
-# version 2.1 of the License, or (at your option) any later version.
-# 
-# This library is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-# Lesser General Public License for more details.
-# 
-# You should have received a copy of the GNU Lesser General Public
-# License along with this library; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
-#
-# ------------------------------------------------------------------------------
-#
-# Please feel free to send questions, suggestions or improvements to:
-#
-#	David J. Goehrig
-#	dgoehrig@cpan.org
-#
+
 
 package SDL::App;
 
@@ -39,7 +15,7 @@ use SDL::Video;
 use SDL::Event;
 use SDL::Events;
 use SDL::Surface;
-
+use SDL::PixelFormat;
 our @ISA = qw(SDL::Surface);
 sub DESTROY {
 
@@ -49,16 +25,6 @@ sub new {
 	my $proto = shift;
 	my $class = ref($proto) || $proto;
 	my %options = @_;
-
-	verify (%options, qw/	-opengl -gl -fullscreen -full -resizeable
-				-title -t -icon_title -it -icon -i 
-				-width -w -height -h -depth -d -flags -f 
-				-red_size -r -blue_size -b -green_size -g -alpha_size -a
-				-red_accum_size -ras -blue_accum_size -bas 
-				-green_accum_sizee -gas -alpha_accum_size -aas
-				-double_buffer -db -buffer_size -bs -stencil_size -st
-				-asyncblit -init
-		/ ) if ($SDL::DEBUG);
 
 	 # SDL_INIT_VIDEO() is 0, so check defined instead of truth.
 	 my $init = defined $options{-init} ? $options{-init} :
@@ -118,7 +84,7 @@ sub new {
 		or croak SDL::get_error();
 	
 	if ($ic and -e $ic) {
-	   my $icon = new SDL::Surface -name => $ic;
+	   my $icon =  SDL::Video::load_BMP($ic);
 	   SDL::Video::wm_set_icon($$icon);
 	}
 
@@ -130,10 +96,12 @@ sub new {
 
 sub resize ($$$) {
 	my ($self,$w,$h) = @_;
-	my $flags = SDL::SurfaceFlags($$self);
-	if ( $flags & SDL::SDL_RESIZABLE()) {
-		my $bpp = SDL::SurfaceBitsPerPixel($$self);
-		$self = \SDL::SetVideoMode($w,$h,$bpp,$flags);
+	my $flags = $self->flags;
+	if ( $flags & SDL_RESIZABLE) {
+		my $bpp = $self->format->BitsPerPixel;
+		$self = SDL::Video::set_video_mode($w,$h,$bpp,$flags) or die "SDL cannot set video:".SDL::get_error;
+	} else {
+		die "Application surface not resizable";
 	}
 }
 
@@ -185,7 +153,7 @@ sub grab_input ($$) {
 sub loop ($$) {
 	my ($self,$href) = @_;
 	my $event = SDL::Event->new();
-	while ( SDL::Events::wait($event->wait) ) {
+	while ( SDL::Events::wait_event($event) ) {
 		if ( ref($$href{$event->type()}) eq "CODE" ) {
 			&{$$href{$event->type()}}($event);			
 		}

@@ -16,13 +16,13 @@ if( !SDL::TestTool->init(SDL_INIT_VIDEO) )
 {
     plan( skip_all => 'Failed to init video' );
 }
-elsif( !SDL::Config->has('SDL_gfx') )
+elsif( !SDL::Config->has('SDL_gfx_primitives') )
 {
-    plan( skip_all => 'SDL_gfx support not compiled' );
+    plan( skip_all => 'SDL_gfx_primitives support not compiled' );
 }
 else
 {
-    plan( tests => 48 );
+    plan( tests => 56 );
 }
 
 my @done =qw/
@@ -71,6 +71,16 @@ aapolygon_RGBA
 filled_polygon_color
 filled_polygon_RGBA
 textured_polygon
+bezier_color
+bezier_RGBA
+filled_polygon_color_MT
+filled_polygon_RGBA_MT
+textured_polygon_MT
+character_color
+character_RGBA
+string_color
+string_RGBA
+set_font
 /;
 
 my $display = SDL::Video::set_video_mode(640,480,32, SDL_SWSURFACE );
@@ -291,7 +301,7 @@ SDL::GFX::Primitives::aaellipse_RGBA(      $display, 65, 405,          12,      
 
 # trigon/aatrigon/filled_trigon tests
 is( SDL::GFX::Primitives::trigon_color(       $display, 130, 243, 132, 245, 130, 247, 0xFF0000FF),             0, 'trigon_color' );        # red
-is( SDL::GFX::Primitives::trigon_RGBA(        $display, 134, 243, 136, 245, 134, 247, 0x00, 0xFF, 0x00, 0xFF), 0, 'trigon_RGBA' );         # greeb
+is( SDL::GFX::Primitives::trigon_RGBA(        $display, 134, 243, 136, 245, 134, 247, 0x00, 0xFF, 0x00, 0xFF), 0, 'trigon_RGBA' );         # green
 is( SDL::GFX::Primitives::aatrigon_color(     $display, 138, 243, 140, 245, 138, 247, 0x0000FFFF),             0, 'aatrigon_color' );      # blue
 is( SDL::GFX::Primitives::aatrigon_RGBA(      $display, 142, 243, 144, 245, 142, 247, 0xFF, 0xFF, 0x00, 0xFF), 0, 'aatrigon_RGBA' );       # yellow
 is( SDL::GFX::Primitives::filled_trigon_color($display, 146, 243, 148, 245, 146, 247, 0x00FFFFFF),             0, 'filled_trigon_color' ); # cyan
@@ -299,18 +309,44 @@ is( SDL::GFX::Primitives::filled_trigon_RGBA( $display, 150, 243, 152, 245, 150,
 
 # polygon/aapolygon/filled_polygon/textured_polygon/MT/ tests
 
-my $surf = SDL::Video::load_BMP('test/data/icon.bmp');
+my $surf = SDL::Video::load_BMP('test/data/pattern_red_white_2x2.bmp');
 
-is( SDL::GFX::Primitives::polygon_color(       $display, [262, 266, 264, 266, 262], [243, 243, 245, 247, 247], 5, 0xFF0000FF),             0, 'polygon_color' );        # red
-is( SDL::GFX::Primitives::polygon_RGBA(        $display, [268, 272, 270, 272, 268], [243, 243, 245, 247, 247], 5, 0x00, 0xFF, 0x00, 0xFF), 0, 'polygon_RGBA' );         # greeb
-is( SDL::GFX::Primitives::aapolygon_color(     $display, [274, 278, 276, 278, 274], [243, 243, 245, 247, 247], 5, 0x0000FFFF),             0, 'aapolygon_color' );      # blue
-is( SDL::GFX::Primitives::aapolygon_RGBA(      $display, [280, 284, 282, 284, 280], [243, 243, 245, 247, 247], 5, 0xFF, 0xFF, 0x00, 0xFF), 0, 'aapolygon_RGBA' );       # yellow
-is( SDL::GFX::Primitives::filled_polygon_color($display, [286, 290, 288, 290, 286], [243, 243, 245, 247, 247], 5, 0x00FFFFFF),             0, 'filled_polygon_color' ); # cyan
-is( SDL::GFX::Primitives::filled_polygon_RGBA( $display, [292, 296, 294, 296, 292], [243, 243, 245, 247, 247], 5, 0xFF, 0x00, 0xFF, 0xFF), 0, 'filled_polygon_RGBA' );  # magenta
-is( SDL::GFX::Primitives::filled_polygon_color_MT($display, [298, 302, 300, 302, 298], [243, 243, 245, 247, 247], 5, 0x00FFFFFF, 0, 0),             0, 'filled_polygon_color_MT' ); # cyan
-is( SDL::GFX::Primitives::filled_polygon_RGBA( $display, [292, 296, 294, 296, 292], [243, 243, 245, 247, 247], 5, 0xFF, 0x00, 0xFF, 0xFF), 0, 'filled_polygon_RGBA' );  # magenta
+is( SDL::GFX::Primitives::polygon_color(          $display, [262, 266, 264, 266, 262], [243, 243, 245, 247, 247], 5, 0xFF0000FF),                         0, 'polygon_color' );           # red
+is( SDL::GFX::Primitives::polygon_RGBA(           $display, [268, 272, 270, 272, 268], [243, 243, 245, 247, 247], 5, 0x00, 0xFF, 0x00, 0xFF),             0, 'polygon_RGBA' );            # green
+is( SDL::GFX::Primitives::aapolygon_color(        $display, [274, 278, 276, 278, 274], [243, 243, 245, 247, 247], 5, 0x0000FFFF),                         0, 'aapolygon_color' );         # blue
+is( SDL::GFX::Primitives::aapolygon_RGBA(         $display, [280, 284, 282, 284, 280], [243, 243, 245, 247, 247], 5, 0xFF, 0xFF, 0x00, 0xFF),             0, 'aapolygon_RGBA' );          # yellow
+is( SDL::GFX::Primitives::filled_polygon_color(   $display, [286, 290, 288, 290, 286], [243, 243, 245, 247, 247], 5, 0x00FFFFFF),                         0, 'filled_polygon_color' );    # cyan
+is( SDL::GFX::Primitives::filled_polygon_RGBA(    $display, [292, 296, 294, 296, 292], [243, 243, 245, 247, 247], 5, 0xFF, 0x00, 0xFF, 0xFF),             0, 'filled_polygon_RGBA' );     # magenta
 
-#is( SDL::GFX::Primitives::textured_polygon(    $display, [262, 382, 322, 382, 262], [249, 249, 299, 349, 349], 5, $surf, 20, 0),           1, 'textured_polygon' );  # magenta
+is( SDL::GFX::Primitives::textured_polygon(       $display, [298, 302, 300, 302, 298], [243, 243, 245, 247, 247], 5, $surf,                  0, 0),       1, 'textured_polygon' );        # texture
+is( SDL::GFX::Primitives::filled_polygon_color_MT($display, [304, 308, 306, 308, 304], [243, 243, 245, 247, 247], 5, 0xFF0000FF,             0, 0),       0, 'filled_polygon_color_MT' ); # red
+is( SDL::GFX::Primitives::filled_polygon_RGBA_MT( $display, [310, 314, 312, 314, 310], [243, 243, 245, 247, 247], 5, 0x00, 0xFF, 0x00, 0xFF, 0, 0),       0, 'filled_polygon_RGBA_MT' );  # green
+is( SDL::GFX::Primitives::textured_polygon_MT(    $display, [316, 320, 318, 320, 316], [243, 243, 245, 247, 247], 5, $surf,                  0, 0, 0, 0), 1, 'textured_polygon_MT' );     # texture
+
+# bezier test
+is( SDL::GFX::Primitives::bezier_color( $display, [390, 392, 394, 396], [243, 255, 235, 247], 4, 20, 0xFF00FFFF),             0, 'polygon_color' );        # red
+is( SDL::GFX::Primitives::bezier_RGBA(  $display, [398, 400, 402, 404], [243, 255, 235, 247], 4, 20, 0x00, 0xFF, 0x00, 0xFF), 0, 'polygon_RGBA' );         # green
+
+#character/string tests
+is( SDL::GFX::Primitives::character_color($display, 518, 243, 'A', 0xFF0000FF),                         0, 'character_color' );           # red
+is( SDL::GFX::Primitives::character_RGBA( $display, 526, 243, 'B', 0x00, 0xFF, 0x00, 0xFF),             0, 'character_RGBA' );            # green
+is( SDL::GFX::Primitives::string_color(   $display, 534, 243, 'CD', 0x0000FFFF),                         0, 'string_color' );         # blue
+is( SDL::GFX::Primitives::string_RGBA(    $display, 550, 243, 'DE', 0xFF, 0xFF, 0x00, 0xFF),             0, 'string_RGBA' );          # yellow
+
+SKIP:
+{
+	skip ' test font not found', 1 unless -e 'test/data/5x7.fnt';
+	my $font = '';
+	open(FH, '<', 'test/data/5x7.fnt');
+	binmode(FH);
+	read(FH, $font, 2048);
+	close(FH);
+
+	is( SDL::GFX::Primitives::set_font($font, 5, 7), undef, 'set_font' );
+}
+
+#chracater demo
+SDL::GFX::Primitives::character_RGBA( $display, 518 + ($_ % 17) * 7, 251 + int($_ / 17) * 8, chr($_), 0x80 + $_ / 2, 0xFF, 0x00, 0xFF) for(0..255);
 
 SDL::Video::unlock_surface($display) if(SDL::Video::MUSTLOCK($display));
 
@@ -319,26 +355,15 @@ SDL::Video::update_rect($display, 0, 0, 640, 480);
 SDL::delay(5000);
 
 my @left = qw/
-filled_polygon_color_MT
-filled_polygon_RGBA_MT
-textured_polygon_MT
-bezier_color
-bezier_RGBA
-character_color
-character_RGBA
-string_color
-string_RGBA
-set_font
 /;
 
-my $why = '[Percentage Completion] '.int( 100 * ($#done +1 ) / ($#done + $#left + 2  ) ) .'% implementation. '.($#done +1 ).'/'.($#done+$#left + 2 ); 
-
-TODO:
-{
-	local $TODO = $why;
-	pass "\nThe following functions:\n".join ",", @left; 
-}
-if( $done[0] eq 'none'){ diag '0% done 0/'.$#left } else { diag  $why} 
+#my $why = '[Percentage Completion] '.int( 100 * ($#done +1 ) / ($#done + $#left + 2  ) ) .'% implementation. '.($#done +1 ).'/'.($#done+$#left + 2 ); 
+#TODO:
+#{
+#	local $TODO = $why;
+#	pass "\nThe following functions:\n".join ",", @left; 
+#}
+#if( $done[0] eq 'none'){ diag '0% done 0/'.$#left } else { diag  $why} 
 
 pass 'Are we still alive? Checking for segfaults';
 

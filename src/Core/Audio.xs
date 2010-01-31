@@ -60,8 +60,13 @@ audio_load_wav ( filename, spec )
 		}
 		else
 		{	
-			RETVAL = newAV();
-			av_push(RETVAL, sv_setref_pv( asref, "SDL::AudioSpec", (void *)temp));
+		 void** pointers = malloc(2 * sizeof(void*));
+		  pointers[0] = (void*)temp;
+		  pointers[1] = (void*)my_perl;
+
+		
+			RETVAL = (AV*)sv_2mortal((SV*)newAV());
+			av_push(RETVAL, sv_setref_pv( asref, "SDL::AudioSpec", (void *)pointers));
 			av_push(RETVAL,newSViv(PTR2IV(buf)));
 			av_push(RETVAL,newSViv(len));
 		}

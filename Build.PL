@@ -70,42 +70,42 @@ my %subsystems =
 			from  => 'src/GFX/BlitFunc.xs',
 			to    => 'lib/SDL/GFX/BlitFunc.xs',
 		},
-		libraries => [qw( SDL SDL_gfx_blit )],
+		libraries => [qw( SDL SDL_gfx_blitfunc )],
 	},
 	Framerate => {
 		file      => {
 			from  => 'src/GFX/Framerate.xs',
 			to    => 'lib/SDL/GFX/Framerate.xs',
 		},
-		libraries => [qw( SDL SDL_gfx )],
+		libraries => [qw( SDL SDL_gfx_framerate )],
 	},
 	FPSManager => {
 		file      => {
 			from  => 'src/GFX/FPSManager.xs',
 			to    => 'lib/SDL/GFX/FPSManager.xs',
 		},
-		libraries => [qw( SDL SDL_gfx )],
+		libraries => [qw( SDL SDL_gfx_framerate )],
 	},
 	ImageFilter => {
 		file      => {
 			from  => 'src/GFX/ImageFilter.xs',
 			to    => 'lib/SDL/GFX/ImageFilter.xs',
 		},
-		libraries => [qw( SDL SDL_gfx )],
+		libraries => [qw( SDL SDL_gfx_imagefilter )],
 	},
 	Primitives => {
 		file      => {
 			from  => 'src/GFX/Primitives.xs',
 			to    => 'lib/SDL/GFX/Primitives.xs',
 		},
-		libraries => [qw( SDL SDL_gfx )],
+		libraries => [qw( SDL SDL_gfx_primitives )],
 	},
 	Rotozoom => {
 		file      => {
 			from  => 'src/GFX/Rotozoom.xs',
 			to    => 'lib/SDL/GFX/Rotozoom.xs',
 		},
-		libraries => [qw( SDL SDL_gfx )],
+		libraries => [qw( SDL SDL_gfx_rotozoom )],
 	},
 	MultiThread => {
 		file      => {
@@ -184,6 +184,13 @@ my %subsystems =
 			to    => 'lib/SDL/AudioCVT.xs',
 		},
 		libraries => [qw( SDL )],
+	},
+	Mixer => {
+		file      => {
+			from  => 'src/Mixer/Mixer.xs',
+			to    => 'lib/SDL/Mixer.xs',
+		},
+		libraries => [qw( SDL SDL_mixer )],
 	},
 	MixChunk => {
 		file      => {
@@ -291,6 +298,35 @@ my %subsystems =
 		},
 		libraries => [qw( SDL SDL_image )],
 	},	
+	Net => {
+		file      => {
+			from  => 'src/Net/Net.xs',
+			to    => 'lib/SDL/Net.xs',
+		},
+		libraries => [qw( SDL SDL_net )],
+	},
+	TCP => {
+		file      => {
+			from  => 'src/Net/TCP.xs',
+			to    => 'lib/SDL/Net/TCP.xs',
+		},
+		libraries => [qw( SDL SDL_net )],
+	},
+	UDP => {
+		file      => {
+			from  => 'src/Net/UDP.xs',
+			to    => 'lib/SDL/Net/UDP.xs',
+		},
+		libraries => [qw( SDL SDL_net )],
+	},
+
+	IPaddress => {
+		file      => {
+			from  => 'src/Net/objects/IPaddress.xs',
+			to    => 'lib/SDL/Net/IPaddress.xs',
+		},
+		libraries => [qw( SDL SDL_net )],
+	},
 
 );
 
@@ -319,10 +355,25 @@ my %libraries = (
 		define => 'HAVE_SDL_GFX',     
 		header => 'SDL_gfxPrimitives.h'
 	},
-	SDL_gfx_blit     => {
-		define => 'HAVE_SDL_GFX_BLIT',     
-		header => 'SDL_gfxBlitFunc.h',
-		library => 'SDL_gfx' 
+	SDL_gfx_blitfunc    => {
+		define => 'HAVE_SDL_GFX_BLITFUNC',     
+		header => 'SDL_gfxBlitFunc.h'
+	},
+	SDL_gfx_framerate   => {
+		define => 'HAVE_SDL_GFX_FRAMERATE',     
+		header => 'SDL_framerate.h'
+	},
+	SDL_gfx_imagefilter => {
+		define => 'HAVE_SDL_GFX_IMAGEFILTER',     
+		header => 'SDL_imageFilter.h'
+	},
+	SDL_gfx_primitives  => {
+		define => 'HAVE_SDL_GFX_PRIMITIVES',     
+		header => 'SDL_gfxPrimitives.h'
+	},
+	SDL_gfx_rotozoom    => {
+		define => 'HAVE_SDL_GFX_ROTOZOOM',     
+		header => 'SDL_rotozoom.h'
 	},
 	png         => {
 		define    => 'HAVE_PNG',
@@ -360,8 +411,9 @@ $arch->write_sdl_config( $build_systems );
 
 # and fetch all of the information needed to compile
 my $defines       = $arch->build_defines( \%libraries, $build_systems );
-my $includes      = $arch->build_includes( \%libraries, $build_systems );
+my $includes      = $arch->build_includes( \%libraries, $build_systems);
 my $links         = $arch->build_links( \%libraries, $build_systems );
+
 
 # mangle the compilable files into a format Module::Build can understand
 my %xs = map { $subsystems{$_}{file}{from} => $subsystems{$_}{file}{to} }
@@ -406,6 +458,7 @@ if($arch eq 'Darwin')
 }
 
 # and here's where the real (and ugly) magic works... see SDL::Build
+
 $build->set_flags(
 	\%subsystems,
 	$build_systems,

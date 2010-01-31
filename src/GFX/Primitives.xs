@@ -7,7 +7,7 @@
 #endif
 
 #include <SDL.h>
-#ifdef HAVE_SDL_GFX
+#ifdef HAVE_SDL_GFX_PRIMITIVES
 #include <SDL_gfxPrimitives.h>
 #endif
 
@@ -47,7 +47,7 @@ See: L<http://www.ferzkopp.net/joomla/content/view/19/14/>
 
 =cut
 
-#ifdef HAVE_SDL_GFX
+#ifdef HAVE_SDL_GFX_PRIMITIVES
 
 int
 gfx_prim_pixel_color(dst, x, y, color)
@@ -899,7 +899,7 @@ gfx_prim_string_RGBA(dst, x, y, c, r, g, b, a)
 
 void
 gfx_prim_set_font(fontdata, cw, ch)
-	void *fontdata
+	char *fontdata
 	int cw
 	int ch
 	CODE:

@@ -9,7 +9,7 @@
 #include <SDL.h>
 #include <SDL_events.h>
 
-
+PerlInterpreter * perl_for_cb=NULL;
 /* Static Memory for event filter call back */
 static SV * eventfiltersv;
 
@@ -26,8 +26,11 @@ int eventfilter_cb( const void * event)
 	ENTER;
 	SAVETMPS;
 	PUSHMARK(SP);
-	
-	XPUSHs( sv_setref_pv( eventref, "SDL::Event", (void *)copyEvent) );
+			 void** pointers = malloc(2 * sizeof(void*));
+		  pointers[0] = (void*)copyEvent;
+		  pointers[1] = (void*)perl_for_cb;
+
+	XPUSHs( sv_setref_pv( eventref, "SDL::Event", (void *)pointers) );
 	PUTBACK;
 
 //	printf ( "Eventref is %p. Event is %p. CopyEvent is %p \n", eventref, event, copyEvent);
@@ -108,6 +111,7 @@ events_set_event_filter(callback)
 	SV* callback
 	CODE:
 	eventfiltersv = callback;
+	perl_for_cb = my_perl;
 	
 	SDL_SetEventFilter((SDL_EventFilter) eventfilter_cb);
 
@@ -117,18 +121,15 @@ events_get_key_state()
 	PREINIT:
 	int value;
 	CODE:
-
-	Uint8* KeyArray = SDL_GetKeyState(&value);
-	RETVAL = newAV();
-	sv_2mortal((SV*)RETVAL);	
-	int i;
-	for( i = 0; i <value; i++)
-	{
-		SV* scalar = newSViv( KeyArray[i]  );
-		av_push( RETVAL, scalar);
-	
-	}
-	
+		Uint8* KeyArray = SDL_GetKeyState(&value);
+		RETVAL = (AV*)sv_2mortal((SV*)newAV());
+		int i;
+		for( i = 0; i <value; i++)
+		{
+			SV* scalar = newSViv( KeyArray[i]  );
+			av_push( RETVAL, scalar);
+		
+		}
 	OUTPUT:
 		RETVAL
 	 
@@ -187,8 +188,7 @@ events_get_mouse_state ()
 		int x;
 		int y;
 		mask = SDL_GetMouseState(&x,&y);
-		RETVAL = newAV();
-		sv_2mortal((SV*)RETVAL);
+		RETVAL = (AV*)sv_2mortal((SV*)newAV());
 		av_push(RETVAL,newSViv(mask));
 		av_push(RETVAL,newSViv(x));
 		av_push(RETVAL,newSViv(y));
@@ -202,8 +202,7 @@ events_get_relative_mouse_state ()
 		int x;
 		int y;
 		mask = SDL_GetRelativeMouseState(&x,&y);
-		RETVAL = newAV();
-		sv_2mortal((SV*)RETVAL);
+		RETVAL = (AV*)sv_2mortal((SV*)newAV());
 		av_push(RETVAL,newSViv(mask));
 		av_push(RETVAL,newSViv(x));
 		av_push(RETVAL,newSViv(y));

@@ -1,25 +1,41 @@
 ---
-name: SDL
-version: 2.3_3
+abstract: 'SDL bindings to Perl'
 author:
   - 'Kartik Thakore <KTHAKORE@cpan.org>'
-abstract: SDL bindings to Perl
-license: lgpl
-resources:
-  license: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt
 build_requires:
+  ExtUtils::CBuilder: 0
   IO::CaptureOutput: 0
   Test::Most: 0.21
   Test::Simple: 0.88
 configure_requires:
   Alien::SDL: v0.07.2
   ExtUtils::CBuilder: 0.260301
-  Module::Build: 0.35
+  Module::Build: 0.36
   YAML: 0.68
+generated_by: 'Module::Build version 0.3603'
+license: lgpl
+meta-spec:
+  url: http://module-build.sourceforge.net/META-spec-v1.4.html
+  version: 1.4
+name: SDL
+no_index:
+  file:
+    - make/lib/SDL/Build.pm
+    - make/lib/SDL/Utility.pm
+    - make/lib/SDL/Build/Cygwin.pm
+    - make/lib/SDL/Build/Darwin.pm
+    - make/lib/SDL/Build/Freebsd.pm
+    - make/lib/SDL/Build/Gnukfreebsd.pm
+    - make/lib/SDL/Build/Linux.pm
+    - make/lib/SDL/Build/MSWin32.pm
+    - make/lib/SDL/Build/Netbsd.pm
+    - make/lib/SDL/Build/Openbsd.pm
+    - make/lib/SDL/Build/Solaris.pm
+    - make/lib/ExtUtils/CBuilder/Platform/Windows.pm
 provides:
   SDL:
     file: lib/SDL.pm
-    version: 2.3_3
+    version: 2.3_5
   SDL::App:
     file: lib/SDL/App.pm
   SDL::Audio:
@@ -83,6 +99,14 @@ provides:
     file: lib/SDL/MultiThread.pm
   SDL::Music:
     file: lib/SDL/Music.pm
+  SDL::Net:
+    file: lib/SDL/Net.pm
+  SDL::Net::IPaddress:
+    file: lib/SDL/Net/IPaddress.pm
+  SDL::Net::TCP:
+    file: lib/SDL/Net/TCP.pm
+  SDL::Net::UDP:
+    file: lib/SDL/Net/UDP.pm
   SDL::OpenGL:
     file: lib/SDL/OpenGL.pm
   SDL::OpenGL::Constants:
@@ -131,6 +155,8 @@ provides:
     file: lib/SDL/Tutorial/LunarLander.pm
   SDL::Tutorial::Pong::Ball:
     file: lib/SDL/Tutorial/Pong.pm
+  SDL::Tutorial::Pong::Paddle:
+    file: lib/SDL/Tutorial/Pong.pm
   SDL::Version:
     file: lib/SDL/Version.pm
   SDL::Video:
@@ -139,21 +165,6 @@ provides:
     file: lib/SDL/VideoInfo.pm
   SDL_perl:
     file: lib/SDL_perl.pm
-generated_by: Module::Build version 0.35
-meta-spec:
-  url: http://module-build.sourceforge.net/META-spec-v1.4.html
-  version: 1.4
-no_index:
-  file:
-    - make/lib/SDL/Build.pm
-    - make/lib/SDL/Utility.pm
-    - make/lib/SDL/Build/Cygwin.pm
-    - make/lib/SDL/Build/Darwin.pm
-    - make/lib/SDL/Build/Freebsd.pm
-    - make/lib/SDL/Build/Gnukfreebsd.pm
-    - make/lib/SDL/Build/Linux.pm
-    - make/lib/SDL/Build/MSWin32.pm
-    - make/lib/SDL/Build/Netbsd.pm
-    - make/lib/SDL/Build/Openbsd.pm
-    - make/lib/SDL/Build/Solaris.pm
-    - make/lib/ExtUtils/CBuilder/Platform/Windows.pm
+resources:
+  license: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt
+version: 2.3_5

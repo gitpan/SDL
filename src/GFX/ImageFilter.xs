@@ -8,7 +8,7 @@
 
 #include <SDL.h>
 
-#ifdef HAVE_SDL_GFX
+#ifdef HAVE_SDL_GFX_IMAGEFILTER
 #include <SDL_imageFilter.h>
 #endif 
 
@@ -24,12 +24,14 @@ See: L<http://www.ferzkopp.net/joomla/content/view/19/14/>
 
 =cut
 
-#ifdef HAVE_SDL_GFX
+#ifdef HAVE_SDL_GFX_IMAGEFILTER
 
 int
 gfx_image_MMX_detect()
 	CODE:
-		SDL_imageFilterMMXdetect();
+		RETVAL = SDL_imageFilterMMXdetect();
+	OUTPUT:
+		RETVAL
 
 void
 gfx_image_MMX_off()

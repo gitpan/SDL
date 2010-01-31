@@ -1,5 +1,15 @@
 Revision history for Perl extension SDL_perl.
 
+* 2.3_5 
+        - Fixed serious XS mem leaks in AV* [FROGGS]
+        - Removed usless verify method in SDL.pm [J_King]
+        - GFX rotozoom started [FROGGS]
+        - More docs for GFX [FROGGS]
+        - ithreads support for audio and timer callback [kthakore, ruoso]
+	- SDL::App resize fixed [kthakore, TonyC] {http://rt.cpan.org/Public/Bug/Display.html?id=16984}
+	- Migrated O_OBJECT to thread safe bag [ruoso, kthakore]
+	- Update time docs [kthakore]
+
 * 2.3_3
 	- SDL::Image implemented and tested [#72] [kthakore]
 	- FreeBSD SDL test clean up [#75] [kthakore]
@@ -7,6 +17,9 @@ Revision history for Perl extension SDL_perl.
 	- Started GFX, GFX BlitFunc, GFX Primatives, FPSManager  [FROGGS] 
 	- Added more init tests [kthakore]
 	- Added condition compile for mixer and ttf [kthakore]
+	- Replaced test file for MixMusic (proper file format) [FROGGS]
+	- Added license information file (README) for test/data [FROGGS]
+	- Moved mixer stuff from SDL:: to SDL::Mixer:: [FROGGS]
 
 * 2.3_1 
 	- General fixup for CPAN
