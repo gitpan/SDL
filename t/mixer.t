@@ -2,94 +2,86 @@
 use strict;
 use SDL;
 use SDL::Config;
-use Test::More;
 
-use lib 't/lib';
-use SDL::TestTool;
-
-if ( !SDL::TestTool->init(SDL_INIT_AUDIO) ) {
-    plan( skip_all => 'Failed to init sound' );
-}
-elsif( !SDL::Config->has('SDL_mixer') )
+BEGIN
 {
-    plan( skip_all => 'SDL_mixer support not compiled' );
-}
-my @done = qw//;
+	use Test::More;
+	use lib 't/lib';
+	use SDL::TestTool;
 
-my @left = qw/
-linked_version	  	
+	if ( !SDL::TestTool->init(SDL_INIT_AUDIO) ) {
+	    plan( skip_all => 'Failed to init sound' );
+	}
+	elsif( !SDL::Config->has('SDL_mixer') )
+	{
+	    plan( skip_all => 'SDL_mixer support not compiled' );
+	}
+} #SDL_init(SDL_INIT_AUDIO) + Version bootstrap conflict prevention in windows
+#
+# To reproduce this bug do 
+#
+# use SDL; use SDL::Version; SDL::init(SDL_INIT_AUDIO);
+#
+
+use SDL::Mixer;
+use SDL::Version;
+
+my @done = qw/
 init	  	
-quit	  	
-openaudio	  	
-closeaudio	  	
-seterror	  	
-geterror	  	
+quit	
+linked_version	  	
+open_audio	  	
+close_audio
 queryspec	  	
-getnumchunkdecoders	  	
-getchunkdecoder	  	
-loadwav	  	
-loadwav_rw	  	
-quickload_wav	  	
-quickload_raw	  	
-volumechunk	  	
-freechunk	  	
-allocatechannels	  	
-volume	  	
-playchannel	  	
-playchanneltimed	  	
-fadeinchannel	  	
-fadeinchanneltimed	  	
-pause	  	
-resume	  	
-haltchannel	  	
-expirechannel	  	
-fadeoutchannel	  	
-channelfinished	  	
-playing	  	
-paused	  	
-fadingchannel	  	
-getchunk	  	
-reservechannels	  	
-groupchannel	  	
-groupchannels	  	
-groupcount	  	
-groupavailable	  	
-groupoldest	  	
-groupnewer	  	
-fadeoutgroup	  	
-haltgroup	  	
-getnummusicdecoders	  	
-getmusicdecoder	  	
-loadmus	  	
-freemusic	  	
-playmusic	  	
-fadeinmusic	  	
-fadeinmusicpos	  	
-hookmusic	  	
-volumemusic	  	
-pausemusic	  	
-resumemusic	  	
-rewindmusic	  	
-setmusicposition	  	
-setmusiccmd	  	
-haltmusic	  	
-fadeoutmusic	  	
-hookmusicfinished	  	
-getmusictype	  	
-playingmusic	  	
-pausedmusic	  	
-fadingmusic	  	
-getmusichookdata	  	
-registereffect	  	
-unregistereffect	  	
-unregisteralleffects	  	
-setpostmix	  	
-setpanning	  	
-setdistance	  	
-setposition	  	
-setreversestereo	  
-/	
-;
+/;
+
+
+my $v = SDL::Mixer::linked_version();
+
+isa_ok($v, 'SDL::Version', '[linked_version] returns a SDL::verion object');
+
+
+SKIP:
+{
+	skip ( 'Version 1.2.10 needed' , 1) unless ( $v->major >= 1 && $v->minor >= 2 && $v->patch >= 10); 
+my @flags = (MIX_INIT_MP3, MIX_INIT_MOD, MIX_INIT_FLAC, MIX_INIT_OGG);
+my @names = qw/MP3 MOD FLAC OGG/;
+foreach (0...3)
+{
+	my $f = $flags[$_];
+	my $n = $names[$_];
+( SDL::Mixer::init($f) != $f)?diag "Tried to init $n". SDL::get_error() : diag "You have $n support"; 
+pass 'Init ran';
+
+}
+SDL::Mixer::quit();
+
+pass 'Quit ran';
+
+}
+
+is( SDL::Mixer::open_audio( 44100, SDL::Constants::AUDIO_S16, 2, 4096 ), 0, '[open_audio] ran');
+
+my $data = SDL::Mixer::query_spec();
+
+my( $status, $freq, $format, $chan ) = @{$data};
+
+isnt ($status, 0,  '[query_spec] ran' );
+isnt ($freq, 0,  '[query_spec] got frequency '. $freq );
+isnt ($format, 0,  '[query_spec] got format ');
+isnt ($chan, 0, '[query_spec] got channels '.$chan);
+
+SDL::Mixer::close_audio();
+
+pass '[close_audio]  ran';
+
+
+
+my @left = qw/  /;
+#seterror	  	
+#geterror	  		  	
+#/	
+
 
 my $why
     = '[Percentage Completion] '
@@ -107,4 +99,4 @@ TODO:
 diag $why;
 
 done_testing();
-sleep(2);
+

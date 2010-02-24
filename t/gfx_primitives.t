@@ -25,64 +25,6 @@ else
     plan( tests => 56 );
 }
 
-my @done =qw/
-pixel_color
-pixel_RGBA
-hline_color
-hline_RGBA
-vline_color
-vline_RGBA
-rectangle_color
-rectangle_RGBA
-box_color
-box_RGBA
-line_color
-line_RGBA
-aaline_color
-aaline_RGBA
-circle_color
-circle_RGBA
-arc_color
-arc_RGBA
-aacircle_color
-aacircle_RGBA
-filled_circle_color
-filled_circle_RGBA
-ellipse_color
-ellipse_RGBA
-aaellipse_color
-aaellipse_RGBA
-filled_ellipse_color
-filled_ellipse_RGBA
-pie_color
-pie_RGBA
-filled_pie_color
-filled_pie_RGBA
-trigon_color
-trigon_RGBA
-aatrigon_color
-aatrigon_RGBA
-filled_trigon_color
-filled_trigon_RGBA
-polygon_color
-polygon_RGBA
-aapolygon_color
-aapolygon_RGBA
-filled_polygon_color
-filled_polygon_RGBA
-textured_polygon
-bezier_color
-bezier_RGBA
-filled_polygon_color_MT
-filled_polygon_RGBA_MT
-textured_polygon_MT
-character_color
-character_RGBA
-string_color
-string_RGBA
-set_font
-/;
-
 my $display = SDL::Video::set_video_mode(640,480,32, SDL_SWSURFACE );
 my $pixel   = SDL::Video::map_RGB( $display->format, 0, 0, 0 );
 SDL::Video::fill_rect( $display, SDL::Rect->new( 0, 0, $display->w, $display->h ), $pixel );
@@ -323,6 +265,15 @@ is( SDL::GFX::Primitives::filled_polygon_color_MT($display, [304, 308, 306, 308,
 is( SDL::GFX::Primitives::filled_polygon_RGBA_MT( $display, [310, 314, 312, 314, 310], [243, 243, 245, 247, 247], 5, 0x00, 0xFF, 0x00, 0xFF, 0, 0),       0, 'filled_polygon_RGBA_MT' );  # green
 is( SDL::GFX::Primitives::textured_polygon_MT(    $display, [316, 320, 318, 320, 316], [243, 243, 245, 247, 247], 5, $surf,                  0, 0, 0, 0), 1, 'textured_polygon_MT' );     # texture
 
+# polygon demo
+SDL::GFX::Primitives::filled_polygon_color(   $display, [311, 331, 381, 301, 311, 351], [293, 293, 378, 378, 361, 361], 6, 0xFF000080);    # red
+SDL::GFX::Primitives::filled_polygon_color(   $display, [381, 371, 271, 311, 321, 301], [378, 395, 395, 327, 344, 378], 6, 0x00FF0080);    # green
+SDL::GFX::Primitives::filled_polygon_color(   $display, [271, 261, 311, 351, 331, 311], [395, 378, 293, 361, 361, 327], 6, 0x0000FF80);    # blue
+
+
+
+
+
 # bezier test
 is( SDL::GFX::Primitives::bezier_color( $display, [390, 392, 394, 396], [243, 255, 235, 247], 4, 20, 0xFF00FFFF),             0, 'polygon_color' );        # red
 is( SDL::GFX::Primitives::bezier_RGBA(  $display, [398, 400, 402, 404], [243, 255, 235, 247], 4, 20, 0x00, 0xFF, 0x00, 0xFF), 0, 'polygon_RGBA' );         # green
@@ -352,18 +303,7 @@ SDL::Video::unlock_surface($display) if(SDL::Video::MUSTLOCK($display));
 
 SDL::Video::update_rect($display, 0, 0, 640, 480); 
 
-SDL::delay(5000);
-
-my @left = qw/
-/;
-
-#my $why = '[Percentage Completion] '.int( 100 * ($#done +1 ) / ($#done + $#left + 2  ) ) .'% implementation. '.($#done +1 ).'/'.($#done+$#left + 2 ); 
-#TODO:
-#{
-#	local $TODO = $why;
-#	pass "\nThe following functions:\n".join ",", @left; 
-#}
-#if( $done[0] eq 'none'){ diag '0% done 0/'.$#left } else { diag  $why} 
+SDL::delay(10000);
 
 pass 'Are we still alive? Checking for segfaults';
 

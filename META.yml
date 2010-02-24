@@ -3,13 +3,15 @@ abstract: 'SDL bindings to Perl'
 author:
   - 'Kartik Thakore <KTHAKORE@cpan.org>'
 build_requires:
+  Alien::SDL: v0.8.2
   ExtUtils::CBuilder: 0
   IO::CaptureOutput: 0
   Test::Most: 0.21
   Test::Simple: 0.88
 configure_requires:
-  Alien::SDL: v0.07.2
+  Alien::SDL: v0.8.2
   ExtUtils::CBuilder: 0.260301
+  File::Find: 2.07
   Module::Build: 0.36
   YAML: 0.68
 generated_by: 'Module::Build version 0.3603'
@@ -18,24 +20,10 @@ meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
   version: 1.4
 name: SDL
-no_index:
-  file:
-    - make/lib/SDL/Build.pm
-    - make/lib/SDL/Utility.pm
-    - make/lib/SDL/Build/Cygwin.pm
-    - make/lib/SDL/Build/Darwin.pm
-    - make/lib/SDL/Build/Freebsd.pm
-    - make/lib/SDL/Build/Gnukfreebsd.pm
-    - make/lib/SDL/Build/Linux.pm
-    - make/lib/SDL/Build/MSWin32.pm
-    - make/lib/SDL/Build/Netbsd.pm
-    - make/lib/SDL/Build/Openbsd.pm
-    - make/lib/SDL/Build/Solaris.pm
-    - make/lib/ExtUtils/CBuilder/Platform/Windows.pm
 provides:
   SDL:
     file: lib/SDL.pm
-    version: 2.3_5
+    version: 2.3_6
   SDL::App:
     file: lib/SDL/App.pm
   SDL::Audio:
@@ -52,6 +40,8 @@ provides:
     file: lib/SDL/CDTrack.pm
   SDL::Color:
     file: lib/SDL/Color.pm
+  SDL::Config:
+    file: lib/SDL/Config.pm
   SDL::Constants:
     file: lib/SDL/Constants.pm
   SDL::Cursor:
@@ -83,16 +73,28 @@ provides:
     version: 0.01
   SDL::Image:
     file: lib/SDL/Image.pm
+  SDL::Internal::Loader:
+    file: lib/SDL/Internal/Loader.pm
   SDL::Joystick:
     file: lib/SDL/Joystick.pm
   SDL::MPEG:
     file: lib/SDL/MPEG.pm
   SDL::Mixer:
     file: lib/SDL/Mixer.pm
+  SDL::Mixer::Channels:
+    file: lib/SDL/Mixer/Channels.pm
+  SDL::Mixer::Effects:
+    file: lib/SDL/Mixer/Effects.pm
+  SDL::Mixer::Groups:
+    file: lib/SDL/Mixer/Groups.pm
   SDL::Mixer::MixChunk:
     file: lib/SDL/Mixer/MixChunk.pm
   SDL::Mixer::MixMusic:
     file: lib/SDL/Mixer/MixMusic.pm
+  SDL::Mixer::Music:
+    file: lib/SDL/Mixer/Music.pm
+  SDL::Mixer::Samples:
+    file: lib/SDL/Mixer/Samples.pm
   SDL::Mouse:
     file: lib/SDL/Mouse.pm
   SDL::MultiThread:
@@ -166,5 +168,5 @@ provides:
   SDL_perl:
     file: lib/SDL_perl.pm
 resources:
-  license: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt
-version: 2.3_5
+  license: http://opensource.org/licenses/lgpl-license.php
+version: 2.3_6
