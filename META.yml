@@ -23,7 +23,7 @@ name: SDL
 provides:
   SDL:
     file: lib/SDL.pm
-    version: 2.3_6
+    version: 2.3_7
   SDL::App:
     file: lib/SDL/App.pm
   SDL::Audio:
@@ -169,4 +169,4 @@ provides:
     file: lib/SDL_perl.pm
 resources:
   license: http://opensource.org/licenses/lgpl-license.php
-version: 2.3_6
+version: 2.3_7

@@ -26,7 +26,6 @@ examples/MoP/lib/SDL/Tutorial/MoP/Models.pm
 examples/MoP/lib/SDL/Tutorial/MoP/View.pm
 examples/MoP/lib/SDL/Tutorial/MoP/View/Map.pm
 examples/MoP/LICENSE
-examples/MoP/MANIFEST
 examples/MoP/README
 examples/MoP/t/001_load.t
 examples/MoP/t/run.t
@@ -69,6 +68,7 @@ lib/pods/SDL/Mixer/Groups.pod
 lib/pods/SDL/Mixer/MixChunk.pod
 lib/pods/SDL/Mixer/MixMusic.pod
 lib/pods/SDL/Mixer/Music.pod
+lib/pods/SDL/Mixer/Samples.pod
 lib/pods/SDL/Mouse.pod
 lib/pods/SDL/MPEG.pod
 lib/pods/SDL/MultiThread.pod
@@ -240,6 +240,7 @@ src/TTF/TTF.xs
 t/00-load.t
 t/apppm.t
 t/colorpm.t
+t/config.t
 t/constantspm.t
 t/core.t
 t/core_audio.t
@@ -267,6 +268,7 @@ t/gfx_fpsmanager.t
 t/gfx_framerate.t
 t/gfx_imagefilter.t
 t/gfx_primitives.t
+t/gfx_primitives2.t
 t/gfx_rotozoom.t
 t/image.t
 t/image_xpm_array.t
@@ -308,6 +310,7 @@ test/data/pattern_red_white_2x2.bmp
 test/data/picture.bmp
 test/data/README
 test/data/sample.wav
+test/data/silence.wav
 test/data/tribe_i.wav
 typemap
 META.yml

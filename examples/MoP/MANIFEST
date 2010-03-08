@@ -1,8 +1,0 @@
-MANIFEST
-README
-LICENSE
-Todo
-Changes
-Build.PL
-lib/SDL/Tutorial/MoP.pm
-t/001_load.t
