@@ -13,7 +13,7 @@
 #endif
 
 
-MODULE = SDL::TTF_Font 	PACKAGE = SDL::TTF_Font    PREFIX = ttf_font_
+MODULE = SDL::TTF::Font 	PACKAGE = SDL::TTF::Font    PREFIX = ttf_font_
 
 =for documentation
 
@@ -23,12 +23,11 @@ SDL_TTF_Font - The opaque holder of a loaded font
 
 #ifdef HAVE_SDL_TTF
 
-
 void
 ttf_font_DESTROY(self)
-        TTF_Font *self
-        CODE:
-                TTF_CloseFont(self);
-
+	TTF_Font *self
+	CODE:
+		TTF_CloseFont(self);
+		self = NULL;
 
 #endif

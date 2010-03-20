@@ -34,7 +34,7 @@ See: http://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer.html
 #if (SDL_MIXER_MAJOR_VERSION >= 1) && (SDL_MIXER_MINOR_VERSION >= 2) && (SDL_MIXER_PATCHLEVEL >= 10)
 
 int
-mixer_init(flags)
+mixer_init( flags )
 	int flags
 	CODE:
 		RETVAL = Mix_Init(flags);
@@ -47,14 +47,37 @@ mixer_quit()
 	CODE:
 		Mix_Quit();
 
+#else
+
+int
+mixer_init( )
+	CODE:
+		warn("SDL_mixer >= 1.2.10 needed for SDL::Mixer::init( flags )");
+		XSRETURN_UNDEF;
+	OUTPUT:
+		RETVAL
+
+void
+mixer_quit( index )
+	int index
+	CODE:
+		warn("SDL_mixer >= 1.2.10 needed for SDL::Mixer::quit()");
+
 #endif
 
 const SDL_version *
 mixer_linked_version ()
 	PREINIT:
 		char* CLASS = "SDL::Version";
+		SDL_version *version;
 	CODE:
-		RETVAL = Mix_Linked_Version();
+		version = (SDL_version *) safemalloc ( sizeof(SDL_version) );
+		SDL_version* version_dont_free = (SDL_version *)Mix_Linked_Version();
+
+		version->major = version_dont_free->major;
+		version->minor = version_dont_free->minor;
+		version->patch = version_dont_free->patch;
+		RETVAL = version;
 	OUTPUT:
 		RETVAL
 

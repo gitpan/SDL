@@ -2,32 +2,7 @@
 #
 # Constants.pm
 #
-# Copyright (C) 2005 David J. Goehrig <dgoehrig@cpan.org>
 #
-# ------------------------------------------------------------------------------
-#
-# This library is free software; you can redistribute it and/or
-# modify it under the terms of the GNU Lesser General Public
-# License as published by the Free Software Foundation; either
-# version 2.1 of the License, or (at your option) any later version.
-# 
-# This library is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-# Lesser General Public License for more details.
-# 
-# You should have received a copy of the GNU Lesser General Public
-# License along with this library; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
-#
-# ------------------------------------------------------------------------------
-#
-# Please feel free to send questions, suggestions or improvements to:
-#
-#	David J. Goehrig
-#	dgoehrig@cpan.org
-#
-
 package SDL::Constants;
 
 use warnings;
@@ -446,6 +421,11 @@ our @EXPORT=qw(
 	TTF_STYLE_ITALIC
 	TTF_STYLE_NORMAL
 	TTF_STYLE_UNDERLINE
+	TTF_STYLE_STRIKETHROUGH
+	TTF_HINTING_NORMAL
+	TTF_HINTING_LIGHT
+	TTF_HINTING_MONO
+	TTF_HINTING_NONE
 	UNICODE_BLENDED
 	UNICODE_SHADED
 	UNICODE_SOLID
@@ -459,6 +439,20 @@ our @EXPORT=qw(
 	SDL_SAMPLEFLAG_EOF
 	SDL_SAMPLEFLAG_ERROR
 	SDL_SAMPLEFLAG_EAGAIN
+	SDL_BUTTON
+	SDL_BUTTON_LEFT                                     
+	SDL_BUTTON_MIDDLE                                   
+	SDL_BUTTON_RIGHT                                    
+	SDL_BUTTON_WHEELUP                                  
+	SDL_BUTTON_WHEELDOWN                                
+	SDL_BUTTON_X1                                       
+	SDL_BUTTON_X2                                       
+	SDL_BUTTON_LMASK                                    
+	SDL_BUTTON_MMASK                                    
+	SDL_BUTTON_RMASK                                    
+	SDL_BUTTON_X1MASK                                   
+	SDL_BUTTON_X2MASK                                  
+
 );
 
 # Getting header constants from C:\strawberry\c\bin\..\include\SDL
@@ -909,6 +903,7 @@ use constant {
 	MUS_MP3_MAD                                         => 7,
 	MUS_MP3_FLAC                                        => 8,
 }; # Mix_MusicType
+sub SDL_BUTTON{ return	(1 << (($_[0])-1)); }
 
 use constant {
 	MIX_CHANNEL_POST                                    => -2,
@@ -919,16 +914,13 @@ use constant {
 	SDL_BUTTON_WHEELDOWN                                => 5,
 	SDL_BUTTON_X1                                       => 6,
 	SDL_BUTTON_X2                                       => 7,
-#	SDL_BUTTON_LMASK                                    => SDL_BUTTON(1),
-#	SDL_BUTTON_MMASK                                    => SDL_BUTTON(2),
-#	SDL_BUTTON_RMASK                                    => SDL_BUTTON(3),
-#	SDL_BUTTON_X1MASK                                   => SDL_BUTTON(6),
-#	SDL_BUTTON_X2MASK                                   => SDL_BUTTON(7),
+	SDL_BUTTON_LMASK                                    => SDL_BUTTON(1),
+	SDL_BUTTON_MMASK                                    => SDL_BUTTON(2),
+	SDL_BUTTON_RMASK                                    => SDL_BUTTON(3),
+	SDL_BUTTON_X1MASK                                   => SDL_BUTTON(6),
+	SDL_BUTTON_X2MASK                                   => SDL_BUTTON(7),
 	SDL_MUTEX_TIMEDOUT                                  => 1,
 	NeedFunctionPrototypes                              => 1,
-	SDL_NET_MAJOR_VERSION                               => 1,
-	SDL_NET_MINOR_VERSION                               => 2,
-	SDL_NET_PATCHLEVEL                                  => 7,
 	INADDR_ANY                                          => 0x00000000,
 	INADDR_NONE                                         => 0xFFFFFFFF,
 	INADDR_BROADCAST                                    => 0xFFFFFFFF,
@@ -3419,26 +3411,19 @@ use constant {
 use constant {
 	SDL_TIMESLICE                                       => 10,
 	TIMER_RESOLUTION                                    => 10,
-	SDL_TTF_MAJOR_VERSION                               => 2,
-	SDL_TTF_MINOR_VERSION                               => 0,
-	SDL_TTF_PATCHLEVEL                                  => 9,
-	TTF_MAJOR_VERSION                                   => 2,
-	TTF_MINOR_VERSION                                   => 0,
-	TTF_PATCHLEVEL                                      => 9,
 	UNICODE_BOM_NATIVE                                  => 0xFEFF,
 	UNICODE_BOM_SWAPPED                                 => 0xFFFE,
 	TTF_STYLE_NORMAL                                    => 0x00,
 	TTF_STYLE_BOLD                                      => 0x01,
 	TTF_STYLE_ITALIC                                    => 0x02,
 	TTF_STYLE_UNDERLINE                                 => 0x04,
-	TTF_SetError                                        => SDL_SetError,
-	TTF_GetError                                        => SDL_GetError,
-	SDL_MAJOR_VERSION                                   => 1,
-	SDL_MINOR_VERSION                                   => 2,
-	SDL_PATCHLEVEL                                      => 14,
+	TTF_STYLE_STRIKETHROUGH                             => 0x08,
+	TTF_HINTING_NORMAL                                  => 0,
+	TTF_HINTING_LIGHT                                   => 1,
+	TTF_HINTING_MONO                                    => 2,
+	TTF_HINTING_NONE                                    => 3,
 	SDL_ALPHA_OPAQUE                                    => 255,
 	SDL_ALPHA_TRANSPARENT                               => 0,
-	SDL_Colour                                          => SDL_Color,
 	SDL_SWSURFACE                                       => 0x00000000,
 	SDL_HWSURFACE                                       => 0x00000001,
 	SDL_ASYNCBLIT                                       => 0x00000004,

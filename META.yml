@@ -3,13 +3,13 @@ abstract: 'SDL bindings to Perl'
 author:
   - 'Kartik Thakore <KTHAKORE@cpan.org>'
 build_requires:
-  Alien::SDL: v0.8.2
+  Alien::SDL: v0.9.1
   ExtUtils::CBuilder: 0
   IO::CaptureOutput: 0
   Test::Most: 0.21
   Test::Simple: 0.88
 configure_requires:
-  Alien::SDL: v0.8.2
+  Alien::SDL: v0.9.1
   ExtUtils::CBuilder: 0.260301
   File::Find: 2.07
   Module::Build: 0.36
@@ -23,7 +23,7 @@ name: SDL
 provides:
   SDL:
     file: lib/SDL.pm
-    version: 2.3_7
+    version: 2.3_8
   SDL::App:
     file: lib/SDL/App.pm
   SDL::Audio:
@@ -52,6 +52,8 @@ provides:
     file: lib/SDL/Events.pm
   SDL::Font:
     file: lib/SDL/Font.pm
+  SDL::GFX:
+    file: lib/SDL/GFX.pm
   SDL::GFX::BlitFunc:
     file: lib/SDL/GFX/BlitFunc.pm
   SDL::GFX::FPSManager:
@@ -131,8 +133,10 @@ provides:
     file: lib/SDL/Sound.pm
   SDL::Surface:
     file: lib/SDL/Surface.pm
-  SDL::TTF_Font:
-    file: lib/SDL/TTF_Font.pm
+  SDL::TTF:
+    file: lib/SDL/TTF.pm
+  SDL::TTF::Font:
+    file: lib/SDL/TTF/Font.pm
   SDL::TTFont:
     file: lib/SDL/TTFont.pm
   SDL::Time:
@@ -169,4 +173,4 @@ provides:
     file: lib/SDL_perl.pm
 resources:
   license: http://opensource.org/licenses/lgpl-license.php
-version: 2.3_7
+version: 2.3_8

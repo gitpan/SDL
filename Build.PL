@@ -72,6 +72,13 @@ my %subsystems =
 		},
 		libraries => [qw( SDL )],
 	},
+	GFX => {
+		file      => {
+			from  => 'src/GFX/GFX.xs',
+			to    => 'lib/SDL/GFX.xs',
+		},
+		libraries => [qw( SDL SDL_gfx_primitives )],
+	},
 	BlitFunc => {
 		file      => {
 			from  => 'src/GFX/BlitFunc.xs',
@@ -170,7 +177,6 @@ my %subsystems =
 		},
 		libraries => [qw( SDL )],
 	},
-
 	PixelFormat => {
 		file      => {
 			from  => 'src/Core/objects/PixelFormat.xs',
@@ -234,8 +240,6 @@ my %subsystems =
 		},
 		libraries => [qw( SDL SDL_mixer )],
 	},
-
-
 	MixChunk => {
 		file      => {
 			from  => 'src/Mixer/objects/MixChunk.xs',
@@ -306,11 +310,17 @@ my %subsystems =
 		},
 		libraries => [qw( SDL )],
 	},
-
+	TTF => {
+		file      => {
+			from  => 'src/TTF/TTF.xs',
+			to    => 'lib/SDL/TTF.xs',
+		},
+		libraries => [qw( SDL SDL_ttf )],
+	},
 	TTF_Font => {
 		file      => {
-			from  => 'src/TTF/objects/TTF_Font.xs',
-			to    => 'lib/SDL/TTF_Font.xs',
+			from  => 'src/TTF/objects/Font.xs',
+			to    => 'lib/SDL/TTF/Font.xs',
 		},
 		libraries => [qw( SDL SDL_ttf )],
 	},
@@ -342,35 +352,34 @@ my %subsystems =
 		},
 		libraries => [qw( SDL SDL_image jpeg png )],
 	},	
-	Net => {
-		file      => {
-			from  => 'src/Net/Net.xs',
-			to    => 'lib/SDL/Net.xs',
-		},
-		libraries => [qw( SDL SDL_net )],
-	},
-	TCP => {
-		file      => {
-			from  => 'src/Net/TCP.xs',
-			to    => 'lib/SDL/Net/TCP.xs',
-		},
-		libraries => [qw( SDL SDL_net )],
-	},
-	UDP => {
-		file      => {
-			from  => 'src/Net/UDP.xs',
-			to    => 'lib/SDL/Net/UDP.xs',
-		},
-		libraries => [qw( SDL SDL_net )],
-	},
-
-	IPaddress => {
-		file      => {
-			from  => 'src/Net/objects/IPaddress.xs',
-			to    => 'lib/SDL/Net/IPaddress.xs',
-		},
-		libraries => [qw( SDL SDL_net )],
-	},
+#	Net => {
+#		file      => {
+#			from  => 'src/Net/Net.xs',
+#			to    => 'lib/SDL/Net.xs',
+#		},
+#		libraries => [qw( SDL SDL_net )],
+#	},
+#	TCP => {
+#		file      => {
+#			from  => 'src/Net/TCP.xs',
+#			to    => 'lib/SDL/Net/TCP.xs',
+#		},
+#		libraries => [qw( SDL SDL_net )],
+#	},
+#	UDP => {
+#		file      => {
+#			from  => 'src/Net/UDP.xs',
+#			to    => 'lib/SDL/Net/UDP.xs',
+#		},
+#		libraries => [qw( SDL SDL_net )],
+#	},
+#	IPaddress => {
+#		file      => {
+#			from  => 'src/Net/objects/IPaddress.xs',
+#			to    => 'lib/SDL/Net/IPaddress.xs',
+#		},
+#		libraries => [qw( SDL SDL_net )],
+#	},
 
 );
 
@@ -396,11 +405,11 @@ my %libraries = (
 		header => 'SDL_mixer.h',
 		lib    => 'SDL_mixer',
 	},
-	SDL_net     => {
-		define => 'HAVE_SDL_NET',     
-		header => 'SDL_net.h',
-		lib    => 'SDL_net',
-	},
+#	SDL_net     => {
+#		define => 'HAVE_SDL_NET',     
+#		header => 'SDL_net.h',
+#		lib    => 'SDL_net',
+#	},
 	SDL_ttf     => {
 		define => 'HAVE_SDL_TTF',     
 		header => 'SDL_ttf.h',
@@ -454,12 +463,12 @@ my %libraries = (
 	GL          => {
 		define => 'HAVE_GL',  
 		header => [ 'GL/gl.h', 'GL/glext.h' ],
-		lib    => ($^O eq 'MSWin32') ? 'opengl32' : 'GL', # xxx not nice
+		lib    => ($^O =~ /^(MSWin32|cygwin)$/) ? 'opengl32' : 'GL', # xxx not nice
 	},
 	GLU         => {
 		define => 'HAVE_GLU', 
 		header => 'GL/glu.h',
-		lib    => ($^O eq 'MSWin32') ? 'glu32' : 'GLU', # xxx not nice
+		lib    => ($^O =~ /^(MSWin32|cygwin)$/) ? 'glu32' : 'GLU', # xxx not nice
 	},
 );
 
@@ -484,7 +493,7 @@ my $build = $package->new(
 		'Test::Simple' => '0.88',
 		'IO::CaptureOutput' => '0',
 		'Test::Most' => '0.21',
-		'Alien::SDL' => '0.8.2',
+		'Alien::SDL' => '0.9.1',
 	},
 	build_recommends     =>
 	{
@@ -505,14 +514,15 @@ warn "###WARNING### Alien::SDL seems to be broken" unless Alien::SDL->config('pr
 
 ### see which subsystems can be built -- do we have headers for them?
 print "Gonna autodetect available libraries ...\n";
-my $build_systems = $build->find_subsystems( \%subsystems, \%libraries );
+my $build_systems = $build->find_subsystems(\%subsystems, \%libraries);
+my $lib_translate = $build->translate_table(\%subsystems, \%libraries);
 
 ### save info about available subsystems for future SDL::ConfigData
 print "Gonna write config_data ...\n";
-$build->config_data('SDL_cfg', $build_systems );
+$build->config_data('SDL_cfg', $build_systems);
+$build->config_data('SDL_lib_translate', $lib_translate);
 $build->config_data('subsystems', \%subsystems);
 $build->config_data('libraries', \%libraries);
-$build->config_data('sdl_ld_shlib_map', Alien::SDL->config('ld_shlib_map'));
 
 ### something that was originally special to MacOS/Darwin
 # somebody MacOS/Darwin friendly should review whether it is still necessary
