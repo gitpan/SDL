@@ -73,15 +73,17 @@ extern PerlInterpreter *parent_perl;
 #endif
 
 void
-windows_force_driver ()
+windows_force_driver()
 {
-
-#if  SDL_MAJOR_VERSION == 1 && SDL_MINOR_VERSION == 2 &&  SDL_PATCHLEVEL >= 14
+	char *test = SDL_getenv("SDL_VIDEODRIVER");
+	if(!test || 0 != strcmp("dummy", test))
+	{
+#if SDL_MAJOR_VERSION >= 1 && SDL_MINOR_VERSION >= 2 &&  SDL_PATCHLEVEL >= 14
 		putenv("SDL_VIDEODRIVER=directx");
 #else
 		putenv("SDL_VIDEODRIVER=windib");
 #endif
-
+	}
 }
 
 
@@ -134,14 +136,19 @@ init ( flags )
 	Uint32 flags
 	CODE:
 		INIT_NS_APPLICATION
-#if defined WINDOWS || WIN32
+#if defined WINDOWS || defined WIN32
 		windows_force_driver();
 #endif
 		RETVAL = SDL_Init(flags);
-#ifdef HAVE_TLS_CONTEXT
+#ifndef WINDOWS 
+#ifndef WIN32
+#ifdef HAVE_TLS_CONTEXT 
+
 		Perl_call_atexit(PERL_GET_CONTEXT, (void*)sdl_perl_atexit,0);
 #else
 		atexit(sdl_perl_atexit);
+#endif
+#endif
 #endif
 	OUTPUT:
 		RETVAL

@@ -350,8 +350,29 @@ my %subsystems =
 			from => 'src/Image.xs',
 			to   =>	'lib/SDL/Image.xs',
 		},
-		libraries => [qw( SDL SDL_image jpeg png )],
-	},	
+		libraries => [qw( SDL SDL_image jpeg png tiff)],
+	},
+	SMPEG => {
+		file	=> {
+			from => 'src/SMPEG.xs',
+			to   =>	'lib/SDL/SMPEG.xs',
+		},
+		libraries => [qw( SDL smpeg)],
+	},
+	Pango => {
+		file	=> {
+			from => 'src/Pango/Pango.xs',
+			to   =>	'lib/SDL/Pango.xs',
+		},
+		libraries => [qw( SDL SDL_Pango )],
+	},
+	Context => {
+		file	=> {
+			from => 'src/Pango/objects/Context.xs',
+			to   =>	'lib/SDL/Pango/Context.xs',
+		},
+		libraries => [qw( SDL SDL_Pango )],
+	},
 #	Net => {
 #		file      => {
 #			from  => 'src/Net/Net.xs',
@@ -445,6 +466,11 @@ my %libraries = (
 		header => 'SDL_rotozoom.h',
 		lib    => 'SDL_gfx',
 	},
+	SDL_Pango    => {
+		define => 'HAVE_SDL_PANGO',     
+		header => 'SDL_Pango.h',
+		lib    => 'SDL_Pango',
+	},
 	png         => {
 		define => 'HAVE_PNG',
 		header => 'png.h',
@@ -455,9 +481,15 @@ my %libraries = (
 		header => 'jpeglib.h',
 		lib    => 'jpeg',
 	},
+	tiff       => {	
+		define => 'HAVE_TIFF',
+		header => 'tiff.h',
+		lib    => 'tiff',
+	},
+
 	smpeg       => {
 		define => 'HAVE_SMPEG',
-		header => 'smpeg.h',
+		header => 'smpeg/smpeg.h',
 		lib    => 'smpeg',
 	},
 	GL          => {

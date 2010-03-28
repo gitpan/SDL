@@ -125,12 +125,8 @@ cdr_track ( cd, number )
 	OUTPUT:
 		RETVAL
 
-
-
 void
 cdr_DESTROY ( cd )
 	SDL_CD *cd
 	CODE:
 		SDL_CDClose(cd);
-	
-

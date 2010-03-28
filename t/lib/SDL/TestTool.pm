@@ -2,7 +2,7 @@ package SDL::TestTool;
 use strict;
 use warnings;
 use IO::CaptureOutput qw(capture);
-use SDL;
+use SDL qw(:all);
 use SDL::AudioSpec;
 use SDL::Audio;
 my %inits =
@@ -14,8 +14,7 @@ my %inits =
 	0x00000200 => 'SDL_INIT_JOYSTICK',
 	0x00100000 => 'SDL_INIT_NOPARACHUTE',
 	0x01000000 => 'SDL_INIT_EVENTTHREAD',
-	0x0000FFFF => 'SDL_INIT_EVERYTHING',
-
+	0x0000FFFF => 'SDL_INIT_EVERYTHING'
 );
 
 sub init {
@@ -29,7 +28,7 @@ sub init {
 	    return ;
     }
 
-    if( $init == SDL_INIT_TIMER and !$ENV{SDL_BSD_TEST} and $^O =~ /bsd|solaris/i )
+    if( $init == SDL::SDL_INIT_TIMER() and !$ENV{SDL_BSD_TEST} and $^O =~ /bsd|solaris/i )
     {
 	    warn ' Timer is REALLY experimental with BSD environments';
 	    return ;
@@ -67,7 +66,7 @@ sub test_audio_open
 {
 	my $desired = SDL::AudioSpec->new;
 	$desired->freq(44100);
-	$desired->format(SDL::Constants::AUDIO_S16MSB);
+	$desired->format(SDL::Audio::AUDIO_S16SYS);
 	$desired->channels(2);
 	$desired->samples(4096);
 	$desired->callback('main::audio_callback');

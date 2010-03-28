@@ -22,7 +22,7 @@ use SDL::Mixer;
 use SDL::Mixer::Channels;
 use SDL::Mixer::Samples;
 
-is( SDL::Mixer::open_audio( 44100, SDL::Constants::AUDIO_S16, 2, 4096 ),  0, '[open_audio] ran');
+is( SDL::Mixer::open_audio( 44100, SDL::Audio::AUDIO_S16SYS, 2, 4096 ),  0, '[open_audio] ran');
 
 is( SDL::Mixer::Channels::allocate_channels( 4 ),                         4, "[allocate_channels] 4 channels allocated" );
 
@@ -33,7 +33,7 @@ SDL::Mixer::Channels::channel_finished( $callback ); pass '[channel_finished] re
 my $delay           = 100;
 my $audio_test_file = 'test/data/silence.wav';
 
-if($ENV{'RELEASE_TESTING'})
+if($ENV{'SDL_RELEASE_TESTING'})
 {
 		SDL::Mixer::Channels::volume( -1, 10 );
 	is( SDL::Mixer::Channels::volume( -1, 20 ),                          10, "[volume] set to 20, previously was 10" );

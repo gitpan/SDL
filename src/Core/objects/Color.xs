@@ -68,5 +68,4 @@ void
 color_DESTROY ( color )
 	SDL_Color *color
 	CODE:
-		return; safefree(color);
-
+		safefree(color);

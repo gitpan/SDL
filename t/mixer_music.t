@@ -1,5 +1,7 @@
 #!/usr/bin/perl -w
 use strict;
+use threads;
+use threads::shared;
 use SDL;
 use SDL::Config;
 
@@ -25,11 +27,11 @@ use SDL::Version;
 
 my $v = SDL::Mixer::linked_version();
 
-is( SDL::Mixer::open_audio( 44100, SDL::Constants::AUDIO_S16, 2, 4096 ),  0, '[open_audio] ran');
+is( SDL::Mixer::open_audio( 44100, SDL::Audio::AUDIO_S16SYS, 2, 4096 ),  0, '[open_audio] ran');
 
-my $finished        = 0;
-my $mix_func_called = 0;
-my $mix_func        = sub
+my $finished : shared        = 0;
+my $mix_func_called : shared = 0;
+sub mix_func
 {
 	my $position = shift; # position
 	my $length   = shift; # length of bytes we have to put in stream
@@ -52,7 +54,7 @@ my $audio_test_file = 'test/data/silence.wav';
 my $volume1         = 2;
 my $volume2         = 1;
 
-if($ENV{'RELEASE_TESTING'})
+if($ENV{'SDL_RELEASE_TESTING'})
 {
 	$delay           = 2000;
 	$audio_test_file = 'test/data/sample.wav';
@@ -63,7 +65,7 @@ if($ENV{'RELEASE_TESTING'})
 SDL::Mixer::Music::volume_music($volume1);
 is( SDL::Mixer::Music::volume_music($volume2),                $volume1,       "[volume_music] was $volume1, now set to $volume2" );
 
-my $callback  = sub
+sub callback
 {
 	# printf("[hook_music_finished] callback called\n", shift);
 	$finished++;
@@ -71,10 +73,10 @@ my $callback  = sub
 
 SKIP:
 {
-	skip('No sound unless RELEASE_TESTING', 5) unless $ENV{'RELEASE_TESTING'};
-	SDL::Mixer::Music::hook_music_finished( $callback ); pass '[hook_music_finished] registered callback';
+	skip('No sound unless SDL_RELEASE_TESTING', 5) unless $ENV{'SDL_RELEASE_TESTING'};
+	SDL::Mixer::Music::hook_music_finished( 'main::callback' ); pass '[hook_music_finished] registered callback';
 
-	SDL::Mixer::Music::hook_music( $mix_func, 0 ); pass '[hook_music] registered custom music player';
+	SDL::Mixer::Music::hook_music( 'main::mix_func', 0 ); pass '[hook_music] registered custom music player';
 	is( SDL::Mixer::Music::get_music_hook_data(), 0,    "[get_music_hook_data] should return 0" );
 
 	SDL::delay(1000);
@@ -145,7 +147,7 @@ SKIP:
 
 SKIP:
 {
-	skip('No sound unless RELEASE_TESTING', 2) unless $ENV{'RELEASE_TESTING'};
+	skip('No sound unless SDL_RELEASE_TESTING', 2) unless $ENV{'SDL_RELEASE_TESTING'};
 	is ( $finished        > 0,                                    1,                  "[hook_music_finished] called the callback $finished times");
 	SDL::Mixer::Music::hook_music_finished();                                    pass '[hook_music_finished] unregistered callback';
 }

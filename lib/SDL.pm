@@ -40,21 +40,18 @@ require Exporter;
 require DynaLoader;
 
 use SDL_perl;
-use SDL::Constants;
+use SDL::Constants ':SDL';
+our @ISA = qw(Exporter DynaLoader);
 
-BEGIN {
-	@ISA = qw(Exporter DynaLoader);
-	@EXPORT = qw( in &NULL );
-};
+use base 'Exporter';
+our @EXPORT      = @{ $SDL::Constants::EXPORT_TAGS{SDL} };
+our %EXPORT_TAGS = (
+	all      => \@EXPORT,
+	init     => $SDL::Constants::EXPORT_TAGS{'SDL/init'},
+	defaults => $SDL::Constants::EXPORT_TAGS{'SDL/defaults'}
+);
 
-# Give our caller SDL::Constant's stuff as well as ours.
-sub import {
-  my $self = shift;
-
-  $self->export_to_level(1, @_);
-  SDL::Constants->export_to_level(1);
-}
-our $VERSION = '2.3_8'; #Development Release
+our $VERSION = '2.3_9'; #Development Release
 $VERSION = eval $VERSION;
 
 print "$VERSION" if (defined($ARGV[0]) && ($ARGV[0] eq '--SDLperl'));

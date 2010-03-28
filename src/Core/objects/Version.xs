@@ -61,4 +61,4 @@ version_DESTROY ( version, ... )
 	SDL_version *version
 	CODE:
 		if( version != NULL)
-		  safefree(version);	
+			safefree(version);

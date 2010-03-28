@@ -1,7 +1,18 @@
 Revision history for Perl extension SDL_perl.
 
-* 2.3_8 
-	- TTF XS/Test/docs [#85] [FROGGS]
+* 2.3_9
+	- all constants are in their modules, exported by default and documented [FROGGS]
+	- Moved SDL::Net away [FROGGS]
+	- Pango XS/tests/docs [FROGGS]
+	- tests are silent unless verbose mode [FROGGS]
+	- tests don't display video-gfx unless SDL_RELEASE_TESTING [FROGGS]
+	- SDL_VIDEODRIVER is not forced for windows if 'dummy'-driver is set [FROGGS]
+	- examples made to work with new API [mantovani]
+	- manifest fix for MacOSX [kthakore]
+	- some measly docs [kthakore]
+
+* 2.3_8
+	- TTF XS/tests/docs [#85] [FROGGS]
 	- Minor fixes and cleanup [ kthakore, kmx ]
 	- added more version checks to SDL::GFX XS [#79] [FROGGS]
 	- SDL::Version memory management [kthakore]

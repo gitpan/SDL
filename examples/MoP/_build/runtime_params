@@ -1,5 +1,0 @@
-do{ my $x = {
-       'verbose' => 1,
-       'build_bat' => 1
-     };
-$x; }

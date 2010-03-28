@@ -20,18 +20,40 @@ BEGIN
 	}
 }
 
-use SDL::TTF;
+use SDL::TTF ':all';
 use SDL::TTF::Font;
 use SDL::RWOps;
 use SDL::Version;
 use Encode;
+
+my $videodriver       = $ENV{SDL_VIDEODRIVER};
+$ENV{SDL_VIDEODRIVER} = 'dummy' unless $ENV{SDL_RELEASE_TESTING};
 
 my $lv = SDL::TTF::linked_version();
 my $cv = SDL::TTF::compile_time_version();
 
 isa_ok($lv, 'SDL::Version', '[linked_version] returns a SDL::Version object');
 isa_ok($cv, 'SDL::Version', '[compile_time_version] returns a SDL::Version object');
-diag sprintf("got version: %d.%d.%d/%d.%d.%d", $lv->major, $lv->minor, $lv->patch, $cv->major, $cv->minor, $cv->patch);
+printf("got version: %d.%d.%d/%d.%d.%d\n", $lv->major, $lv->minor, $lv->patch, $cv->major, $cv->minor, $cv->patch);
+
+is( TTF_HINTING_NORMAL,                                   0, 'TTF_HINTING_NORMAL should be imported' );
+is( TTF_HINTING_NORMAL(),                                 0, 'TTF_HINTING_NORMAL() should also be available' );
+is( TTF_HINTING_LIGHT,                                    1, 'TTF_HINTING_LIGHT should be imported' );
+is( TTF_HINTING_LIGHT(),                                  1, 'TTF_HINTING_LIGHT() should also be available' );
+is( TTF_HINTING_MONO,                                     2, 'TTF_HINTING_MONO should be imported' );
+is( TTF_HINTING_MONO(),                                   2, 'TTF_HINTING_MONO() should also be available' );
+is( TTF_HINTING_NONE,                                     3, 'TTF_HINTING_NONE should be imported' );
+is( TTF_HINTING_NONE(),                                   3, 'TTF_HINTING_NONE() should also be available' );
+is( TTF_STYLE_NORMAL,                                     0, 'TTF_STYLE_NORMAL should be imported' );
+is( TTF_STYLE_NORMAL(),                                   0, 'TTF_STYLE_NORMAL() should also be available' );
+is( TTF_STYLE_BOLD,                                       1, 'TTF_STYLE_BOLD should be imported' );
+is( TTF_STYLE_BOLD(),                                     1, 'TTF_STYLE_BOLD() should also be available' );
+is( TTF_STYLE_ITALIC,                                     2, 'TTF_STYLE_ITALIC should be imported' );
+is( TTF_STYLE_ITALIC(),                                   2, 'TTF_STYLE_ITALIC() should also be available' );
+is( TTF_STYLE_UNDERLINE,                                  4, 'TTF_STYLE_UNDERLINE should be imported' );
+is( TTF_STYLE_UNDERLINE(),                                4, 'TTF_STYLE_UNDERLINE() should also be available' );
+is( TTF_STYLE_STRIKETHROUGH,                              8, 'TTF_STYLE_STRIKETHROUGH should be imported' );
+is( TTF_STYLE_STRIKETHROUGH(),                            8, 'TTF_STYLE_STRIKETHROUGH() should also be available' );
 
 is( SDL::TTF::was_init(),                                 0,                   "[was_init] returns false" );
 is( SDL::TTF::init(),                                     0,                   "[init] succeeded" );
@@ -39,13 +61,13 @@ is( SDL::TTF::was_init(),                                 1,                   "
 is( SDL::TTF::byte_swapped_unicode(0),                    undef,               "[ttf_byte_swapped_unicode] on" );
 is( SDL::TTF::byte_swapped_unicode(1),                    undef,               "[ttf_byte_swapped_unicode] off" );
 my $font = SDL::TTF::open_font('test/data/aircut3.ttf', 24);
-isa_ok( $font,                                           'SDL::TTF_Font',      "[open_font]" );
-isa_ok( SDL::TTF::open_font_index('test/data/aircut3.ttf', 8, 0), 'SDL::TTF_Font', "[open_font_index]" );
+isa_ok( $font,                                            'SDL::TTF::Font',    "[open_font]" );
+isa_ok( SDL::TTF::open_font_index('test/data/aircut3.ttf', 8, 0), 'SDL::TTF::Font', "[open_font_index]" );
 my $file = SDL::RWOps->new_file('test/data/aircut3.ttf', 'r');
 isa_ok( $file,                                            'SDL::RWOps',        "[new_file]");
-isa_ok( SDL::TTF::open_font_RW($file, 0, 12),             'SDL::TTF_Font',     "[open_font_RW]" );
+isa_ok( SDL::TTF::open_font_RW($file, 0, 12),             'SDL::TTF::Font',    "[open_font_RW]" );
 $file = SDL::RWOps->new_file('test/data/aircut3.ttf', 'r');
-isa_ok( SDL::TTF::open_font_index_RW($file, 0, 16, 0),    'SDL::TTF_Font',     "[open_font_index_RW]" );
+isa_ok( SDL::TTF::open_font_index_RW($file, 0, 16, 0),    'SDL::TTF::Font',    "[open_font_index_RW]" );
 is( SDL::TTF::get_font_style($font),                      TTF_STYLE_NORMAL,    "[get_font_style] returns TTF_STYLE_NORMAL" );
 is( SDL::TTF::set_font_style($font, TTF_STYLE_BOLD),      undef,               "[set_font_style] to TTF_STYLE_BOLD" );
 is( SDL::TTF::get_font_style($font),                      TTF_STYLE_BOLD,      "[get_font_style] returns TTF_STYLE_BOLD" );
@@ -65,15 +87,19 @@ SKIP:
 	$font_outline++;
 	SDL::TTF::set_font_outline($font, $font_outline);                     pass "[set_font_outline] to $font_outline";
 	is( SDL::TTF::get_font_outline($font),                $font_outline,       "[get_font_outline] is $font_outline" );
-	is( SDL::TTF::get_font_hinting($font),                TTF_HINTING_NORMAL,  "[get_font_hinting] is TTF_HINTING_NORMAL" );
-	SDL::TTF::set_font_hinting($font, TTF_HINTING_LIGHT);                 pass "[set_font_hinting] to TTF_HINTING_LIGHT";
-	is( SDL::TTF::get_font_hinting($font),                TTF_HINTING_LIGHT,   "[get_font_hinting] is TTF_HINTING_LIGHT" );
+	SKIP:
+	{
+		skip("Font hinting is buggy in SDL_ttf", 3);
+		is( SDL::TTF::get_font_hinting($font),                TTF_HINTING_NORMAL,  "[get_font_hinting] is TTF_HINTING_NORMAL" );
+		SDL::TTF::set_font_hinting($font, TTF_HINTING_LIGHT);                 pass "[set_font_hinting] to TTF_HINTING_LIGHT";
+		is( SDL::TTF::get_font_hinting($font),                TTF_HINTING_LIGHT,   "[get_font_hinting] is TTF_HINTING_LIGHT" );
+	}
 	my $kerning_allowed = SDL::TTF::get_font_kerning($font);
 	like( $kerning_allowed,                               '/^[01]$/',          "[get_font_kerning] is " . ($kerning_allowed ? 'allowed' : 'not allowed'));
 	SDL::TTF::set_font_kerning($font, 0);                                 pass "[set_font_kerning to not allowed] ";
 	$kerning_allowed = SDL::TTF::get_font_kerning($font);
 	is( $kerning_allowed,                                 0,                   "[get_font_kerning] is " . ($kerning_allowed ? 'allowed' : 'not allowed'));
-	is( SDL::TTF::glyph_is_provided($font, "\0M"),        1,                   "[glyph_is_provided] is true for character 'M'");
+	ok( SDL::TTF::glyph_is_provided($font, "\0M") > 0,                         "[glyph_is_provided] is true for character 'M'");
 }
 
 my $font_height = SDL::TTF::font_height($font);
@@ -193,6 +219,8 @@ SKIP:
 is( SDL::TTF::was_init(),                  1, "[was_init] returns true" );
 is( SDL::TTF::quit(),                  undef, "[quit] ran" );
 is( SDL::TTF::was_init(),                  0, "[was_init] returns false" );
+
+$ENV{SDL_VIDEODRIVER} = $videodriver;
 
 done_testing;
 

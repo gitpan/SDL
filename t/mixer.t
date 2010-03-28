@@ -29,7 +29,22 @@ use SDL::Version;
 my $v = SDL::Mixer::linked_version();
 
 isa_ok($v, 'SDL::Version', '[linked_version]');
-diag sprintf("got version: %d.%d.%d", $v->major, $v->minor, $v->patch);
+printf("got version: %d.%d.%d\n", $v->major, $v->minor, $v->patch);
+
+is( MIX_DEFAULT_CHANNELS, 2, 'MIX_DEFAULT_CHANNELS should be imported' );
+is( MIX_DEFAULT_CHANNELS(), 2,'MIX_DEFAULT_CHANNELS() should also be available' );
+is( MIX_DEFAULT_FORMAT, 32784, 'MIX_DEFAULT_FORMAT should be imported' );
+is( MIX_DEFAULT_FORMAT(), 32784, 'MIX_DEFAULT_FORMAT() should also be available' );
+is( MIX_DEFAULT_FREQUENCY, 22050, 'MIX_DEFAULT_FREQUENCY should be imported' );
+is( MIX_DEFAULT_FREQUENCY(), 22050, 'MIX_DEFAULT_FREQUENCY() should also be available' );
+is( MIX_FADING_IN,    2,   'MIX_FADING_IN should be imported' );
+is( MIX_FADING_IN(),  2,   'MIX_FADING_IN() should also be available' );
+is( MIX_FADING_OUT,   1,   'MIX_FADING_OUT should be imported' );
+is( MIX_FADING_OUT(), 1,   'MIX_FADING_OUT() should also be available' );
+is( MIX_MAX_VOLUME,   128, 'MIX_MAX_VOLUME should be imported' );
+is( MIX_MAX_VOLUME(), 128, 'MIX_MAX_VOLUME() should also be available' );
+is( MIX_NO_FADING,    0,   'MIX_NO_FADING should be imported' );
+is( MIX_NO_FADING(),  0,   'MIX_NO_FADING() should also be available' );
 
 SKIP:
 {
@@ -40,12 +55,12 @@ SKIP:
 	{
 		my $f = $flags[$_];
 		my $n = $names[$_];
-		( SDL::Mixer::init($f) != $f) ? diag "Tried to init $n". SDL::get_error() : diag "You have $n support"; 
+		( SDL::Mixer::init($f) != $f) ? print "Tried to init $n". SDL::get_error() . "\n" : print "You have $n support\n"; 
 		pass 'Init ran';
 	}
 }
 
-is( SDL::Mixer::open_audio( 44100, SDL::Constants::AUDIO_S16, 2, 4096 ), 0, '[open_audio] ran');
+is( SDL::Mixer::open_audio( 44100, SDL::Audio::AUDIO_S16SYS, 2, 4096 ), 0, '[open_audio] ran');
 
 my $data = SDL::Mixer::query_spec();
 

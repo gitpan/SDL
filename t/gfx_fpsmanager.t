@@ -12,6 +12,9 @@ use Test::More;
 use lib 't/lib';
 use SDL::TestTool;
 
+my $videodriver       = $ENV{SDL_VIDEODRIVER};
+$ENV{SDL_VIDEODRIVER} = 'dummy' unless $ENV{SDL_RELEASE_TESTING};
+
 if( !SDL::TestTool->init(SDL_INIT_VIDEO) )
 {
     plan( skip_all => 'Failed to init video' );
@@ -27,7 +30,7 @@ else
 
 my $v       = SDL::GFX::linked_version();
 isa_ok($v, 'SDL::Version', '[linked_version]');
-diag sprintf("got version: %d.%d.%d", $v->major, $v->minor, $v->patch);
+printf("got version: %d.%d.%d\n", $v->major, $v->minor, $v->patch);
 
 my $fps = SDL::GFX::FPSManager->new(0, 0, 0, 0);
 
@@ -49,8 +52,8 @@ is( $fps->rate,       4, 'fps has rate' );
 
 SDL::delay(100);
 
+$ENV{SDL_VIDEODRIVER} = $videodriver;
+
 pass 'Are we still alive? Checking for segfaults';
 
 done_testing;
-
-

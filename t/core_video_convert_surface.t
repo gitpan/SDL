@@ -11,10 +11,15 @@ use Test::More;
 use Data::Dumper;
 use Devel::Peek;
 
- if (SDL::init(SDL_INIT_VIDEO) > 0)
- {
-	 die 'Cannot init video'. SDL::get_error();
- }
+use lib 't/lib';
+use SDL::TestTool;
+
+my $videodriver       = $ENV{SDL_VIDEODRIVER};
+$ENV{SDL_VIDEODRIVER} = 'dummy' unless $ENV{SDL_RELEASE_TESTING};
+
+if ( !SDL::TestTool->init(SDL_INIT_VIDEO) ) {
+	   plan( skip_all => 'Failed to init video' );
+}
 
 my $hwdisplay = SDL::Video::set_video_mode(640,480,8, SDL_HWSURFACE );
 
@@ -35,5 +40,6 @@ isa_ok( $surface3, 'SDL::Surface', '[convert_surface] makes copy of surface conv
 
 warn 'SW->SW conversion failed: '.SDL::get_error if !$surface3;
 
+$ENV{SDL_VIDEODRIVER} = $videodriver;
 
 done_testing;

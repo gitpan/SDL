@@ -10,7 +10,7 @@ Core
 
 =head1 SYNOPSIS
 
-  use SDL;
+  use SDL ':all';
 
 =head1 DESCRIPTION
 
@@ -21,83 +21,48 @@ and Perl.  This document describes the low-level functional SDL_perl API.  For t
 object oriented programming interface please see the documentation provided on a
 per class basis.
 
-=head1 The SDL Perl 2009 Development Team
-
-=head2 Documentation
-
-	Nick: magnet
-
-=head2 Perl Development
-
-	Nick: Garu
-	Name: Breno G. de Oliveira
-	
-	Nick: Dngor
-	Name: Rocco Caputo
-
-	Nick: nferraz
-	Name: Nelson Ferraz
-
-	Nick: acme
-	Name: Leon Brocard
-	
-	Nick: FROGGS
-	Name: Tobias Leich
-
-=head2 Maintainance 
-	
-	Nick: kthakore
-	Name: Kartik Thakore
-
-=head1 MacOSX Experimental Usage
-
-Please get libsdl packages from Fink
-	
-	perl Build.PL
-	perl Build test
-	perl Build bundle
-	perl Build install
-
-=head2 Running SDL Perl Scripts in MacOSX
-
-First set the PERL5LIB environment variable to the dependencies of your script
-	
-	%export PERL5LIB=$PERL5LIB:./lib
-
-Use the SDLPerl executable made in the bundle and call your scripts
-
-	%SDLPerl.app/Contents/MacOS/SDLPerl yourScript.pl
-
 =head1 Functions exported by SDL.pm
 
 =head2 init(flags) 
 
 As with the C language API, SDL_perl initializes the SDL environment through
-the C<SDL::init> subroutine.  This routine takes a mode flag constructed through
-the bitwise OR product of the following constants:
+the C<SDL::init> subroutine. This routine takes a mode flag constructed through
+the bitwise OR product of the SDL_INIT_* constants.
+
+The constants are not exported by default. You can export them into your namespace by doing:
+
+ use SDL ':all';
+
+or access them directly:
+
+ SDL::SDL_INIT_AUDIO;
+
+or by choosing the export tags below:
+
+Export tag: ':init'
 
 =over 4
 
 =item *
-INIT_AUDIO
+SDL_INIT_AUDIO
 
 =item *
-INIT_VIDEO
+SDL_INIT_VIDEO
 
 =item *
-INIT_CDROM
+SDL_INIT_CDROM
 
 =item *
-INIT_EVERYTHING
+SDL_INIT_EVERYTHING
 
 =item *
-INIT_NOPARACHUTE
+SDL_INIT_NOPARACHUTE
 
 =item *
-INIT_JOYSTICK
+SDL_INIT_JOYSTICK
 
 =item *
-INIT_TIMER
+SDL_INIT_TIMER
 
 =back
 
@@ -131,95 +96,49 @@ SDL::was_init allows you to see which SDL subsytems have been initialized.
 flags is a bitwise OR'd combination of the subsystems you wish to check (see SDL::init for a list of subsystem flags). 
 If 'flags' is 0 or SDL_INIT_EVERYTHING, it returns a mask of all initialized subsystems (this does not include SDL_INIT_EVENTTHREAD or SDL_INIT_NOPARACHUTE).
 
-
 =head2 get_error()
 
 The last error message set by the SDL library can be retrieved using the subroutine
 C<SDL::get_error>, which returns a scalar containing the text of the message if any.
 
-=head2 set_error_real(error, @values)  
+=head2 set_error_real(error, @values)
 
-SDL::get_error sets the SDL error to a printf style formatted string. 
+SDL::set_error_real sets the SDL error to a printf style formatted string. 
 it doesn't returns any values.
 
-=head2 error(code) * need to be coded
+=head2 clear_error()
 
-Sets the SDL error message to one of several predefined strings specified by code. 
-
-code can be :
-
-=over 4
-
-=item SDL_errorcode
-
-The corresponding error string
-
-=item SDL_ENOMEM
-
-Out of memory
-
-=item SDL_EFREAD
-
-Error reading from datastream
-
-=item SDL_EFWRITE
-
-Error writing to datastream
-
-=item SDL_EFSEEK
-
-Error seeking in datastream
-
-=item SDL_UNSUPPORTED
-
-Unknown SDL error
-
-=item SDL_LASTERROR
-
-Unknown SDL error
-
-=item any other value
-
-Unknown SDL error
-
-=back
-
-
-Note 1: SDL_LASTERROR marks the highest numbered predefined error.
-Note 2: SDL also defines SDL_OutOfMemory() and SDL_Unsupported() for internal use
-which are equivalent to SDL_Error(SDL_ENOMEM) and SDL_Error(SDL_UNSUPPORTED) respectively. 
-
-SDL::Error doesn't returns any value.
-
-
-=head2 clear_error() 
-
-SDL::clear_error deletes all information about the last internal SDL error. Useful if the error has been handled by the program.
+SDL::clear_error deletes all information about the last SDL error. Useful if the error has been handled by the program.
 it doesn't returns any value.
-
-=head2 load_object()
-
-Need to be coded.
-
-=head2 load_function()
-
-Need to be coded.
-
-=head2 unload_object()
-
-Need to be coded.
-
-=head2 VERSION()
-
-Need to be coded. 
 
 =head2 version()
 
-Need to be coded.
+ my $version = SDL::version();
+
+Returns an SDL::Version object of the of the SDL library at compile time.
+
+Example:
+
+ use SDL;
+ use SDL::Version;
+ 
+ my $v = SDL::version();
+ printf("got version: %d.%d.%d\n", $v->major, $v->minor, $v->patch);
+
 
 =head2 linked_version
 
-Need to be coded.
+ my $linked_version = SDL::linked_version();
+
+Returns an SDL::Version object of the currently loaded SDL library.
+
+Example:
+
+ use SDL;
+ use SDL::Version;
+ 
+ my $v = SDL::linked_version();
+ printf("got version: %d.%d.%d\n", $v->major, $v->minor, $v->patch);
 
 =head2 get_error()
 
@@ -228,13 +147,12 @@ C<SDL::get_error>, which returns a scalar containing the text of the message if 
 
 =head2 delay(ms)
 
+ SDL::delay(1000);
+
 This subroutine allows an application to delay further operations for atleast a
 number of milliseconds provided as the argument.  The actual delay may be longer
 than the specified depending on the underlying OS.
 
-
 =head1 AUTHORS
 
 magnet, kthakore
-
-

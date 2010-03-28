@@ -63,4 +63,4 @@ void
 cursor_DESTROY(self)
 	SDL_Cursor *self
 	CODE:
-		SDL_FreeCursor(self );
+		SDL_FreeCursor(self);

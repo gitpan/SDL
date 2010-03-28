@@ -10,8 +10,8 @@ Core, Video
 
 =head1 SYNOPSIS
 
- use SDL;
- use SDL::Video;
+ use SDL ':init';
+ use SDL::Video ':all';
  use SDL::Surface;
  use SDL::Rect;
 
@@ -22,7 +22,7 @@ Core, Video
  SDL::init(SDL_INIT_VIDEO);
 
  # setting video mode
- my $screen_surface = SDL::Video::set_video_mode($screen_width, $screen_height, 32, SDL_SWSURFACE);
+ my $screen_surface = SDL::Video::set_video_mode($screen_width, $screen_height, 32, SDL_ANYFORMAT);
  
  # drawing something somewhere
  my $mapped_color   = SDL::Video::map_RGB($screen_surface->format(), 0, 0, 255); # blue
@@ -36,6 +36,82 @@ Core, Video
  sleep(5); # just to have time to see it
  
  SDL::quit();
+
+=head1 CONSTANTS
+
+The constants are exported by default. You can avoid this by doing:
+
+ use SDL::Video ();
+
+and access them directly:
+
+ SDL::Video::SDL_SWSURFACE;
+
+or by choosing the export tags below:
+
+Export tag: ':surface'
+
+ SDL_ASYNCBLIT       Use asynchronous blit if possible
+ SDL_SWSURFACE       Stored in the system memory.
+ SDL_HWSURFACE       Stored in video memory
+
+Export tag: ':video'
+
+ SDL_ANYFORMAT       Allow any pixel-format
+ SDL_HWPALETTE       Have an exclusive palette
+ SDL_DOUBLEBUF       Double buffered
+ SDL_FULLSCREEN      Full screen surface
+ SDL_OPENGL          Have an OpenGL context
+ SDL_OPENGLBLIT      Support OpenGL blitting. 
+                     NOTE: This option is kept for compatibility only, and is not recommended for new code.
+ SDL_RESIZABLE       Resizable surface
+ SDL_NOFRAME         No window caption or edge frame
+ SDL_HWACCEL Use     Hardware acceleration blit
+ SDL_SRCCOLORKEY     Use colorkey blitting
+ SDL_RLEACCELOK      Private flag
+ SDL_RLEACCEL        Accelerated colorkey blitting with RLE
+ SDL_SRCALPHA        Use alpha blending blit
+ SDL_PREALLOC        Use preallocated memory
+
+Export tag ':overlay'
+
+ SDL_YV12_OVERLAY    Planar mode: Y + V + U  (3 planes)
+ SDL_IYUV_OVERLAY    Planar mode: Y + U + V  (3 planes)
+ SDL_YUY2_OVERLAY    Packed mode: Y0+U0+Y1+V0 (1 plane)
+ SDL_UYVY_OVERLAY    Packed mode: U0+Y0+V0+Y1 (1 plane)
+ SDL_YVYU_OVERLAY    Packed mode: Y0+V0+Y1+U0 (1 plane)
+
+Export tag ':palette'
+
+ SDL_LOGPAL          Logical palette, which controls how blits are mapped to/from the surface
+ SDL_PHYSPAL         Physical palette, which controls how pixels look on the screen
+ 
+Export tag ':grab'
+
+ SDL_GRAB_QUERY
+ SDL_GRAB_OFF
+ SDL_GRAB_ON
+ SDL_GRAB_FULLSCREEN Used interally
+
+Export tag ':gl'
+
+ SDL_GL_RED_SIZE
+ SDL_GL_GREEN_SIZE
+ SDL_GL_BLUE_SIZE
+ SDL_GL_ALPHA_SIZE
+ SDL_GL_BUFFER_SIZE
+ SDL_GL_DOUBLEBUFFER
+ SDL_GL_DEPTH_SIZE
+ SDL_GL_STENCIL_SIZE
+ SDL_GL_ACCUM_RED_SIZE
+ SDL_GL_ACCUM_GREEN_SIZE
+ SDL_GL_ACCUM_BLUE_SIZE
+ SDL_GL_ACCUM_ALPHA_SIZE
+ SDL_GL_STEREO
+ SDL_GL_MULTISAMPLEBUFFERS
+ SDL_GL_MULTISAMPLESAMPLES
+ SDL_GL_ACCELERATED_VISUAL
+ SDL_GL_SWAP_CONTROL
 
 =head1 Core Functions
 

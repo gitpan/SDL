@@ -1,29 +1,27 @@
 package SDL::Mixer;
 use strict;
 use warnings;
+use vars qw(@ISA @EXPORT @EXPORT_OK);
 require Exporter;
 require DynaLoader;
+use SDL::Constants qw(:SDL::Mixer :SDL::Audio);
 our @ISA = qw(Exporter DynaLoader);
-use vars qw(@ISA @EXPORT);
-
-BEGIN {
-  @ISA = qw(Exporter DynaLoader);
-  @EXPORT = qw(  MIX_INIT_FLAC MIX_INIT_MOD MIX_INIT_MP3 MIX_INIT_OGG );      
-}
-
-
 
 use SDL::Internal::Loader;
 internal_load_dlls(__PACKAGE__);
 
-use constant
-{
-    MIX_INIT_FLAC => 0x00000001,
-    MIX_INIT_MOD  => 0x00000002,
-    MIX_INIT_MP3  => 0x00000004,
-    MIX_INIT_OGG  => 0x00000008
-};
-
 bootstrap SDL::Mixer;
+
+use base 'Exporter';
+our @EXPORT      = (@{ $SDL::Constants::EXPORT_TAGS{'SDL::Mixer'} }, @{ $SDL::Constants::EXPORT_TAGS{'SDL::Audio'} });
+our %EXPORT_TAGS = (
+	all      => \@EXPORT,
+	init     => $SDL::Constants::EXPORT_TAGS{'SDL::Mixer/init'},
+	defaults => $SDL::Constants::EXPORT_TAGS{'SDL::Mixer/defaults'},
+	fading   => $SDL::Constants::EXPORT_TAGS{'SDL::Mixer/fading'},
+	type     => $SDL::Constants::EXPORT_TAGS{'SDL::Mixer/type'},
+	format   => $SDL::Constants::EXPORT_TAGS{'SDL::Audio/format'},
+	status   => $SDL::Constants::EXPORT_TAGS{'SDL::Audio/status'}
+);
 
 1;

@@ -6,11 +6,6 @@
 #define aTHX_
 #endif
 
-
-#ifdef HAVE_SDL_TTF
-#include <SDL_ttf.h>
-#endif
-
 #ifdef USE_THREADS
 #define HAVE_TLS_CONTEXT
 #endif
@@ -153,6 +148,4 @@ void
 audiospec_DESTROY(self)
 	SDL_AudioSpec *self
 	CODE:
-
-	safefree( (char *)self );
-
+		safefree( (char *)self );

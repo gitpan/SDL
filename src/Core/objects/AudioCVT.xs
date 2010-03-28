@@ -154,12 +154,8 @@ audiocvt_len_ratio(self, ...)
 	OUTPUT:
 		RETVAL
 
-
-
-
 void
 audiocvt_DESTROY(self)
 	SDL_AudioCVT* self
 	CODE:
 		safefree(self);
-

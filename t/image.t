@@ -9,13 +9,17 @@ use SDL::RWOps;
 use Test::More;
 use lib 't/lib';
 use SDL::TestTool;
+
+my $videodriver       = $ENV{SDL_VIDEODRIVER};
+$ENV{SDL_VIDEODRIVER} = 'dummy' unless $ENV{SDL_RELEASE_TESTING};
+
 if( !SDL::TestTool->init(SDL_INIT_VIDEO) )
 {
-    plan( skip_all => 'Failed to init video' );
+	plan( skip_all => 'Failed to init video' );
 }
 elsif( !SDL::Config->has('SDL_image') )
 {
-    plan( skip_all => 'SDL_image support not compiled' );
+	plan( skip_all => 'SDL_image support not compiled' );
 }
 
 my @done = qw/
@@ -50,7 +54,7 @@ can_ok("SDL::Image", @done);
 
 my $lver = SDL::Image::linked_version();
 isa_ok($lver, "SDL::Version", '[linked_version] got version back!' );
-diag sprintf("got version: %d.%d.%d", $lver->major, $lver->minor, $lver->patch);
+printf("got version: %d.%d.%d\n", $lver->major, $lver->minor, $lver->patch);
 
 isa_ok( SDL::Image::load("test/data/highlight.png"), "SDL::Surface", "[load] Gets Surface"); 
 
@@ -84,18 +88,35 @@ is( IMG_INIT_TIF , 0x00000004, '[IMG_INIT_TIF] constant loaded properly');
 SKIP:
 {
 	skip ('This is only for version >= 1.2.10', 2) unless ($lver->major >= 1 && $lver->minor >= 2 && $lver->patch >= 10);
-	is (SDL::Image::init( IMG_INIT_JPG ), IMG_INIT_JPG , '[init] Inited jpg');
-	is (SDL::Image::init( IMG_INIT_TIF ), IMG_INIT_TIF , '[init] Inited TIFF');
-	is (SDL::Image::init( IMG_INIT_PNG ), IMG_INIT_PNG , '[init] Inited PNG');
+	SKIP:
+	{
+		skip ('libjpeg support not compiled', 1) unless SDL::Config->has('jpeg');
+		is (SDL::Image::init( IMG_INIT_JPG ), IMG_INIT_JPG , '[init] Inited jpg');
+	}
+
+
+	SKIP:
+	{
+		skip ('libtiff support not compiled', 1) unless SDL::Config->has('tiff');
+		is (SDL::Image::init( IMG_INIT_TIF ), IMG_INIT_TIF , '[init] Inited TIFF');
+	}
+
+	SKIP:
+	{
+		skip ('libpng support not compiled', 1) unless SDL::Config->has('png');
+		is (SDL::Image::init( IMG_INIT_PNG ), IMG_INIT_PNG , '[init] Inited PNG');
+	}
 
 	can_ok('SDL::Image', qw/
 		load_ICO_rw
 		load_CUR_rw
 		is_ICO
 		is_CUR/
-	     );
- 
+	);
+
 	SDL::Image::quit(); pass '[quit] we can quit fine';
 }
+
+$ENV{SDL_VIDEODRIVER} = $videodriver;
 
 done_testing;

@@ -8,6 +8,65 @@ SDL::TTF - True Type Font functions (libfreetype)
 
 TTF
 
+=head1 CONSTANTS
+
+The constants are exported by default. You can avoid this by doing:
+
+ use SDL::TTF ();
+
+
+and access them directly:
+
+ SDL::TTF::TTF_HINTING_NORMAL;
+
+Available constants for "hinting":
+
+=over 4
+
+=item *
+
+TTF_HINTING_NORMAL
+
+=item *
+
+TTF_HINTING_LIGHT
+
+=item *
+
+TTF_HINTING_MONO
+
+=item *
+
+TTF_HINTING_NONE
+
+=back
+
+Available constants for "style":
+
+=over 4
+
+=item *
+
+TTF_STYLE_NORMAL
+
+=item *
+
+TTF_STYLE_BOLD
+
+=item *
+
+TTF_STYLE_ITALIC
+
+=item *
+
+TTF_STYLE_UNDERLINE
+
+=item *
+
+TTF_STYLE_STRIKETHROUGH
+
+=back
+
 =head1 METHODS
 
 =head2 General methods
@@ -75,7 +134,7 @@ Example:
  use SDL::TTF;
  use SDL::TTF::Font;
  
- my $font = SDL::TTF::open_font('arial.ttf', '24);
+ my $font = SDL::TTF::open_font('arial.ttf', 24);
 
 =head3 open_font_index
 
@@ -241,6 +300,8 @@ Get the current kerning setting of the loaded font.
 Returns: C<0>(zero) if kerning is disabled. A non-zero value is returned when enabled. The default for a newly loaded font is enabled(C<1>). 
 
 B<Note>: at least SDL_ttf 2.0.10 needed
+
+B<Note>: This function returns wrong values: See L<http://bugzilla.libsdl.org/show_bug.cgi?id=973>
 
 =head4 set_font_kerning
 
@@ -459,22 +520,22 @@ version 2.3.5
 
 Example:
 
- use SDL;
- use SDL::Video;
- use SDL::Color;
- use SDL::TTF;
- use SDL::TTF::Font;
- 
- SDL::init(SDL_INIT_VIDEO);
- 
- my $display = SDL::Video::set_video_mode(640, 480, 32, SDL_SWSURFACE);
- my $font    = SDL::TTF::open_font('arial.ttf', '24);
- my $surface = SDL::TTF::render_text_solid($font, 'Hallo!', SDL::Color->new(0xFF,0xFF,0xFF));
- 
- SDL::Video::blit_surface($surface, SDL::Rect->new(0, 0, 640, 480), $display, SDL::Rect->new(10, 10, 640, 480));
- SDL::Video::update_rect($display, 0, 0, 0, 0);
- 
- SDL::delay(5000);
+	use SDL;
+	use SDL::Rect;
+	use SDL::Video;
+	use SDL::Color;
+	use SDL::TTF;
+	use SDL::TTF::Font;
+
+	SDL::init(SDL_INIT_VIDEO);
+	SDL::TTF::init();
+	my $display = SDL::Video::set_video_mode(640, 480, 32, SDL_SWSURFACE);
+	my $font    = SDL::TTF::open_font('test/data/aircut3.ttf', '24');
+	die 'Coudnt make font '. SDL::get_error if !$font;
+	my $surface = SDL::TTF::render_text_solid($font, 'Hallo!', SDL::Color->new(0xFF,0xFF,0xFF));
+	SDL::Video::blit_surface($surface, SDL::Rect->new(0, 0, 640, 480), $display, SDL::Rect->new(10, 10, 640, 480));
+	SDL::Video::update_rect($display, 0, 0, 0, 0);
+	SDL::delay(5000);
 
 =head4 render_utf8_solid
 

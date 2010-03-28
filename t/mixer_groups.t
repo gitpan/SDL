@@ -23,14 +23,14 @@ use SDL::Mixer::Channels;
 use SDL::Mixer::Groups;
 use SDL::Mixer::Samples;
 
-is( SDL::Mixer::open_audio( 44100, SDL::Constants::AUDIO_S16, 2, 4096 ),  0, '[open_audio] ran');
+is( SDL::Mixer::open_audio( 44100, SDL::Audio::AUDIO_S16SYS, 2, 4096 ),  0, '[open_audio] ran');
 is( SDL::Mixer::Channels::allocate_channels( 8 ),                         8, "[allocate_channels] 8 channels allocated" );
 is( SDL::Mixer::Groups::reserve_channels( 4 ),                            4, "[reserve_channels] 4 channels reserved" );
 
 my $delay           = 100;
 my $audio_test_file = 'test/data/silence.wav';
 
-if($ENV{'RELEASE_TESTING'})
+if($ENV{'SDL_RELEASE_TESTING'})
 {
 		SDL::Mixer::Channels::volume( -1, 10 );
 	is( SDL::Mixer::Channels::volume( -1, 20 ),                          10, "[volume] set to 20, previously was 10" );

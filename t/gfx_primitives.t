@@ -14,6 +14,9 @@ use Test::More;
 use lib 't/lib';
 use SDL::TestTool;
 
+my $videodriver       = $ENV{SDL_VIDEODRIVER};
+$ENV{SDL_VIDEODRIVER} = 'dummy' unless $ENV{SDL_RELEASE_TESTING};
+
 if( !SDL::TestTool->init(SDL_INIT_VIDEO) )
 {
     plan( skip_all => 'Failed to init video' );
@@ -25,9 +28,9 @@ elsif( !SDL::Config->has('SDL_gfx_primitives') )
 
 my $v       = SDL::GFX::linked_version();
 isa_ok($v, 'SDL::Version', '[linked_version]');
-diag sprintf("got version: %d.%d.%d", $v->major, $v->minor, $v->patch);
+printf("got version: %d.%d.%d\n", $v->major, $v->minor, $v->patch);
 
-my $display = SDL::Video::set_video_mode(640,480,32, SDL_SWSURFACE );
+my $display = SDL::Video::set_video_mode(640,480,32, SDL_ANYFORMAT );
 my $pixel   = SDL::Video::map_RGB( $display->format, 0, 0, 0 );
 
 if(!$display)
@@ -35,7 +38,7 @@ if(!$display)
 	plan skip_all => 'Couldn\'t set video mode: ' . SDL::get_error();
 }
 
-my $surface = SDL::Surface->new( SDL::SDL_ANYFORMAT(), 640, 480, 32, 0, 0, 0, 0 );
+my $surface = SDL::Surface->new( SDL_SWSURFACE, 640, 480, 32, 0, 0, 0, 0 );
 SDL::Video::fill_rect( $surface, SDL::Rect->new( 0, 0, $surface->w, $surface->h ), $pixel );
 
 # pixel tests
@@ -240,6 +243,8 @@ SDL::Video::blit_surface($surface, SDL::Rect->new(0, 0, 640, 480), $display, SDL
 SDL::Video::update_rect($display, 0, 0, 640, 480); 
 
 SDL::delay(3000);
+
+$ENV{SDL_VIDEODRIVER} = $videodriver;
 
 pass 'Are we still alive? Checking for segfaults';
 

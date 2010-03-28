@@ -23,11 +23,23 @@ SDL_TTF_Font - The opaque holder of a loaded font
 
 #ifdef HAVE_SDL_TTF
 
-void
-ttf_font_DESTROY(self)
-	TTF_Font *self
+TTF_Font *
+ttf_font_new(CLASS, file, ptsize, index = 0)
+	char* CLASS
+	char *file
+	int ptsize
+	long index
 	CODE:
-		TTF_CloseFont(self);
-		self = NULL;
+		RETVAL = safemalloc(sizeof(TTF_Font *));
+		RETVAL = TTF_OpenFontIndex(file, ptsize, index);
+	OUTPUT:
+		RETVAL
+
+
+void
+ttf_font_DESTROY(ttf_font)
+	TTF_Font *ttf_font
+	CODE:
+		TTF_CloseFont(ttf_font);
 
 #endif

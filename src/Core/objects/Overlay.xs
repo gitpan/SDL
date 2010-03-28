@@ -84,5 +84,3 @@ overlay_DESTROY(overlay)
 	SDL_Overlay *overlay
 	CODE:
 		SDL_FreeYUVOverlay(overlay);
-
-

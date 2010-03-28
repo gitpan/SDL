@@ -23,7 +23,7 @@ name: SDL
 provides:
   SDL:
     file: lib/SDL.pm
-    version: 2.3_8
+    version: 2.3_9
   SDL::App:
     file: lib/SDL/App.pm
   SDL::Audio:
@@ -119,6 +119,10 @@ provides:
     file: lib/SDL/Overlay.pm
   SDL::Palette:
     file: lib/SDL/Palette.pm
+  SDL::Pango:
+    file: lib/SDL/Pango.pm
+  SDL::Pango::Context:
+    file: lib/SDL/Pango/Context.pm
   SDL::PixelFormat:
     file: lib/SDL/PixelFormat.pm
   SDL::RWOps:
@@ -173,4 +177,4 @@ provides:
     file: lib/SDL_perl.pm
 resources:
   license: http://opensource.org/licenses/lgpl-license.php
-version: 2.3_8
+version: 2.3_9

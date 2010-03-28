@@ -14,6 +14,9 @@ use Test::More;
 use lib 't/lib';
 use SDL::TestTool;
 
+my $videodriver       = $ENV{SDL_VIDEODRIVER};
+$ENV{SDL_VIDEODRIVER} = 'dummy' unless $ENV{SDL_RELEASE_TESTING};
+
 if( !SDL::TestTool->init(SDL_INIT_VIDEO) )
 {
     plan( skip_all => 'Failed to init video' );
@@ -24,14 +27,19 @@ elsif( !SDL::Config->has('SDL_gfx_rotozoom') )
 }
 else
 {
-    plan( tests => 19 );
+    plan( tests => 23 );
 }
 
 my $v       = SDL::GFX::linked_version();
 isa_ok($v, 'SDL::Version', '[linked_version]');
-diag sprintf("got version: %d.%d.%d", $v->major, $v->minor, $v->patch);
+printf("got version: %d.%d.%d\n", $v->major, $v->minor, $v->patch);
 
-my $display = SDL::Video::set_video_mode(640,480,32, SDL_SWSURFACE );
+is( SMOOTHING_OFF,     0,           'SMOOTHING_OFF should be imported' );
+is( SMOOTHING_OFF(),   0,           'SMOOTHING_OFF() should also be available' );
+is( SMOOTHING_ON,      1,           'SMOOTHING_ON should be imported' );
+is( SMOOTHING_ON(),    1,           'SMOOTHING_ON() should also be available' );
+
+my $display = SDL::Video::set_video_mode(640,480,32, SDL_ANYFORMAT );
 my $pixel   = SDL::Video::map_RGB( $display->format, 0, 0, 0 );
 SDL::Video::fill_rect( $display, SDL::Rect->new( 0, 0, $display->w, $display->h ), $pixel );
 
@@ -81,7 +89,7 @@ SKIP:
 	isa_ok(SDL::GFX::Rotozoom::shrink_surface($src, 1, 1),         'SDL::Surface', 'shrink_surface');
 	draw();
 }
-$src = SDL::Surface->new( SDL::SDL_ANYFORMAT(), 100, 200, 32, 0, 0, 0, 0 );
+$src = SDL::Surface->new( SDL_SWSURFACE, 100, 200, 32, 0, 0, 0, 0 );
 isa_ok(SDL::GFX::Rotozoom::rotate_surface_90_degrees($src, 1), 'SDL::Surface', 'rotate_surface_90_degrees');
 # Note: everything but 32bit surface will crash
 
@@ -101,6 +109,8 @@ sub draw
 
 
 SDL::delay(1000);
+
+$ENV{SDL_VIDEODRIVER} = $videodriver;
 
 pass 'Are we still alive? Checking for segfaults';
 
