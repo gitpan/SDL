@@ -20,6 +20,10 @@ static PerlInterpreter *my_perl = NULL;
 char path[MAXPATHLEN];
 char libpath[MAXPATHLEN];
 char scriptfile[MAXPATHLEN];
+int argc_perl;
+char** argv_perl;
+char** env_perl;
+
 BOOL init_path;
 
 void xs_init (pTHX);
@@ -30,7 +34,7 @@ xs_init(pTHX)
 	char *file = __FILE__;
 	
 	sprintf(libpath,"%s/Contents/Resources/lib/%s",path,ARCHNAME);
-	fprintf(stderr,"LIBPATH: %s\n",libpath);
+	//fprintf(stderr,"LIBPATH: %s\n",libpath);
 
 	dXSUB_SYS;
 
@@ -48,7 +52,7 @@ xs_init(pTHX)
 @implementation SDLPerlApplication
 - (void) terminate:(id)sender
 {
-	fprintf(stderr,"Quitting Event\n");
+	//fprintf(stderr,"Quitting Event\n");
 	SDL_Event event;
 	event.type = SDL_QUIT;
 	SDL_PushEvent(&event);
@@ -60,11 +64,11 @@ xs_init(pTHX)
 - (void) setupWorkingDirectory:(BOOL)changep
 {
 	CFURLRef bpath;
-	fprintf(stderr,"Setup working directory ? %s", (changep ? "True" : "False"));
+	//fprintf(stderr,"Setup working directory ? %s", (changep ? "True" : "False"));
 	if (! changep) return;
 	bpath = CFBundleCopyBundleURL(CFBundleGetMainBundle());
 	if (CFURLGetFileSystemRepresentation(bpath,true,(UInt8*)path,MAXPATHLEN)) {
-		fprintf(stderr,"PATH: %s\n",path);
+		//fprintf(stderr,"PATH: %s\n",path);
 		chdir((char*)path);
 	}
 }
@@ -77,7 +81,7 @@ xs_init(pTHX)
 	NSString* appName;
 	NSString* title;
 	
-	fprintf(stderr, "Application will finish launching\n");
+	//fprintf(stderr, "Application will finish launching\n");
 
 	dict = (NSDictionary*)CFBundleGetInfoDictionary(CFBundleGetMainBundle());
 	appName = (dict ? [dict objectForKey: @"CFBundleName"] : [[NSProcessInfo processInfo] processName]);
@@ -110,75 +114,74 @@ xs_init(pTHX)
 	
 	[NSApp setMainMenu: appleMenu];
 	
-	fprintf(stderr,"Done with menu\n");
+	//fprintf(stderr,"Done with menu\n");
 }
 
 - (void) applicationDidFinishLaunching: (NSNotification *) note
 {
-	fprintf(stderr, "Application did  finish launching\n");
+	//fprintf(stderr, "Application did  finish launching\n");
 
-//	fprintf(stderr, "SCRIPT: %s\n",scriptfile);
-//	NSString* scr = [[NSString alloc] initWithUTF8String: scriptfile];
-//	fprintf(stderr, "Setting directory: %s\n",init_path ? "true" : "false");
-//	[self setupWorkingDirectory: init_path];
-//	fprintf(stderr,"Launching perl script %s\n", scriptfile);
-//	[self launchPerl: scr ];
+	//fprintf(stderr, "SCRIPT: %s\n",scriptfile);
+	NSString* scr = [[NSString alloc] initWithUTF8String: scriptfile];
+	//fprintf(stderr, "Setting directory: %s\n",init_path ? "true" : "false");
+	[self setupWorkingDirectory: init_path];
+	//fprintf(stderr,"Launching perl script %s\n", scriptfile);
+	[self launchPerl: scr ];
 	[NSApp terminate: self];	
 }
 
 - (void) launchPerl: (NSString*) script
 {
-	int count = 3;
-	char* embedding[] = { path, scriptfile , "0" } ;
+//	int count = 3;
+//	char* embedding[] = { path, scriptfile, "0"};
 	unsigned buflen = [ script lengthOfBytesUsingEncoding: NSUTF8StringEncoding] + 1;
 	[script getCString:scriptfile maxLength: buflen encoding:NSUTF8StringEncoding];
-	fprintf(stderr,"Launching script: %s\n",scriptfile);
-	PERL_SYS_INIT3(&count,&embedding,NULL);
+	//fprintf(stderr,"Launching script: %s\n",scriptfile);
+	PERL_SYS_INIT3(&argc_perl, &argv_perl, &env_perl);
 	my_perl = perl_alloc();
 	perl_construct(my_perl);
-	perl_parse(my_perl,xs_init,count,embedding,NULL);
-	fprintf(stderr,"Running perl\n");
+	perl_parse(my_perl,xs_init,argc_perl,argv_perl,(char **)NULL);
+	//fprintf(stderr,"Running perl\n");
 	perl_run(my_perl);
-	fprintf(stderr,"Destructing  perl\n");
+	//fprintf(stderr,"Destructing  perl\n");
 	perl_destruct(my_perl);
-	fprintf(stderr,"Freeing perl\n");
+	//fprintf(stderr,"Freeing perl\n");
 	perl_free(my_perl);
-	fprintf(stderr,"Quiting perl script: %s\n",scriptfile);
+	//fprintf(stderr,"Quiting perl script: %s\n",scriptfile);
 	PERL_SYS_TERM();
 }
 
 - (BOOL) application: (NSApplication*) theApplication openFile: (NSString*) filename
 {
-	fprintf(stderr,"openFile %s\n", [filename UTF8String]);
-	fprintf(stderr, "Setting directory: %s\n",init_path ? "true" : "false");
+	//fprintf(stderr,"openFile %s\n", [filename UTF8String]);
+	//fprintf(stderr, "Setting directory: %s\n",init_path ? "true" : "false");
 	[self setupWorkingDirectory: init_path];
-	fprintf(stderr,"launchgin perl\n");
+	//fprintf(stderr,"launching perl\n");
 	[self launchPerl: filename];
 }
 
 @end
 
 int
-main( int argc, char** argv)
+main( int argc, char** argv, char** env)
 {
-	int i;
 	NSAutoreleasePool* pool;
 
-	fprintf(stderr, "ARGC %d \n", argc);
-	for (i = 0; i < argc; ++i) {
-		fprintf(stderr,"ARGV[%d] %s\n",i,argv[i]);
-	}
+	argc_perl = argc;
+	argv_perl = argv;
+	env_perl = env;	
 
 	init_path = YES;
 	memset(scriptfile,0,MAXPATHLEN);
-	if (argc >= 2) {
+	if( argc >= 2 ) {
 		if ( argc == 2 ) {
 			strncpy(scriptfile,argv[1],strlen(argv[1]));
 		} else {
 			strncpy(scriptfile,argv[1],strlen(argv[2]));
 		}
 	}
-	fprintf(stderr, "[main] SCRIPT: %s\n",scriptfile);
+	//fprintf(stderr, "[main] SCRIPT: %s\n",scriptfile);
+	
 
 	pool = [[NSAutoreleasePool alloc] init];
 
@@ -191,7 +194,7 @@ main( int argc, char** argv)
 
 	[NSApp run];
 	
-	fprintf(stderr,"Terminating NSApp\n");
+	//fprintf(stderr,"Terminating NSApp\n");
 	[sdlplmain release];
 	[pool release];
 

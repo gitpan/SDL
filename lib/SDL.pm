@@ -45,13 +45,14 @@ our @ISA = qw(Exporter DynaLoader);
 
 use base 'Exporter';
 our @EXPORT      = @{ $SDL::Constants::EXPORT_TAGS{SDL} };
+push @EXPORT, 'NULL';
 our %EXPORT_TAGS = (
 	all      => \@EXPORT,
 	init     => $SDL::Constants::EXPORT_TAGS{'SDL/init'},
 	defaults => $SDL::Constants::EXPORT_TAGS{'SDL/defaults'}
 );
 
-our $VERSION = '2.3_9'; #Development Release
+our $VERSION = '2.4';
 $VERSION = eval $VERSION;
 
 print "$VERSION" if (defined($ARGV[0]) && ($ARGV[0] eq '--SDLperl'));

@@ -28,7 +28,6 @@ lib/pods/SDL/Credits.pod
 lib/pods/SDL/Cursor.pod
 lib/pods/SDL/Event.pod
 lib/pods/SDL/Events.pod
-lib/pods/SDL/Font.pod
 lib/pods/SDL/Game/Palette.pod
 lib/pods/SDL/GFX/BlitFunc.pod
 lib/pods/SDL/GFX/FPSManager.pod
@@ -58,7 +57,6 @@ lib/pods/SDL/Pango/Context.pod
 lib/pods/SDL/PixelFormat.pod
 lib/pods/SDL/Rect.pod
 lib/pods/SDL/RWOps.pod
-lib/pods/SDL/SFont.pod
 lib/pods/SDL/SMPEG.pod
 lib/pods/SDL/Sound.pod
 lib/pods/SDL/Surface.pod
@@ -67,12 +65,9 @@ lib/pods/SDL/Tool/Font.pod
 lib/pods/SDL/Tool/Graphic.pod
 lib/pods/SDL/TTF.pod
 lib/pods/SDL/TTF/Font.pod
-lib/pods/SDL/TTFont.pod
 lib/pods/SDL/Tutorial.pod
 lib/pods/SDL/Tutorial/Animation.pod
-lib/pods/SDL/Tutorial/Images.pod
 lib/pods/SDL/Tutorial/LunarLander.pod
-lib/pods/SDL/Tutorial/Pong.pod
 lib/pods/SDL/Tutorial/Tetris.pod
 lib/pods/SDL/Version.pod
 lib/pods/SDL/Video.pod
@@ -91,7 +86,6 @@ lib/SDL/Constants.pm
 lib/SDL/Cursor.pm
 lib/SDL/Event.pm
 lib/SDL/Events.pm
-lib/SDL/Font.pm
 lib/SDL/Game/Event.pm
 lib/SDL/Game/Palette.pm
 lib/SDL/Game/Rect.pm
@@ -130,7 +124,6 @@ lib/SDL/Pango/Context.pm
 lib/SDL/PixelFormat.pm
 lib/SDL/Rect.pm
 lib/SDL/RWOps.pm
-lib/SDL/SFont.pm
 lib/SDL/SMPEG.pm
 lib/SDL/Sound.pm
 lib/SDL/Surface.pm
@@ -144,10 +137,7 @@ lib/SDL/TTF/Font.pm
 lib/SDL/TTFont.pm
 lib/SDL/Tutorial.pm
 lib/SDL/Tutorial/Animation.pm
-lib/SDL/Tutorial/Drawing.pm
-lib/SDL/Tutorial/Images.pm
 lib/SDL/Tutorial/LunarLander.pm
-lib/SDL/Tutorial/Pong.pm
 lib/SDL/Version.pm
 lib/SDL/Video.pm
 lib/SDL/VideoInfo.pm
@@ -218,17 +208,12 @@ src/OpenGL.xs
 src/Pango/objects/Context.xs
 src/Pango/Pango.xs
 src/SDL.xs
-src/SFont.h
-src/SFont.xs
 src/SMPEG.xs
 src/support/darwin_support.h
 src/support/darwin_support.m
 src/support/win32.c
-src/TTF/Attributes.xs
-src/TTF/Management.xs
 src/TTF/objects/Font.xs
 src/TTF/README
-src/TTF/Render.xs
 src/TTF/TTF.xs
 t/00-load.t
 t/apppm.t
@@ -299,4 +284,5 @@ test/data/README
 test/data/sample.wav
 test/data/silence.wav
 test/data/tribe_i.wav
+TODO
 typemap

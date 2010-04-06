@@ -10,12 +10,12 @@
 # modify it under the terms of the GNU Lesser General Public
 # License as published by the Free Software Foundation; either
 # version 2.1 of the License, or (at your option) any later version.
-# 
+#
 # This library is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 # Lesser General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU Lesser General Public
 # License along with this library; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
@@ -33,6 +33,7 @@ package My::Builder::Darwin;
 use strict;
 use warnings;
 use Alien::SDL;
+use Cwd;
 use base 'My::Builder';
 
 sub special_build_settings
@@ -40,7 +41,7 @@ sub special_build_settings
 	my $self = shift;
 	$self->{c_source} = ['launcher.m'];
 	$self->{c_sources} = 'MacOSX';
-	$self->{install_base} = "SDLPerl.app/Contents/Resources";	
+	$self->{install_base} = "SDLPerl.app/Contents/Resources";
 }
 
 sub build_bundle
@@ -80,6 +81,21 @@ sub process_support_files {
        foreach my $file (map($p->{c_source} . "/$_", @{$p->{c_sources}})) {
               push @{$p->{objects}}, $self->compile_c($file);
        }
+}
+
+sub build_test
+{
+      my $self = shift;
+      $self->build_bundle() if !(-d getcwd().'/SDLPerl.app');
+      my $cmd = './SDLPerl.app/Contents/MacOS/SDLPerl '.getcwd().'/Build test';
+      if($ENV{SDL_PERL_TEST}) {
+          $self->Module::Build::ACTION_test;
+	  $ENV{SDL_PERL_TEST} = 0; #unset it again
+      } else {
+          $ENV{SDL_PERL_TEST} = 1;
+          system ( split ' ', $cmd );
+         die 'Errors in Testing. Can\'t continue' if $?;
+      }
 }
 
 1;

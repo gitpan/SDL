@@ -2,7 +2,7 @@
 #
 # Copyright (C) 2003 chromatic 
 # Copyright (C) 2004 David J. Goehrig
-# Copyright (C) 2009 Kartik Thakore
+# Copyright (C) 2010 Kartik Thakore
 
 use strict;
 use warnings;
@@ -11,12 +11,10 @@ use Carp;
 use lib 'inc';
 use Alien::SDL;
 
-print STDERR <<BROKENMSG if ($^O =~ /bsd|solaris/i );
-*************************** !!!WARNING!!! *****************************
-BSD support is currently experimental - you can continue, but 
-you've been warned! If you are interested in helping please contact us 
-at sdl-devel\@perl.org, or join us on #sdl in irc.perl.org
-***********************************************************************
+print STDERR <<BROKENMSG;
+*************************** !!!WARNING!!! ********************************
+This Release breaks back compatibility support with versions 2.2 and below
+**************************************************************************
 BROKENMSG
 
 ### we need the platform-specific module
@@ -338,13 +336,6 @@ my %subsystems =
 		},
 		libraries => [qw( SDL GL GLU )],
 	},
-	SFont => {
-		file	=> {
-			from => 'src/SFont.xs',
-			to   =>	'lib/SDL/SFont.xs',
-		},
-		libraries => [qw( SDL SDL_ttf )],
-	},	
 	Image => {
 		file	=> {
 			from => 'src/Image.xs',
@@ -517,7 +508,7 @@ my $build = $package->new(
 	{
 		'YAML'	=> '0.68',
 		'ExtUtils::CBuilder' => '0.260301',
-		'Alien::SDL' => '0.9.1',
+		'Alien::SDL' => '1.2',
 		'File::Find' => '2.07'
 	},
 	build_requires =>
@@ -525,7 +516,7 @@ my $build = $package->new(
 		'Test::Simple' => '0.88',
 		'IO::CaptureOutput' => '0',
 		'Test::Most' => '0.21',
-		'Alien::SDL' => '0.9.1',
+		'Alien::SDL' => '1.2',
 	},
 	build_recommends     =>
 	{
@@ -536,7 +527,13 @@ my $build = $package->new(
 	meta_add	     =>	     
 	{
 	},
-	create_readme => 1,
+	#create_readme => 1, ### make sense only if there is some POD doc in the file specified by dist_version_from
+	meta_merge => {
+		resources  => {
+			bugtracker => 'http://sdlperl.ath.cx/projects/SDLPerl/report/1',
+			repository => 'http://github.com/kthakore/SDL_perl'
+		}
+	},
 	dist_abstract => 'SDL bindings to Perl',
 	dist_author	     => 'Kartik Thakore <KTHAKORE@cpan.org>',
 );

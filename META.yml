@@ -3,13 +3,13 @@ abstract: 'SDL bindings to Perl'
 author:
   - 'Kartik Thakore <KTHAKORE@cpan.org>'
 build_requires:
-  Alien::SDL: v0.9.1
+  Alien::SDL: 1.2
   ExtUtils::CBuilder: 0
   IO::CaptureOutput: 0
   Test::Most: 0.21
   Test::Simple: 0.88
 configure_requires:
-  Alien::SDL: v0.9.1
+  Alien::SDL: 1.2
   ExtUtils::CBuilder: 0.260301
   File::Find: 2.07
   Module::Build: 0.36
@@ -23,7 +23,7 @@ name: SDL
 provides:
   SDL:
     file: lib/SDL.pm
-    version: 2.3_9
+    version: 2.4
   SDL::App:
     file: lib/SDL/App.pm
   SDL::Audio:
@@ -50,8 +50,6 @@ provides:
     file: lib/SDL/Event.pm
   SDL::Events:
     file: lib/SDL/Events.pm
-  SDL::Font:
-    file: lib/SDL/Font.pm
   SDL::GFX:
     file: lib/SDL/GFX.pm
   SDL::GFX::BlitFunc:
@@ -129,8 +127,6 @@ provides:
     file: lib/SDL/RWOps.pm
   SDL::Rect:
     file: lib/SDL/Rect.pm
-  SDL::SFont:
-    file: lib/SDL/SFont.pm
   SDL::SMPEG:
     file: lib/SDL/SMPEG.pm
   SDL::Sound:
@@ -155,18 +151,8 @@ provides:
     file: lib/SDL/Tutorial.pm
   SDL::Tutorial::Animation:
     file: lib/SDL/Tutorial/Animation.pm
-  SDL::Tutorial::Drawing:
-    file: lib/SDL/Tutorial/Drawing.pm
-  SDL::Tutorial::Images:
-    file: lib/SDL/Tutorial/Images.pm
-  SDL::Tutorial::Images::Walker:
-    file: lib/SDL/Tutorial/Images.pm
   SDL::Tutorial::LunarLander:
     file: lib/SDL/Tutorial/LunarLander.pm
-  SDL::Tutorial::Pong::Ball:
-    file: lib/SDL/Tutorial/Pong.pm
-  SDL::Tutorial::Pong::Paddle:
-    file: lib/SDL/Tutorial/Pong.pm
   SDL::Version:
     file: lib/SDL/Version.pm
   SDL::Video:
@@ -176,5 +162,7 @@ provides:
   SDL_perl:
     file: lib/SDL_perl.pm
 resources:
+  bugtracker: http://sdlperl.ath.cx/projects/SDLPerl/report/1
   license: http://opensource.org/licenses/lgpl-license.php
-version: 2.3_9
+  repository: http://github.com/kthakore/SDL_perl
+version: 2.4
