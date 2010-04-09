@@ -23,7 +23,7 @@ name: SDL
 provides:
   SDL:
     file: lib/SDL.pm
-    version: 2.4
+    version: 2.402
   SDL::App:
     file: lib/SDL/App.pm
   SDL::Audio:
@@ -66,8 +66,6 @@ provides:
     file: lib/SDL/GFX/Rotozoom.pm
   SDL::Game::Event:
     file: lib/SDL/Game/Event.pm
-  SDL::Game::Palette:
-    file: lib/SDL/Game/Palette.pm
   SDL::Game::Rect:
     file: lib/SDL/Game/Rect.pm
     version: 0.01
@@ -162,7 +160,7 @@ provides:
   SDL_perl:
     file: lib/SDL_perl.pm
 resources:
-  bugtracker: http://sdlperl.ath.cx/projects/SDLPerl/report/1
+  bugtracker: http://sdlperl.ath.cx/projects/SDLPerl
   license: http://opensource.org/licenses/lgpl-license.php
   repository: http://github.com/kthakore/SDL_perl
-version: 2.4
+version: 2.402

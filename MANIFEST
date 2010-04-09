@@ -68,7 +68,6 @@ lib/pods/SDL/TTF/Font.pod
 lib/pods/SDL/Tutorial.pod
 lib/pods/SDL/Tutorial/Animation.pod
 lib/pods/SDL/Tutorial/LunarLander.pod
-lib/pods/SDL/Tutorial/Tetris.pod
 lib/pods/SDL/Version.pod
 lib/pods/SDL/Video.pod
 lib/pods/SDL/VideoInfo.pod
@@ -87,7 +86,6 @@ lib/SDL/Cursor.pm
 lib/SDL/Event.pm
 lib/SDL/Events.pm
 lib/SDL/Game/Event.pm
-lib/SDL/Game/Palette.pm
 lib/SDL/Game/Rect.pm
 lib/SDL/GFX.pm
 lib/SDL/GFX/BlitFunc.pm
@@ -260,10 +258,8 @@ t/mixer_music.t
 t/mixer_samples.t
 t/mpegpm.t
 t/opengl.t
-t/palettepm.t
 t/pango.t
 t/sdlgamerect.t
-t/sdlpm.t
 t/smpeg.t
 t/soundpm.t
 t/ttf.t

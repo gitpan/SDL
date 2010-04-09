@@ -52,7 +52,7 @@ our %EXPORT_TAGS = (
 	defaults => $SDL::Constants::EXPORT_TAGS{'SDL/defaults'}
 );
 
-our $VERSION = '2.4';
+our $VERSION = '2.402';
 $VERSION = eval $VERSION;
 
 print "$VERSION" if (defined($ARGV[0]) && ($ARGV[0] eq '--SDLperl'));
@@ -61,6 +61,26 @@ $SDL::DEBUG=0;
 
 sub NULL {
 	return 0;
+}
+
+# workaround, doing putenv from perl instead of sdl's:
+#int
+#putenv (variable)
+#	char *variable
+#	CODE:
+#		RETVAL = SDL_putenv(variable);
+#	OUTPUT:
+#		RETVAL
+sub putenv
+{
+	my $cmd  = shift;
+	if($cmd =~ /^(\w+)=(.*)$/)
+	{
+		$ENV{$1} = $2;
+		return 0;
+	}
+	
+	return -1;
 }
 
 # workaround as:
