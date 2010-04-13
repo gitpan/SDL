@@ -11,7 +11,7 @@ build_requires:
 configure_requires:
   Alien::SDL: 1.2
   ExtUtils::CBuilder: 0.260301
-  File::Find: 2.07
+  File::Find: 0
   Module::Build: 0.36
   YAML: 0.68
 generated_by: 'Module::Build version 0.3603'
@@ -23,7 +23,7 @@ name: SDL
 provides:
   SDL:
     file: lib/SDL.pm
-    version: 2.402
+    version: 2.403
   SDL::App:
     file: lib/SDL/App.pm
   SDL::Audio:
@@ -163,4 +163,4 @@ resources:
   bugtracker: http://sdlperl.ath.cx/projects/SDLPerl
   license: http://opensource.org/licenses/lgpl-license.php
   repository: http://github.com/kthakore/SDL_perl
-version: 2.402
+version: 2.403
