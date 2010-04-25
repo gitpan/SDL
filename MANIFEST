@@ -126,7 +126,6 @@ lib/SDL/SMPEG.pm
 lib/SDL/Sound.pm
 lib/SDL/Surface.pm
 lib/SDL/Time.pm
-lib/SDL/Timer.pm
 lib/SDL/Tool/Font.pm
 lib/SDL/Tool/Graphic.pm
 lib/SDL/TTF.pm
