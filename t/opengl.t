@@ -39,14 +39,14 @@ use strict;
 use SDL::Config;
 
 use Test::More;
+plan ( tests => 3 );
 
-if ( SDL::Config->has('GL') && SDL::Config->has('GLU') ) {
-		plan ( tests => 3 );
-} else {
-	plan ( skip_all => 'OpenGL support not compiled' );
-}
 
 use_ok('SDL::OpenGL');
+
+SKIP:
+{
+skip ( 'No GL support found', 1) unless SDL::Config->has('GL');
 
 can_ok('main', qw/
 	glBegin
@@ -79,6 +79,11 @@ can_ok('main', qw/
 	glVertex
 	glVertex
 	glViewport /);
+}
+
+SKIP:
+{
+skip ( 'No GLU support found', 1) unless SDL::Config->has('GLU');
 
 can_ok('main',qw/
 	gluPerspective
@@ -91,5 +96,5 @@ can_ok('main',qw/
 	gluNurbsProperty
 	gluNurbsSurface
 	gluPwlCurve /);
-
+}
 sleep(2);

@@ -42,7 +42,7 @@
 #ifdef PERL_DARWIN
 #include <gl.h>
 #include <glu.h>
-#else
+#else //not darwin
 #include <GL/gl.h>
 
 #if defined(__WIN32__) && defined(__MINGW32__)
@@ -55,10 +55,13 @@ constants missing in GL/gl.h thus we need also GL/glext.h
 #include <GL/glext.h>
 #undef GL_VERSION_1_3
 #undef GL_VERSION_1_2
-#endif
+#endif // this was for windows 
 
+#ifdef HAVE_GLU
 #include <GL/glu.h>
 #endif
+#endif //Darwin or not
+
 
 
 #ifdef USE_THREADS
@@ -155,6 +158,8 @@ sdl_perl_nurbs_end_callback ( void *cb )
 	LEAVE_TLS_CONTEXT	
 }
 
+#ifdef HAVE_GLU
+
 void
 sdl_perl_tess_end_callback ( void *cb )
 {
@@ -176,6 +181,7 @@ sdl_perl_tess_end_callback ( void *cb )
         LEAVE;
         LEAVE_TLS_CONTEXT
 }
+
 
 void
 sdl_perl_tess_begin_callback ( GLenum type,  void *cb )
@@ -308,6 +314,7 @@ sdl_perl_tess_combine_callback ( GLdouble coords[3], double *vd[4], GLfloat weig
         LEAVE;
         LEAVE_TLS_CONTEXT
 }
+#endif //HAVE_GLU check for callbacks 
 
 #endif
 

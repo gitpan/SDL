@@ -121,9 +121,23 @@ surface_get_pixel(surface, offset)
 	SDL_Surface *surface
 	int offset
 	CODE:
-	  RETVAL =((unsigned int*)surface->pixels)[offset];
+		switch(surface->format->BytesPerPixel)
+		{
+			case 1:  RETVAL = ((Uint8  *)surface->pixels)[offset];
+			         break;
+			case 2:  RETVAL = ((Uint16 *)surface->pixels)[offset];
+			         break;
+			case 3:  RETVAL = ((Uint32)((Uint8 *)surface->pixels)[offset * surface->format->BytesPerPixel]     <<  0)
+			                + ((Uint32)((Uint8 *)surface->pixels)[offset * surface->format->BytesPerPixel + 1] <<  8)
+			                + ((Uint32)((Uint8 *)surface->pixels)[offset * surface->format->BytesPerPixel + 2] << 16);
+			         break;
+			case 4:  RETVAL = ((Uint32 *)surface->pixels)[offset];
+			         break;
+			default: XSRETURN_UNDEF;
+			         break;
+		}
 	OUTPUT:
-	  RETVAL
+		RETVAL
 
 
 IV
@@ -136,12 +150,24 @@ surface_get_pixels_ptr(surface)
 	  RETVAL
 
 void
-surface_set_pixels(surface, index, value)
+surface_set_pixels(surface, offset, value)
 	SDL_Surface *surface
-	int index
+	int offset
 	unsigned int value
 	CODE:
-	((unsigned int*)surface->pixels)[index] = value;
+		switch(surface->format->BytesPerPixel)
+		{
+			case 1: ((Uint8  *)surface->pixels)[offset] = (Uint8)value;
+			        break;
+			case 2: ((Uint16 *)surface->pixels)[offset] = (Uint16)value;
+			        break;
+			case 3: ((Uint8  *)surface->pixels)[offset * surface->format->BytesPerPixel]     = (Uint8)( value        & 0xFF);
+			        ((Uint8  *)surface->pixels)[offset * surface->format->BytesPerPixel + 1] = (Uint8)((value <<  8) & 0xFF);
+			        ((Uint8  *)surface->pixels)[offset * surface->format->BytesPerPixel + 2] = (Uint8)((value << 16) & 0xFF);
+			        break;
+			case 4: ((Uint32 *)surface->pixels)[offset] = (Uint32)value;
+			        break;
+		}
 
 void
 surface_DESTROY(bag)

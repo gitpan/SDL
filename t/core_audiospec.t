@@ -1,4 +1,11 @@
 #!/usr/bin/perl -w
+BEGIN { # http://wiki.cpantesters.org/wiki/CPANAuthorNotes
+	use Config;
+	if (! $Config{'useithreads'}) {
+		print("1..0 # Skip: Perl not compiled with 'useithreads'\n");
+		exit(0);
+	}
+}
 use strict;
 use threads;
 use threads::shared;
@@ -12,17 +19,8 @@ use Config;
 use lib 't/lib';
 use SDL::TestTool;
 
-unless ( $ENV{AUTOMATED_TESTING} or $ENV{SDL_RELEASE_TESTING} ) {
-	plan( skip_all => "author tests not required for installation" );
-}
-
-if ( !SDL::TestTool->init(SDL_INIT_AUDIO) ) {
-    plan( skip_all => 'Failed to init sound' );
-}
-
-if( defined $Config{'config_args'} && $Config{'config_args'} !~ /USE_ITHREADS/ ) {
-    plan( skip_all => 'Threads are needed for this test' );
-}
+plan( skip_all => "author tests not required for installation" ) unless ( $ENV{AUTOMATED_TESTING} or $ENV{SDL_RELEASE_TESTING} );
+plan( skip_all => 'Failed to init sound' )                       unless SDL::TestTool->init(SDL_INIT_AUDIO);
 
 my $obtained = SDL::AudioSpec->new;   
 my $p :shared = 0;
