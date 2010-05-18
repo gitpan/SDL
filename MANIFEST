@@ -28,7 +28,6 @@ lib/pods/SDL/Credits.pod
 lib/pods/SDL/Cursor.pod
 lib/pods/SDL/Event.pod
 lib/pods/SDL/Events.pod
-lib/pods/SDL/Game/Palette.pod
 lib/pods/SDL/GFX/BlitFunc.pod
 lib/pods/SDL/GFX/FPSManager.pod
 lib/pods/SDL/GFX/Framerate.pod
@@ -48,7 +47,6 @@ lib/pods/SDL/Mixer/Samples.pod
 lib/pods/SDL/Mouse.pod
 lib/pods/SDL/MPEG.pod
 lib/pods/SDL/MultiThread.pod
-lib/pods/SDL/Music.pod
 lib/pods/SDL/OpenGL.pod
 lib/pods/SDL/Overlay.pod
 lib/pods/SDL/Palette.pod
@@ -58,11 +56,8 @@ lib/pods/SDL/PixelFormat.pod
 lib/pods/SDL/Rect.pod
 lib/pods/SDL/RWOps.pod
 lib/pods/SDL/SMPEG.pod
-lib/pods/SDL/Sound.pod
 lib/pods/SDL/Surface.pod
 lib/pods/SDL/Time.pod
-lib/pods/SDL/Tool/Font.pod
-lib/pods/SDL/Tool/Graphic.pod
 lib/pods/SDL/TTF.pod
 lib/pods/SDL/TTF/Font.pod
 lib/pods/SDL/Tutorial.pod
@@ -108,7 +103,6 @@ lib/SDL/Mixer/Samples.pm
 lib/SDL/Mouse.pm
 lib/SDL/MPEG.pm
 lib/SDL/MultiThread.pm
-lib/SDL/Music.pm
 lib/SDL/Net.pm
 lib/SDL/Net/IPaddress.pm
 lib/SDL/Net/TCP.pm
@@ -123,11 +117,8 @@ lib/SDL/PixelFormat.pm
 lib/SDL/Rect.pm
 lib/SDL/RWOps.pm
 lib/SDL/SMPEG.pm
-lib/SDL/Sound.pm
 lib/SDL/Surface.pm
 lib/SDL/Time.pm
-lib/SDL/Tool/Font.pm
-lib/SDL/Tool/Graphic.pm
 lib/SDL/TTF.pm
 lib/SDL/TTF.pod
 lib/SDL/TTF/Font.pm
@@ -260,7 +251,6 @@ t/opengl.t
 t/pango.t
 t/sdlgamerect.t
 t/smpeg.t
-t/soundpm.t
 t/ttf.t
 t/ttf_font.t
 test/data/24P_Arial_NeonYellow.png

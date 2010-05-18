@@ -13,7 +13,6 @@ configure_requires:
   ExtUtils::CBuilder: 0.260301
   File::Find: 0
   Module::Build: 0.36
-  YAML: 0.68
 generated_by: 'Module::Build version 0.3603'
 license: lgpl
 meta-spec:
@@ -23,7 +22,7 @@ name: SDL
 provides:
   SDL:
     file: lib/SDL.pm
-    version: 2.405
+    version: 2.406
   SDL::App:
     file: lib/SDL/App.pm
   SDL::Audio:
@@ -97,8 +96,6 @@ provides:
     file: lib/SDL/Mouse.pm
   SDL::MultiThread:
     file: lib/SDL/MultiThread.pm
-  SDL::Music:
-    file: lib/SDL/Music.pm
   SDL::Net:
     file: lib/SDL/Net.pm
   SDL::Net::IPaddress:
@@ -127,8 +124,6 @@ provides:
     file: lib/SDL/Rect.pm
   SDL::SMPEG:
     file: lib/SDL/SMPEG.pm
-  SDL::Sound:
-    file: lib/SDL/Sound.pm
   SDL::Surface:
     file: lib/SDL/Surface.pm
   SDL::TTF:
@@ -139,10 +134,6 @@ provides:
     file: lib/SDL/TTFont.pm
   SDL::Time:
     file: lib/SDL/Time.pm
-  SDL::Tool::Font:
-    file: lib/SDL/Tool/Font.pm
-  SDL::Tool::Graphic:
-    file: lib/SDL/Tool/Graphic.pm
   SDL::Tutorial:
     file: lib/SDL/Tutorial.pm
   SDL::Tutorial::Animation:
@@ -161,4 +152,4 @@ resources:
   bugtracker: http://sdlperl.ath.cx/projects/SDLPerl
   license: http://opensource.org/licenses/lgpl-license.php
   repository: http://github.com/kthakore/SDL_perl
-version: 2.405
+version: 2.406
