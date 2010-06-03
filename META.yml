@@ -3,13 +3,13 @@ abstract: 'SDL bindings to Perl'
 author:
   - 'Kartik Thakore <KTHAKORE@cpan.org>'
 build_requires:
-  Alien::SDL: 1.403
+  Alien::SDL: 1.405
   ExtUtils::CBuilder: 0
   IO::CaptureOutput: 0
   Test::Most: 0.21
   Test::Simple: 0.88
 configure_requires:
-  Alien::SDL: 1.403
+  Alien::SDL: 1.405
   ExtUtils::CBuilder: 0.260301
   File::Find: 0
   Module::Build: 0.36
@@ -22,7 +22,7 @@ name: SDL
 provides:
   SDL:
     file: lib/SDL.pm
-    version: 2.406
+    version: 2.407
   SDL::App:
     file: lib/SDL/App.pm
   SDL::Audio:
@@ -152,4 +152,4 @@ resources:
   bugtracker: http://sdlperl.ath.cx/projects/SDLPerl
   license: http://opensource.org/licenses/lgpl-license.php
   repository: http://github.com/kthakore/SDL_perl
-version: 2.406
+version: 2.407
