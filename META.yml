@@ -24,9 +24,7 @@ name: SDL
 provides:
   SDL:
     file: lib/SDL.pm
-    version: 2.408
-  SDL::App:
-    file: lib/SDL/App.pm
+    version: 2.500_1
   SDL::Audio:
     file: lib/SDL/Audio.pm
   SDL::AudioCVT:
@@ -65,11 +63,6 @@ provides:
     file: lib/SDL/GFX/Primitives.pm
   SDL::GFX::Rotozoom:
     file: lib/SDL/GFX/Rotozoom.pm
-  SDL::Game::Event:
-    file: lib/SDL/Game/Event.pm
-  SDL::Game::Rect:
-    file: lib/SDL/Game/Rect.pm
-    version: 0.01
   SDL::Image:
     file: lib/SDL/Image.pm
   SDL::Internal::Loader:
@@ -106,10 +99,6 @@ provides:
     file: lib/SDL/Net/TCP.pm
   SDL::Net::UDP:
     file: lib/SDL/Net/UDP.pm
-  SDL::OpenGL:
-    file: lib/SDL/OpenGL.pm
-  SDL::OpenGL::Constants:
-    file: lib/SDL/OpenGL/Constants.pm
   SDL::Overlay:
     file: lib/SDL/Overlay.pm
   SDL::Palette:
@@ -150,8 +139,31 @@ provides:
     file: lib/SDL/VideoInfo.pm
   SDL_perl:
     file: lib/SDL_perl.pm
+  SDLx::App:
+    file: lib/SDLx/App.pm
+  SDLx::Controller:
+    file: lib/SDLx/Controller.pm
+  SDLx::Controller::Timer:
+    file: lib/SDLx/Controller/Timer.pm
+  SDLx::FPS:
+    file: lib/SDLx/FPS.pm
+  SDLx::Rect:
+    file: lib/SDLx/Rect.pm
+    version: 0.01
+  SDLx::Sprite:
+    file: lib/SDLx/Sprite.pm
+  SDLx::Sprite::Animated:
+    file: lib/SDLx/Sprite/Animated.pm
+  SDLx::Surface:
+    file: lib/SDLx/Surface.pm
+  SDLx::Surface::Matrix:
+    file: lib/SDLx/Surface/Matrix.pm
+  TiedMatrix:
+    file: lib/SDLx/Surface/Matrix.pm
+  TiedMatrixRow:
+    file: lib/SDLx/Surface/Matrix.pm
 resources:
   bugtracker: http://sdlperl.ath.cx/projects/SDLPerl
   license: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt
   repository: http://github.com/kthakore/SDL_perl
-version: 2.408
+version: 2.500_1

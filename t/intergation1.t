@@ -27,7 +27,7 @@
 #	dgoehrig\@cpan.org
 #
 #
-# basic testing of SDL::App
+# basic testing of SDLx::App
 
 BEGIN {
 	unshift @INC, 'blib/lib','blib/arch';
@@ -37,7 +37,7 @@ use strict;
 use SDL;
 use SDL::Config;
 use SDL::Rect;
-use SDL::Game::Rect;
+use SDLx::Rect;
 use SDL::Color;
 use SDL::Video;
 use Test::More;
@@ -47,9 +47,9 @@ use SDL::TestTool;
 
 plan ( tests => 3 );
 
-use_ok( 'SDL::App' ); 
+use_ok( 'SDLx::App' ); 
   
-can_ok ('SDL::App', qw/
+can_ok ('SDLx::App', qw/
 	new 
 	resize 
 	title 
@@ -72,7 +72,7 @@ SKIP:
 {
 	skip 'No Video', 1 unless SDL::TestTool->init(SDL_INIT_VIDEO);
 
-	my $app  = SDL::App->new(-title => "Test", -width => 640, -height => 480, -init => SDL_INIT_VIDEO);
+	my $app  = SDLx::App->new(-title => "Test", -width => 640, -height => 480, -init => SDL_INIT_VIDEO);
 
 	my $rect = SDL::Rect->new( 0,0, $app->w, $app->h);
 
@@ -80,7 +80,7 @@ SKIP:
 	my $blue_pixel = SDL::Video::map_RGB( $pixel_format, 0x00, 0x00, 0xff );
 	my $col_pixel = SDL::Video::map_RGB( $pixel_format, 0xf0, 0x00, 0x33 );
 
-	my $grect = SDL::Game::Rect->new(10, 10, 30, 35);
+	my $grect = SDLx::Rect->new(10, 10, 30, 35);
 	foreach(0..80)
 	{
 

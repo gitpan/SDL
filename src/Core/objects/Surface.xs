@@ -1,6 +1,9 @@
 #include "EXTERN.h"
 #include "perl.h"
 #include "XSUB.h"
+#define NEED_newRV_noinc_GLOBAL
+#define NEED_newSV_type_GLOBAL
+#include "ppport.h"
 
 #ifndef aTHX_
 #define aTHX_
@@ -46,7 +49,7 @@ surface_new (CLASS, flags, width, height, depth = 32, Rmask = 0xFF000000, Gmask 
 		RETVAL
 
 SDL_Surface *
-surface_new_from (CLASS, pixels, width, height, depth, pitch, Rmask, Gmask, Bmask, Amask )
+surface_new_from (CLASS, pixels, width, height, depth, pitch, Rmask = 0xFF000000 , Gmask =  0x00FF0000, Bmask = 0x0000FF00, Amask =  0x000000FF )
 	char* CLASS
 	int width
 	int height
@@ -56,16 +59,10 @@ surface_new_from (CLASS, pixels, width, height, depth, pitch, Rmask, Gmask, Bmas
 	Uint32 Gmask
 	Uint32 Bmask
 	Uint32 Amask
-	IV pixels
+	SV* pixels
 	CODE:
-		//warn ("USING THIS WILL CAUSE YOUR CODE TO SEGFAULT ON EXIT! \n READ: http://sdlperl.ath.cx/projects/SDLPerl/ticket/53");
-		void *p = INT2PTR(void*, pixels);
-		int size_p = sizeof( (*p));  //gets freed by old surface
-	        unsigned int *newpixels = safemalloc( size_p ); //gets freed by new Surface
-		memcpy(newpixels, p, size_p);
-		//warn("p is %p, newpixels is %p \n", p, newpixels);
-		
-		RETVAL = SDL_CreateRGBSurfaceFrom ( newpixels, width, height, depth, pitch, Rmask, Gmask, Bmask, Amask );
+		int* pix = SvRV ( SvRV( pixels ) );
+		RETVAL = SDL_CreateRGBSurfaceFrom ( pix, width, height, depth, pitch, Rmask, Gmask, Bmask, Amask );
 		if( RETVAL == NULL)
 		croak ("SDL_CreateRGBSurfaceFrom failed: %s", SDL_GetError());
 
@@ -140,12 +137,17 @@ surface_get_pixel(surface, offset)
 		RETVAL
 
 
-IV
+SV *
 surface_get_pixels_ptr(surface)
 	SDL_Surface *surface
 	CODE:
 	  if(!surface->pixels) croak("Incomplete surface");
-	  RETVAL = PTR2IV(surface->pixels);
+	  SV * sv = newSV_type(SVt_PV);
+	  SvPV_set(sv, surface->pixels);
+	  SvPOK_on(sv);
+	  SvLEN_set(sv, 0);
+	  SvCUR_set(sv, surface->format->BytesPerPixel * surface->w * surface->h);
+	  RETVAL = newRV_noinc(sv);
 	OUTPUT:
 	  RETVAL
 
@@ -177,7 +179,7 @@ surface_DESTROY(bag)
                    void** pointers = (void**)(SvIV((SV*)SvRV( bag ))); 
                    SDL_Surface* surface = (SDL_Surface*)(pointers[0]);
                    if (PERL_GET_CONTEXT == pointers[1]) {
-                       //warn("Freed surface %p and pixels %p \n", surface, surface->pixels);
+                       /*warn("Freed surface %p and pixels %p \n", surface, surface->pixels); */
                        pointers[0] = NULL;
                        safefree( pointers );
 

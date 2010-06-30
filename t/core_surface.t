@@ -12,7 +12,7 @@ use strict;
 use SDL;
 use SDL::Config;
 use SDL::Surface;
-use SDL::App;
+use SDLx::App;
 use SDL::Rect;
 use SDL::Color;
 use SDL::Video;
@@ -30,7 +30,7 @@ if ( !SDL::TestTool->init(SDL_INIT_VIDEO) ) {
 }
 else
 {
-    plan( tests => 39);
+    plan( tests => 41);
 }
 
 my $surface = SDL::Surface->new( SDL_ANYFORMAT, 640, 320, 8, 0, 0, 0, 0 );
@@ -86,7 +86,7 @@ ok( 1, 'Managed to blit' );
 #$surface->update_rects( SDL::Rect->new( 0, 0, 32, 32 ) );
 #ok( 1, 'Managed to update_rects' );
 
-my $app = SDL::App->new(
+my $app = SDLx::App->new(
     -title  => "Test",
     -width  => 640,
     -height => 480,
@@ -117,14 +117,19 @@ SDL::Video::update_rect( $app, 0, 0, 0, 0 );
 
 SDL::Video::update_rects( $app, $small_rect );
 
-my $other_surface =  SDL::Surface->new_from( $surface->get_pixels_ptr, 640, 320, 8, $surface->pitch, 0, 0, 0, 0 ); 
 
+my $ref = $surface->get_pixels_ptr;
+my $other_surface =  SDL::Surface->new_from( $$ref, 640, 320, 8, $surface->pitch, 0, 0, 0, 0 );
 my $get_pixel = $surface->get_pixel(0);
 ok( $get_pixel >= 0,  "[get_pixel] returns integer ($get_pixel)" );
 $surface->set_pixels(0, 42); pass '[set_pixel] first pixel to 42' ;
 is( $surface->get_pixel(0), 42,   '[get_pixel] returns integer (42)' );
 
 isa_ok( $other_surface, 'SDL::Surface' );
+is( $other_surface->w, $surface->w, '[new_form] have same w');
+is( $other_surface->h, $surface->h, '[neh_form] have same h');
+
+#TODO: Added more comparison stuff
 
 if($videodriver)
 {

@@ -20,7 +20,7 @@ BROKENMSG
 ### we need the platform-specific module
 my %platforms =(
 	MSWin32      => 'Windows',
-	MacOS        => 'MacOS',
+	MacOS        => 'Darwin',
 	darwin       => 'Darwin',
 	cygwin       => 'Unix',
 	freebsd      => 'Unix',
@@ -158,6 +158,13 @@ my %subsystems =
 		file      => {
 			from  => 'src/Core/objects/Surface.xs',
 			to    => 'lib/SDL/Surface.xs',
+		},
+		libraries => [qw( SDL )],
+	},
+	SurfaceX => {
+		file      => {
+			from  => 'src/SDLx/Surface.xs',
+			to    => 'lib/SDLx/Surface.xs',
 		},
 		libraries => [qw( SDL )],
 	},
@@ -329,13 +336,6 @@ my %subsystems =
 		},
 		libraries => [qw( SDL )],
 	},
-	OpenGL => {
-		file      => {
-			from => 'src/OpenGL.xs',
-			to   => 'lib/SDL/OpenGL.xs', 
-		},
-		libraries => [qw( SDL GL GLU )],
-	},
 	Image => {
 		file	=> {
 			from => 'src/Image.xs',
@@ -343,13 +343,13 @@ my %subsystems =
 		},
 		libraries => [qw( SDL SDL_image jpeg png tiff)],
 	},
-	SMPEG => {
-		file	=> {
-			from => 'src/SMPEG.xs',
-			to   =>	'lib/SDL/SMPEG.xs',
-		},
-		libraries => [qw( SDL smpeg)],
-	},
+#	SMPEG => {
+#		file	=> {
+#			from => 'src/SMPEG.xs',
+#			to   =>	'lib/SDL/SMPEG.xs',
+#		},
+#		libraries => [qw( SDL smpeg)],
+#	},
 	Pango => {
 		file	=> {
 			from => 'src/Pango/Pango.xs',

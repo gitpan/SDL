@@ -52,6 +52,12 @@ BEGIN {
 		SDL::TTF::Font
 
 		SDL::Version
+
+		SDLx::App
+		SDLx::Sprite
+		SDLx::Sprite::Animated
+		SDLx::FPS
+		
 	/;
 	plan tests => scalar @modules;
 
