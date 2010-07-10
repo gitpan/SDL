@@ -153,7 +153,6 @@ MacOSX/main.c
 MacOSX/Makefile.test
 MacOSX/SDLPerl.icns
 MANIFEST			This list of files
-META.yml
 README
 src/Core/Audio.xs
 src/Core/CDROM.xs
@@ -295,3 +294,4 @@ test/data/silence.wav
 test/data/tribe_i.wav
 TODO
 typemap
+META.yml

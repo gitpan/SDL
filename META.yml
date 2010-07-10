@@ -24,7 +24,7 @@ name: SDL
 provides:
   SDL:
     file: lib/SDL.pm
-    version: 2.500
+    version: 2.501
   SDL::Audio:
     file: lib/SDL/Audio.pm
   SDL::AudioCVT:
@@ -166,6 +166,6 @@ provides:
     file: lib/SDLx/Surface/Matrix.pm
 resources:
   bugtracker: http://sdlperl.ath.cx/projects/SDLPerl
-  license: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt
+  license: http://opensource.org/licenses/lgpl-license.php
   repository: http://github.com/kthakore/SDL_perl
-version: 2.500
+version: 2.501
