@@ -4,6 +4,7 @@ use warnings;
 require Exporter;
 our @ISA = qw(Exporter);
 our @EXPORT = qw(internal_load_dlls);
+our @LIBREFS = ();
 
 use SDL::ConfigData;
 use Alien::SDL;
@@ -29,7 +30,6 @@ use Alien::SDL;
 
 sub internal_load_dlls($) {
   my $package = shift;
-
   ### check if some ld_shlib_map is defined
   my $shlib_map = Alien::SDL->config('ld_shlib_map');
   return unless $shlib_map; # empty shlib_map, nothing to do
@@ -42,9 +42,14 @@ sub internal_load_dlls($) {
   require DynaLoader;  
   foreach my $n (@$lib_nick) {
     my $file = $shlib_map->{$n};
-    next unless $file;
-    my $libref = DynaLoader::dl_load_file($file, 0);
-    push(@DynaLoader::dl_librefs, $libref) if $libref;
+    if($file && -e $file) {
+      my $libref = DynaLoader::dl_load_file($file, 0);
+      push(@DynaLoader::dl_librefs, $libref) if $libref;
+      push (@LIBREFS, $libref) if $libref;
+    }
+    else {
+      print(STDERR "###ERROR### shared object file '$file' for '$n' not found.\n");
+    }
   }
 }
 

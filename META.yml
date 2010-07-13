@@ -3,14 +3,15 @@ abstract: 'SDL bindings to Perl'
 author:
   - 'Kartik Thakore <KTHAKORE@cpan.org>'
 build_requires:
-  Alien::SDL: 1.409
+  Alien::SDL: 1.410
   ExtUtils::CBuilder: 0
   File::ShareDir: 0
   IO::CaptureOutput: 0
   Test::Most: 0.21
   Test::Simple: 0.88
+  Tie::Simple: 0
 configure_requires:
-  Alien::SDL: 1.409
+  Alien::SDL: 1.410
   ExtUtils::CBuilder: 0.260301
   File::Find: 0
   File::ShareDir: 0
@@ -24,7 +25,7 @@ name: SDL
 provides:
   SDL:
     file: lib/SDL.pm
-    version: 2.501
+    version: 2.502
   SDL::Audio:
     file: lib/SDL/Audio.pm
   SDL::AudioCVT:
@@ -158,14 +159,12 @@ provides:
     file: lib/SDLx/Sprite/Animated.pm
   SDLx::Surface:
     file: lib/SDLx/Surface.pm
-  SDLx::Surface::Matrix:
-    file: lib/SDLx/Surface/Matrix.pm
-  TiedMatrix:
-    file: lib/SDLx/Surface/Matrix.pm
-  TiedMatrixRow:
-    file: lib/SDLx/Surface/Matrix.pm
+  SDLx::Surface::TiedMatrix:
+    file: lib/SDLx/Surface/TiedMatrix.pm
+  SDLx::Surface::TiedMatrixRow:
+    file: lib/SDLx/Surface/TiedMatrixRow.pm
 resources:
   bugtracker: http://sdlperl.ath.cx/projects/SDLPerl
-  license: http://opensource.org/licenses/lgpl-license.php
+  license: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt
   repository: http://github.com/kthakore/SDL_perl
-version: 2.501
+version: 2.502

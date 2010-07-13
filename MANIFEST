@@ -12,6 +12,7 @@ examples/cookbook/pogl_sdl_texture.pl
 examples/GFX/script_roto.pl
 examples/pixel_operations/fast_pixel_write.pl
 examples/pixel_operations/sols/ch02.pl
+examples/pixel_operations/starry.pl
 examples/pixel_operations/tie_matrix.pl
 examples/SDLx/pong.pl
 examples/SDLx/SDLx_controller_two_squares.pl
@@ -79,6 +80,7 @@ lib/pods/SDLx/App.pod
 lib/pods/SDLx/Rect.pod
 lib/pods/SDLx/SFont.pod
 lib/pods/SDLx/Sprite.pod
+lib/pods/SDLx/Surface.pod
 lib/SDL.pm
 lib/SDL/Audio.pm
 lib/SDL/AudioCVT.pm
@@ -147,12 +149,14 @@ lib/SDLx/SFont.pm
 lib/SDLx/Sprite.pm
 lib/SDLx/Sprite/Animated.pm
 lib/SDLx/Surface.pm
-lib/SDLx/Surface/Matrix.pm
+lib/SDLx/Surface/TiedMatrix.pm
+lib/SDLx/Surface/TiedMatrixRow.pm
 MacOSX/Info.plist
 MacOSX/main.c
 MacOSX/Makefile.test
 MacOSX/SDLPerl.icns
 MANIFEST			This list of files
+META.yml
 README
 src/Core/Audio.xs
 src/Core/CDROM.xs
@@ -270,6 +274,7 @@ t/sdlgamerect.t
 t/sdlx_app.t
 t/sdlx_sfont.t
 t/sdlx_sprite.t
+t/sdlx_surface.t
 t/smpeg.t
 t/ttf.t
 t/ttf_font.t
@@ -294,4 +299,3 @@ test/data/silence.wav
 test/data/tribe_i.wav
 TODO
 typemap
-META.yml

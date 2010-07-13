@@ -1,5 +1,14 @@
 Revision history for Perl extension SDL_perl.
 
+* 2.502
+	- Displaying Alien::SDL's build option for every build step [FROGGS]
+	- Dispalying error message if required shared lib is missing [FROGGS]
+	- Added test and docs for SDLx::Surface
+	- Added version gaurd for older version of pixelinfo struct
+	- Added example of new SDLx::Surface
+	- Fixes for exec.h stack dumper during testing
+	
+
 * 2.501  July 10 2010
 	- Fixes tests for SDLx::TTF and SDL::Surface [FROGGS, kthakore] 
 	- Makes ptr to pixels READONLY for some safety
@@ -13,7 +22,7 @@ Revision history for Perl extension SDL_perl.
 	- Added SDLx::FPS [Blaizer]
 	- Cleaned up docs [Blaizer]
 	- Cleaned up docs for SDLx::Rect and added Category 
-	- Added SDLx::SFont and docs
+	- Added SDLx::SFont and docs and test
 
 * 2.5 RC
 	- Fixed SDL::Surface->get_pixels_ptr
