@@ -77,9 +77,11 @@ lib/pods/SDL/Version.pod
 lib/pods/SDL/Video.pod
 lib/pods/SDL/VideoInfo.pod
 lib/pods/SDLx/App.pod
+lib/pods/SDLx/Controller.pod
 lib/pods/SDLx/Rect.pod
 lib/pods/SDLx/SFont.pod
 lib/pods/SDLx/Sprite.pod
+lib/pods/SDLx/Sprite/Animated.pod
 lib/pods/SDLx/Surface.pod
 lib/SDL.pm
 lib/SDL/Audio.pm
@@ -274,6 +276,7 @@ t/sdlgamerect.t
 t/sdlx_app.t
 t/sdlx_sfont.t
 t/sdlx_sprite.t
+t/sdlx_sprite_animated.t
 t/sdlx_surface.t
 t/smpeg.t
 t/ttf.t
@@ -285,6 +288,7 @@ test/data/aircut3.ttf
 test/data/chest.png
 test/data/electrohar.ttf
 test/data/font.png
+test/data/hero.bmp
 test/data/hero.png
 test/data/highlight.png
 test/data/icon.bmp
@@ -293,6 +297,8 @@ test/data/logo.png
 test/data/menu.png
 test/data/pattern_red_white_2x2.bmp
 test/data/picture.bmp
+test/data/picture.jpg
+test/data/picture.tif
 test/data/README
 test/data/sample.wav
 test/data/silence.wav

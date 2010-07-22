@@ -1,3 +1,4 @@
+
 =pod
 
 =head1 NAME
@@ -20,7 +21,7 @@ Extension
 
  my $surf_matrix = SDLx::Surface->new( surface => $display);
  
- $surf__matrix->[10][10] = 0xFFFF; #for 16bpp write white at x = 10 and y=10
+ $surf_matrix->[10][10] = 0xFFFF; #for 16bpp write white at x = 10 and y=10
 
  $surf_matrix->surface( $new_surface );
 
@@ -30,7 +31,7 @@ Extension
 
 An C<SDLx::Surface> allows matrix read and write to a surface, safely. 
 
-=head1 METHODS
+=head1 CONSTRUCTOR 
 
 =head2 new
 
@@ -48,26 +49,45 @@ If a surface is passed to 'surface =>' that is loaded. Otherwise you can define 
 
 	SDLx::Surface->new( width=> 400, height=>200, flags=> SDL_SWSURFACE, depth=>32, greenmask=>0xFF000000 )
 		# A SDL::Surface->new( SDL_ANYFORMAT, 400, 200, 32, 0, 0xFF000000,0, 0, 0 ) is loaded
+	SDLx::Surface->new( w => 1, h => 1, color => 0xFF0000FF )
+		# A SDL::Surface->new( SDL_ANYFORMAT, 1, 1, 32, 0, 0, 0, 0 ) is loaded
+		all pixels are colored with color (red)
+
+=head2 display
+
+If L<SDLx::App::new> or L<SDL::Video::get_video_mode> called before then:
+
+ my $appx = SDLx::Surface::display(); 
+
+gets the display if it is already made. Passed options are ignored. Otherwise you can quickly make the display with :
+
+ SDLx::Surface::display( width => 20, height => 20) #depth => 32 and SDL_ANYFORMAT used
+
+or you can also pass flags and depth. 
+
+ SDLx::Surface::display( width => 20, height => 20, flags=> SDL_HWSURFACE, depth=>24) 
+
+You can also use the keys C<w> and C<h> in place of C<width> and C<height>, as with C<new>.
+
+Get or create the main display surface and attach to a SDLx::Surface.
+
+=head2 duplicate
+
+Does a attributes only, no pixel, copy of another SDLx::Surface. 
+
+=head1 ATTRIBUTES
 
 =head2 surface
 
 If a SDL::Surface is passed it is attached to the matrix. Returns the SDL::Surface that is currently attached to this SDLx::Surface
 
-=head2 get_display
+=head2 w, h, format, pitch, flags
 
-If L<SDLx::App::new> or L<SDL::Video::get_video_mode> called before then:
+Returns the inner SDL::Surface's respective attribute. See C<SDL::Surface>.
 
- my $appx = SDLx::Surface::get_display(); 
+=head2 clip_rect
 
-gets the display if it is already made. Passed options are ignored. Otherwise you can quickly make the display with :
-
- SDLx::Surface::get_display( width => 20, height => 20) #depth => 32 and SDL_ANYFORMAT used
-
-or you can also pass flags and depth. 
-
- SDLx::Surface::get_display( width => 20, height => 20, flags=> SDL_HWSURFACE, depth=>24) 
-
-Get or create the main display surface and attach to a SDLx::Surface.
+Sets the passed C<SDL::Rect> as the new clip_rect for the surface. Returns the SDL::Surface's clip_rect. See C<SDL::Video::get_clip_rect> and C<SDL::Video::set_clip_rect>.
 
 =head1 EXTENSIONS
 
@@ -76,9 +96,16 @@ Get or create the main display surface and attach to a SDLx::Surface.
  $sdlx_surface->blit( $dest, $src_rect, $dest_rect );
 
 Blits SDLx::Surface onto $dest surface. 
-$src_rect or $dest_rect are optional. $src_rect or $dest_rect can be array refs or SDL::Rect. $dest can be SDLx::Surface or SDL::Surface. 
+$src_rect or $dest_rect are optional. If $src_rect is ommited, it will be the size of the entire surface. If $dest_rect is ommited, it will be blitted at C<(0, 0)>. $src_rect or $dest_rect can be array refs or SDL::Rect. $dest can be SDLx::Surface or SDL::Surface.
 
 Returns $self
+
+=head2 blit_by
+
+ $sdlx_surface->blit_by( $src, $src_rect, $dest_rect );
+
+Does the same as C<blit> but the C<SDLx::Surface> is the one being blitted to.
+This is useful when the surface you have isn't an C<SDLx::Surface>, but the surface it is being blitted to is.
 
 =head2 flip
 
@@ -97,8 +124,26 @@ Applies L<SDL::Video::update_rect> for no rect or 1 array ref. Applies L<SDL::Vi
 
 Returns $self
 
+
+=head2 draw_rect
+
+ $sdlx_surface->draw_rect( [$x,$y,$w,$h], 0xFFFF00FF );
+ $sdlx_surface->draw_rect( SDL::Rect->new($x,$y,$w,$h), 0xFFFF00FF );
+
+Draws a rect on the surface with the given color. If the rect is ommited, the colored rect will be drawn to the entire surface.
+
+Returns $self
+
+=head2 draw_line
+
+ $sdlx_surface->draw_line( [$x1, $y1], [$x2, $y2], $color, $antialias); # $color is a number
+ $sdlx_surface->draw_line( [$x1, $y1], [$x2, $y2], \@color, $antialias); # 
+
+Draws a line on the surface. Antialias is turned on if $antialias is true. 
+
+Returns $self
+
 =head1 AUTHOR
 
  kthakore 
-
 

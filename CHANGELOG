@@ -1,13 +1,21 @@
 Revision history for Perl extension SDL_perl.
 
+* 2.503
+	- Finished a working version of SDLx::Sprite::Animated [jtpalmer]
+	- Added draw functions to SDLx::Surface
+	- Cleaned up Sprite inheritance from Surface
+	- Fixed bug in SDL::Event::key_mod, it returned pointer instead of int [FROGGS]
+	- SDLx::App now depends on SDLx::Surface 
+
 * 2.502
 	- Displaying Alien::SDL's build option for every build step [FROGGS]
-	- Dispalying error message if required shared lib is missing [FROGGS]
+	- Displaying error message if required shared lib is missing [FROGGS]
 	- Added test and docs for SDLx::Surface
-	- Added version gaurd for older version of pixelinfo struct
+	- Added version guard for older version of pixelinfo struct
 	- Added example of new SDLx::Surface
 	- Fixes for exec.h stack dumper during testing
-	
+	- Added version guard for SDLx::GFX [FROGGS]	
+	- Modified SDLx::Sprite to inherit from SDLx::Surface
 
 * 2.501  July 10 2010
 	- Fixes tests for SDLx::TTF and SDL::Surface [FROGGS, kthakore] 
@@ -19,7 +27,7 @@ Revision history for Perl extension SDL_perl.
 	- Fixed Memory Leaks due to perl desturct level 
 	- Fixed Memory leak in SDL::Mixer::Music 
 	- Fixed the test on SDLx::Sprite
-	- Added SDLx::FPS [Blaizer]
+	- Modified SDLx::FPS [Blaizer]
 	- Cleaned up docs [Blaizer]
 	- Cleaned up docs for SDLx::Rect and added Category 
 	- Added SDLx::SFont and docs and test
@@ -35,7 +43,7 @@ Revision history for Perl extension SDL_perl.
 	- Using dummy audiodriver for tests so no sound is played [#163] [FROGGS]
 	- POGL example added
 	- Fixed fail due to to strict test for texture_polygon in SDL::GFX 
-	- Created SDL::FPS {Bliazer}
+	- Created SDLx::FPS [Blaizer]
 
 * 2.408 Sun June 13 2010
 	- Added File::ShareDir as a dep
