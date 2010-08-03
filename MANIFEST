@@ -1,10 +1,6 @@
 Build.PL
 CHANGELOG
 CONTRIBUTORS
-examples/adventure/adventure.pl
-examples/adventure/data/hero.png
-examples/adventure/README
-examples/adventure/walker.pm
 examples/cookbook/1.pl
 examples/cookbook/openglapp.pl
 examples/cookbook/pdl.pl
@@ -14,6 +10,7 @@ examples/pixel_operations/fast_pixel_write.pl
 examples/pixel_operations/sols/ch02.pl
 examples/pixel_operations/starry.pl
 examples/pixel_operations/tie_matrix.pl
+examples/SDLx/app.pl
 examples/SDLx/pong.pl
 examples/SDLx/SDLx_controller_two_squares.pl
 examples/SDLx/SDLx_sprite.pl
@@ -146,6 +143,8 @@ lib/SDLx/App.pm
 lib/SDLx/Controller.pm
 lib/SDLx/Controller/Timer.pm
 lib/SDLx/FPS.pm
+lib/SDLx/Layer.pm
+lib/SDLx/LayerManager.pm
 lib/SDLx/Rect.pm
 lib/SDLx/SFont.pm
 lib/SDLx/Sprite.pm
@@ -153,6 +152,7 @@ lib/SDLx/Sprite/Animated.pm
 lib/SDLx/Surface.pm
 lib/SDLx/Surface/TiedMatrix.pm
 lib/SDLx/Surface/TiedMatrixRow.pm
+lib/SDLx/Validate.pm
 MacOSX/Info.plist
 MacOSX/main.c
 MacOSX/Makefile.test
@@ -219,8 +219,14 @@ src/Pango/objects/Context.xs
 src/Pango/Pango.xs
 src/ppport.h
 src/SDL.xs
+src/SDLx/Layer.h
+src/SDLx/Layer.xs
+src/SDLx/LayerManager.h
+src/SDLx/LayerManager.xs
 src/SDLx/SFont.xs
 src/SDLx/Surface.xs
+src/SDLx/Timer.h
+src/SDLx/Timer.xs
 src/SFont.h
 src/SMPEG.xs
 src/support/darwin_support.h
@@ -274,10 +280,13 @@ t/mpegpm.t
 t/pango.t
 t/sdlgamerect.t
 t/sdlx_app.t
+t/sdlx_controller.t
+t/sdlx_layermanager.t
 t/sdlx_sfont.t
 t/sdlx_sprite.t
 t/sdlx_sprite_animated.t
 t/sdlx_surface.t
+t/sdlx_validate.t
 t/smpeg.t
 t/ttf.t
 t/ttf_font.t
@@ -287,6 +296,7 @@ test/data/5x7.fnt
 test/data/aircut3.ttf
 test/data/chest.png
 test/data/electrohar.ttf
+test/data/font.bmp
 test/data/font.png
 test/data/hero.bmp
 test/data/hero.png

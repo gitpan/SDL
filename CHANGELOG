@@ -1,11 +1,24 @@
 Revision history for Perl extension SDL_perl.
 
+* 2.510
+	- Using bmp file if libpng isnt available in t/sdlx_sfont.t [#177] [FROGGS]
+	- Moved SDLx::Controller::Timer to XS [#180]
+	- Added SDLx::Layermanager (wip) [FROGGS]
+	- Added and cleaned up SDLx::Validate [Blaizer, kthakore]
+	- More tests and clean up in SDLx::Sprite::Animated [jtpalmer]
+  - Fixed free errors for SUSE [kthakore]
+  - Moved Surfaces classes to inside-out OOP [ruoso, jtpalmer]
+
 * 2.503
+	- Removed examples/adventure/
+	- Removed dashes from SDLx::App constructor [#176] [Blaizer]
+	- Added tests for SDLx::Controller [Blaizer]
+	- Added removing handlers with coderef in SDLx::Controller [Blaizer]
 	- Finished a working version of SDLx::Sprite::Animated [jtpalmer]
 	- Added draw functions to SDLx::Surface
 	- Cleaned up Sprite inheritance from Surface
 	- Fixed bug in SDL::Event::key_mod, it returned pointer instead of int [FROGGS]
-	- SDLx::App now depends on SDLx::Surface 
+	- SDLx::App now depends on SDLx::Surface
 
 * 2.502
 	- Displaying Alien::SDL's build option for every build step [FROGGS]
@@ -16,7 +29,7 @@ Revision history for Perl extension SDL_perl.
 	- Fixes for exec.h stack dumper during testing
 	- Added version guard for SDLx::GFX [FROGGS]	
 	- Modified SDLx::Sprite to inherit from SDLx::Surface
-
+                
 * 2.501  July 10 2010
 	- Fixes tests for SDLx::TTF and SDL::Surface [FROGGS, kthakore] 
 	- Makes ptr to pixels READONLY for some safety

@@ -25,7 +25,7 @@ name: SDL
 provides:
   SDL:
     file: lib/SDL.pm
-    version: 2.503
+    version: 2.510
   SDL::Audio:
     file: lib/SDL/Audio.pm
   SDL::AudioCVT:
@@ -148,6 +148,10 @@ provides:
     file: lib/SDLx/Controller/Timer.pm
   SDLx::FPS:
     file: lib/SDLx/FPS.pm
+  SDLx::Layer:
+    file: lib/SDLx/Layer.pm
+  SDLx::LayerManager:
+    file: lib/SDLx/LayerManager.pm
   SDLx::Rect:
     file: lib/SDLx/Rect.pm
     version: 0.01
@@ -163,8 +167,10 @@ provides:
     file: lib/SDLx/Surface/TiedMatrix.pm
   SDLx::Surface::TiedMatrixRow:
     file: lib/SDLx/Surface/TiedMatrixRow.pm
+  SDLx::Validate:
+    file: lib/SDLx/Validate.pm
 resources:
   bugtracker: http://sdlperl.ath.cx/projects/SDLPerl
-  license: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt
+  license: http://opensource.org/licenses/lgpl-license.php
   repository: http://github.com/kthakore/SDL_perl
-version: 2.503
+version: 2.510
