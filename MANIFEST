@@ -1,6 +1,7 @@
 Build.PL
 CHANGELOG
 CONTRIBUTORS
+COPYING
 examples/cookbook/1.pl
 examples/cookbook/openglapp.pl
 examples/cookbook/pdl.pl
@@ -183,7 +184,6 @@ src/Core/objects/Surface.xs
 src/Core/objects/typemap
 src/Core/objects/Version.xs
 src/Core/objects/VideoInfo.xs
-src/Core/SDL.xs
 src/Core/Time.xs
 src/Core/Video.xs
 src/defines.h
@@ -206,15 +206,6 @@ src/Mixer/objects/MixChunk.xs
 src/Mixer/objects/MixMusic.xs
 src/Mixer/README
 src/Mixer/Samples.xs
-src/Net/Net.xs
-src/Net/objects/GenericSocket.xs
-src/Net/objects/IPaddress.xs
-src/Net/objects/SocketSet.xs
-src/Net/objects/TCPsocket.xs
-src/Net/objects/UDPpacket.xs
-src/Net/objects/UDPsocket.xs
-src/Net/TCP.xs
-src/Net/UDP.xs
 src/Pango/objects/Context.xs
 src/Pango/Pango.xs
 src/ppport.h

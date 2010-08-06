@@ -6,15 +6,19 @@ require Exporter;
 require DynaLoader;
 use Carp ();
 use SDL;
-use SDL::Video;
 use SDL::Rect;
+use SDL::Video;
+use SDL::Image;
 use SDL::Color;
+use SDL::Config;
 use SDL::Surface;
-use SDLx::Surface;
-use SDLx::Surface::TiedMatrix;
 use SDL::PixelFormat;
-use SDLx::Validate;
+
+use SDL::GFX::Primitives;
+
 use Tie::Simple;
+use SDLx::Validate;
+use SDLx::Surface::TiedMatrix;
 
 use overload (
 	'@{}'    => '_array',
@@ -98,7 +102,6 @@ sub display {
 sub duplicate {
 	my $surface = shift;
 	SDLx::Validate::surface($surface);
-	require SDL::PixelFormat;
 	return SDLx::Surface->new(
 		width  => $surface->w,
 		height => $surface->h,
@@ -152,6 +155,41 @@ sub clip_rect {
 	SDL::Video::set_clip_rect( $_[1] ) if $_[1] && $_[1]->isa('SDL::Rect');
 	SDL::Video::get_clip_rect( $_[0] );
 
+}
+
+sub load {
+    my ($self, $filename, $type) = @_;
+    my $surface;
+
+    # short-circuit if it's a bitmap
+    if ( ($type and lc $type eq 'bmp')
+        or lc substr($filename, -4, 4) eq '.bmp' )
+    {
+        $surface = SDL::Video::load_BMP( $filename )
+            or Carp::croak "error loading image $filename: " . SDL::get_error;
+    }
+    else {
+        # otherwise, make sure we can load first
+	#eval { require SDL::Image; 1 }; This doesn't work. As you can still load SDL::Image but can't call any functions.
+	#
+        Carp::croak 'no SDL_image support found. Can only load bitmaps'
+            unless SDL::Config->has('SDL_image');#this checks if we actually have that library. C Library != SDL::Image
+
+        require SDL::Image;
+
+        if ($type) { #I don't understand what you are doing here
+            require SDL::RWOps;
+            my $file = SDL::RWOps->new_file($filename, "rb")
+                or Carp::croak "error loading file $filename: " . SDL::get_error;
+            $surface = SDL::Image::load_typed_rw($file, 1, $type)
+                or Carp::croak "error loading image $file: " . SDL::get_error;
+        }
+        else {
+            $surface = SDL::Image::load( $filename )
+                or Carp::croak "error loading image $filename: " . SDL::get_error;
+        }
+    }
+    return SDLx::Surface->new( surface => $surface);
 }
 
 #EXTENSTIONS
@@ -237,7 +275,13 @@ sub draw_line {
 		unless ref($start) eq 'ARRAY';
 	Carp::croak "Error end needs an array ref [x,y]"
 		unless ref($end) eq 'ARRAY';
-	return unless eval{ require SDL::GFX::Primitives; 1};
+
+	unless ( SDL::Config->has('SDL_gfx_primitives') ) {
+		Carp::carp("SDL_gfx_primitives support has not been compiled");
+		return;
+	}
+
+	require SDL::GFX::Primitives;
 
 	my $result;
 	if ( Scalar::Util::looks_like_number($color) ) {

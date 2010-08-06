@@ -540,7 +540,7 @@ my $build = $package->new(
 	dist_version_from  => 'lib/SDL.pm',
 	configure_requires => {
 		'ExtUtils::CBuilder' => '0.260301',
-		'Alien::SDL'         => '1.412',
+		'Alien::SDL'         => '1.413',
 		'File::Find'         => '0',
 		'File::ShareDir'     => '0',
 
@@ -549,7 +549,7 @@ my $build = $package->new(
 		'Test::Simple'      => '0.88',
 		'IO::CaptureOutput' => '0',
 		'Test::Most'        => '0.21',
-		'Alien::SDL'        => '1.412',
+		'Alien::SDL'        => '1.413',
 		'File::ShareDir'    => '0',
 		'Tie::Simple'       => '0'
 	},
@@ -601,5 +601,22 @@ $build->notes( 'sdl_cflags',    Alien::SDL->config('cflags') );
 $build->notes( 'sdl_libs',      Alien::SDL->config('libs') );
 $build->set_file_flags(); # creates notes('file_flags')
 
-# now we're ready to go!
+=pod
+
+##TODO: MacOSx Arch Fix.
+# Move this to appropriate place
+my $sdl_lib_name = 'libSDL.dylib'; #get the right extentions dynamically
+my $sdl_lib = Alien::SDL->config('prefix')."/lib/$sdl_lib_name"; 
+#Note 'prefix' is not set when Alien::SDL is built with preinstall SDL
+
+my $lipo_out = 'lipo -info '.$sdl_lib;
+my $arch = $1 if $lipo_out = m/architecture:\s*(\w+)\b/;
+
+my $lddflags = $build->config( 'lddflags' );
+my $ccflags = $build->config( 'cflags' );
+my $ldflags = $build->config( 'ldflags' );
+
+## foreach of above strip -arch foo and add -arch $arch
+=cut 
+
 $build->create_build_script();
