@@ -305,6 +305,102 @@ is( $clip->y,               48, 'clip->y after seventh next' );
 is( $sprite->current_frame, 2,  'sprite->current_frame after seventh next' );
 is( $sprite->current_loop,  2,  'sprite->current_loop after seventh next' );
 
+$sprite = SDLx::Sprite::Animated->new(
+	image => 'test/data/hero.bmp',
+	rect  => SDL::Rect->new( 40, 50, 48, 48 ),
+);
+$sprite->set_sequences( up => [ [ 0, 0 ], [ 0, 1 ], ], );
+$sprite->sequence('up');
+$clip = $sprite->clip;
+is( $clip->y, 0, 'clip->y after new' );
+
+$sprite->previous;
+is( $clip->y, 48, 'clip->y after first previous' );
+
+$sprite->previous;
+is( $clip->y, 0, 'clip->y after second previous' );
+
+$sprite->previous;
+is( $clip->y, 48, 'clip->y after third previous' );
+
+$sprite = SDLx::Sprite::Animated->new(
+	image => 'test/data/hero.bmp',
+	rect  => SDL::Rect->new( 40, 50, 48, 48 ),
+	type  => 'reverse'
+);
+$sprite->set_sequences( up => [ [ 0, 0 ], [ 0, 1 ], [ 0, 2 ], ], );
+$sprite->sequence('up');
+$clip = $sprite->clip;
+is( $clip->y, 0, 'clip->y after new with type = reverse' );
+
+$sprite->previous;
+is( $clip->y,               96, 'clip->y after first previous' );
+is( $sprite->current_frame, 3,  'sprite->current_frame after first previous' );
+
+$sprite->previous;
+is( $clip->y,               48, 'clip->y after second previous' );
+is( $sprite->current_frame, 2,  'sprite->current_frame after second previous' );
+
+$sprite->previous;
+is( $clip->y,               0, 'clip->y after third previous' );
+is( $sprite->current_frame, 1, 'sprite->current_frame after third previous' );
+
+$sprite->previous;
+is( $clip->y,               48, 'clip->y after fourth previous' );
+is( $sprite->current_frame, 2,  'sprite->current_frame after fourth previous' );
+
+$sprite->previous;
+is( $clip->y,               96, 'clip->y after fifth previous' );
+is( $sprite->current_frame, 3,  'sprite->current_frame after fifth previous' );
+
+$sprite->previous;
+is( $clip->y,               48, 'clip->y after sixth previous' );
+is( $sprite->current_frame, 2,  'sprite->current_frame after sixth previous' );
+
+$sprite->previous;
+is( $clip->y,               0, 'clip->y after seventh previous' );
+is( $sprite->current_frame, 1, 'sprite->current_frame after seventh previous' );
+
+$sprite = SDLx::Sprite::Animated->new(
+	image     => 'test/data/hero.png',
+	rect      => SDL::Rect->new( 40, 50, 48, 48 ),
+	clip      => SDL::Rect->new( 48, 48, 48, 48 ),
+	sequences => { up => [ [ 0, 0 ], [ 0, 1 ] ] },
+	sequence  => 'up',
+);
+$clip = $sprite->clip;
+is( $clip->x, 48, 'clip->x after new with clip' );
+is( $clip->y, 48, 'clip->y after new with clip' );
+
+$sprite->next();
+is( $clip->x, 48, 'clip->x after first next' );
+is( $clip->y, 96, 'clip->y after first next' );
+
+$sprite->next();
+is( $clip->x, 48, 'clip->x after second next' );
+is( $clip->y, 48, 'clip->y after second next' );
+
+$sprite = SDLx::Sprite::Animated->new(
+	image => 'test/data/hero.png',
+	rect  => SDL::Rect->new( 40, 50, 48, 48 ),
+);
+$clip = $sprite->clip;
+is( $clip->x, 0, 'clip->x after new with no sequences' );
+is( $clip->y, 0, 'clip->y after new with no sequences' );
+
+my $sequences = [
+	[ 0, 0 ],  [ 48, 0 ],  [ 96, 0 ],  [ 144, 0 ],  [ 192, 0 ],
+	[ 0, 48 ], [ 48, 48 ], [ 96, 48 ], [ 144, 48 ], [ 192, 48 ],
+	[ 0, 96 ], [ 48, 96 ], [ 96, 96 ], [ 144, 96 ], [ 192, 96 ],
+];
+
+foreach my $count ( 1 .. 20 ) {
+	$sprite->next;
+	my $s = $sequences->[ $count % @$sequences ];
+	is( $clip->x, $s->[0], 'clip->x after ' . $count . '-th next' );
+	is( $clip->y, $s->[1], 'clip->y after ' . $count . '-th next' );
+}
+
 done_testing;
 
 #reset the old video driver

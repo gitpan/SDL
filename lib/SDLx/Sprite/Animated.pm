@@ -7,10 +7,9 @@ use SDL;
 use SDL::Video;
 use SDL::Rect;
 use SDLx::Sprite;
+use SDLx::Validate;
 
 use base 'SDLx::Sprite';
-
-use Carp ();
 
 # inside out
 my %_ticks;
@@ -18,6 +17,8 @@ my %_width;
 my %_height;
 my %_step_x;
 my %_step_y;
+my %_offset_x;
+my %_offset_y;
 my %_type;
 my %_max_loops;
 my %_ticks_per_frame;
@@ -39,16 +40,23 @@ sub new {
 
 	my $self = $class->SUPER::new(%options);
 
-	$_sequences{ refaddr $self} = $options{sequences};
-	$_sequence{ refaddr $self}  = $options{sequence};
-
 	$self->_store_geometry( $w, $h );
 
-	$self->step_x( exists $options{step_x}                   ? $options{step_x}          : $self->clip->w );
-	$self->step_y( exists $options{step_y}                   ? $options{step_y}          : $self->clip->h );
+	$self->step_x( exists $options{step_x} ? $options{step_x} : $self->clip->w );
+	$self->step_y( exists $options{step_y} ? $options{step_y} : $self->clip->h );
+	$_offset_x{ refaddr $self} = exists $options{clip} ? $options{clip}->x : 0;
+	$_offset_y{ refaddr $self} = exists $options{clip} ? $options{clip}->y : 0;
+
 	$self->max_loops( exists $options{max_loops}             ? $options{max_loops}       : 0 );
 	$self->ticks_per_frame( exists $options{ticks_per_frame} ? $options{ticks_per_frame} : 1 );
 	$self->type( exists $options{type}                       ? $options{type}            : 'circular' );
+
+	if ( exists $options{sequences} ) {
+		$_sequences{ refaddr $self} = $options{sequences};
+	} else {
+		$self->_init_default_sequence();
+	}
+	$self->sequence( $options{sequence} ) if exists $options{sequence};
 
 	$_ticks{ refaddr $self}     = 0;
 	$_direction{ refaddr $self} = 1;
@@ -63,6 +71,8 @@ sub DESTROY {
 	delete $_height{ refaddr $self};
 	delete $_step_x{ refaddr $self};
 	delete $_step_y{ refaddr $self};
+	delete $_offset_x{ refaddr $self};
+	delete $_offset_y{ refaddr $self};
 	delete $_type{ refaddr $self};
 	delete $_max_loops{ refaddr $self};
 	delete $_ticks_per_frame{ refaddr $self};
@@ -79,7 +89,24 @@ sub load {
 	my $image = shift;
 	$self->SUPER::load($image);
 	$self->_restore_geometry;
+	$self->_init_default_sequence;
 	return $self;
+}
+
+sub _init_default_sequence {
+	my $self = shift;
+
+	my $max_x = int( ( $self->surface->w - $_offset_x{ refaddr $self} ) / $self->step_x );
+	my $max_y = int( ( $self->surface->h - $_offset_y{ refaddr $self} ) / $self->step_y );
+
+	my @sequence;
+	foreach my $y ( 0 .. $max_y - 1 ) {
+		foreach my $x ( 0 .. $max_x - 1 ) {
+			push @sequence, [ $x, $y ];
+		}
+	}
+	$_sequences{ refaddr $self} = { 'default' => \@sequence };
+	$self->sequence('default');
 }
 
 sub _store_geometry {
@@ -131,10 +158,10 @@ sub type {
 }
 
 sub max_loops {
-	my ( $self, $max ) = @_;
+	my $self = shift;
 
-	if ( @_ > 1 ) {
-		$_max_loops{ refaddr $self} = $max;
+	if (@_) {
+		$_max_loops{ refaddr $self} = shift;
 	}
 
 	return $_max_loops{ refaddr $self};
@@ -152,13 +179,6 @@ sub ticks_per_frame {
 
 sub current_frame {
 	my ( $self, $frame ) = @_;
-
-	if ($frame) {
-
-		# TODO: Validate frame.
-		$_current_frame{ refaddr $self} = $frame;
-	}
-
 	return $_current_frame{ refaddr $self};
 }
 
@@ -181,7 +201,10 @@ sub sequence {
 
 	if ($sequence) {
 
-		#TODO: Validate sequence.
+		if ( !defined( $_sequences{ refaddr $self}{$sequence} ) ) {
+			warn 'Unknown sequence: ', $sequence;
+			return;
+		}
 		$_sequence{ refaddr $self}      = $sequence;
 		$_current_frame{ refaddr $self} = 1;
 		$_current_loop{ refaddr $self}  = 1;
@@ -204,8 +227,6 @@ sub _frame {
 
 sub next {
 	my $self = shift;
-
-	#$_{ refaddr $self}
 
 	return if @{ $self->_sequence } == 1;
 
@@ -234,9 +255,28 @@ sub next {
 	return $self;
 }
 
-# TODO
 sub previous {
 	my $self = shift;
+
+	return if $_max_loops{ refaddr $self} && $_current_loop{ refaddr $self } > $_max_loops{ refaddr $self};
+
+	$_ticks{ refaddr $self} = 0;
+
+	return if @{ $self->_sequence } == 1;
+
+	my $previous_frame = ( $_current_frame{ refaddr $self} - 1 - $_direction{ refaddr $self} ) % @{ $self->_sequence };
+
+	if ( $previous_frame == 0 ) {
+		if ( $_type{ refaddr $self} eq 'reverse' ) {
+
+			if ( $_direction{ refaddr $self} == -1 ) {
+				$previous_frame = 1;
+			}
+
+			$_direction{ refaddr $self} *= -1;
+		}
+	}
+	$_current_frame{ refaddr $self} = $previous_frame + 1;
 
 	$self->_update_clip;
 
@@ -274,8 +314,8 @@ sub _update_clip {
 	my $clip  = $self->clip;
 	my $frame = $self->_frame;
 
-	$clip->x( $frame->[0] * $_step_x{ refaddr $self} );
-	$clip->y( $frame->[1] * $_step_y{ refaddr $self} );
+	$clip->x( $_offset_x{ refaddr $self} + $frame->[0] * $_step_x{ refaddr $self} );
+	$clip->y( $_offset_y{ refaddr $self} + $frame->[1] * $_step_y{ refaddr $self} );
 }
 
 sub alpha_key {
@@ -288,17 +328,12 @@ sub alpha_key {
 sub draw {
 	my ( $self, $surface ) = @_;
 
+	$surface = SDLx::Validate::surface($surface);
+
 	$_ticks{ refaddr $self}++;
-	$self->next
-		if $_started{ refaddr $self} && $_ticks{ refaddr $self} % $_ticks_per_frame{ refaddr $self} == 0;
+	$self->next if $_started{ refaddr $self} && $_ticks{ refaddr $self} % $_ticks_per_frame{ refaddr $self} == 0;
 
-	Carp::croak 'destination must be a SDL::Surface'
-		unless ref $surface and $surface->isa('SDL::Surface');
-
-	SDL::Video::blit_surface(
-		$self->surface, $self->clip, $surface,
-		$self->rect
-	);
+	SDL::Video::blit_surface( $self->surface, $self->clip, $surface, $self->rect );
 
 	return $self;
 }

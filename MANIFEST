@@ -1,6 +1,5 @@
 Build.PL
 CHANGELOG
-CONTRIBUTORS
 COPYING
 examples/cookbook/1.pl
 examples/cookbook/openglapp.pl
@@ -13,7 +12,9 @@ examples/pixel_operations/starry.pl
 examples/pixel_operations/tie_matrix.pl
 examples/SDLx/app.pl
 examples/SDLx/pong.pl
+examples/SDLx/SDLx_C_Object.pl
 examples/SDLx/SDLx_controller_two_squares.pl
+examples/SDLx/SDLx_LayerManager_Chess.pl
 examples/SDLx/SDLx_sprite.pl
 examples/SDLx/SDLx_sprite_animated.pl
 inc/My/Builder.pm
@@ -76,6 +77,8 @@ lib/pods/SDL/Video.pod
 lib/pods/SDL/VideoInfo.pod
 lib/pods/SDLx/App.pod
 lib/pods/SDLx/Controller.pod
+lib/pods/SDLx/Layer.pod
+lib/pods/SDLx/LayerManager.pod
 lib/pods/SDLx/Rect.pod
 lib/pods/SDLx/SFont.pod
 lib/pods/SDLx/Sprite.pod
@@ -130,7 +133,6 @@ lib/SDL/SMPEG.pm
 lib/SDL/Surface.pm
 lib/SDL/Time.pm
 lib/SDL/TTF.pm
-lib/SDL/TTF.pod
 lib/SDL/TTF/Font.pm
 lib/SDL/TTFont.pm
 lib/SDL/Tutorial.pm
@@ -142,6 +144,8 @@ lib/SDL/VideoInfo.pm
 lib/SDL_perl.pm
 lib/SDLx/App.pm
 lib/SDLx/Controller.pm
+lib/SDLx/Controller/Object.pm
+lib/SDLx/Controller/State.pm
 lib/SDLx/Controller/Timer.pm
 lib/SDLx/FPS.pm
 lib/SDLx/Layer.pm
@@ -210,15 +214,18 @@ src/Pango/objects/Context.xs
 src/Pango/Pango.xs
 src/ppport.h
 src/SDL.xs
+src/SDLx/Controller/Object.h
+src/SDLx/Controller/Object.xs
+src/SDLx/Controller/State.xs
 src/SDLx/Layer.h
 src/SDLx/Layer.xs
 src/SDLx/LayerManager.h
 src/SDLx/LayerManager.xs
+src/SDLx/SFont.h
 src/SDLx/SFont.xs
 src/SDLx/Surface.xs
 src/SDLx/Timer.h
 src/SDLx/Timer.xs
-src/SFont.h
 src/SMPEG.xs
 src/support/darwin_support.h
 src/support/darwin_support.m
@@ -247,6 +254,7 @@ t/core_timer.t
 t/core_version.t
 t/core_video.t
 t/core_video_convert_surface.t
+t/core_video_gamma.t
 t/extendingrect.t
 t/gfx.t
 t/gfx_fpsmanager.t
@@ -272,6 +280,7 @@ t/pango.t
 t/sdlgamerect.t
 t/sdlx_app.t
 t/sdlx_controller.t
+t/sdlx_controller_object.t
 t/sdlx_layermanager.t
 t/sdlx_sfont.t
 t/sdlx_sprite.t
@@ -285,6 +294,8 @@ test/data/24P_Arial_NeonYellow.png
 test/data/24P_Copperplate_Blue.png
 test/data/5x7.fnt
 test/data/aircut3.ttf
+test/data/button_dark.png
+test/data/button_light.png
 test/data/chest.png
 test/data/electrohar.ttf
 test/data/font.bmp
@@ -304,5 +315,7 @@ test/data/README
 test/data/sample.wav
 test/data/silence.wav
 test/data/tribe_i.wav
+test/data/wood_dark.png
+test/data/wood_light.png
 TODO
 typemap

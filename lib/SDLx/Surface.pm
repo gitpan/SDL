@@ -281,8 +281,6 @@ sub draw_line {
 		return;
 	}
 
-	require SDL::GFX::Primitives;
-
 	my $result;
 	if ( Scalar::Util::looks_like_number($color) ) {
 		if ($antialias) {
@@ -325,7 +323,106 @@ sub draw_line {
 sub draw_circle {
 	my ( $self, $center, $radius, $color, $antialias ) = @_;
 
+        unless ( SDL::Config->has('SDL_gfx_primitives') ) {
+		Carp::carp("SDL_gfx_primitives support has not been compiled");
+		return;
+	}
+
+        Carp::carp "Center needs to be an array of format [x,y]" unless (ref $center eq 'ARRAY' && scalar @$center == 2);
+         SDLx::Validate::list_rgba($color);
+
+	SDL::GFX::Primitives::circle_RGBA($self->surface, @{$center}, $radius, @{$color});
 	return $self;
 }
+
+sub draw_circle_filled {
+	my ( $self, $center, $radius, $color, $antialias ) = @_;
+
+        unless ( SDL::Config->has('SDL_gfx_primitives') ) {
+		Carp::carp("SDL_gfx_primitives support has not been compiled");
+		return;
+	}
+
+        Carp::carp "Center needs to be an array of format [x,y]" unless (ref $center eq 'ARRAY' && scalar @$center == 2);
+         SDLx::Validate::list_rgba($color);
+
+	SDL::GFX::Primitives::filled_circle_RGBA($self->surface, @{$center}, $radius, @{$color});
+	return $self;
+}
+
+
+sub draw_trigon {
+	my ( $self, $center, $vextexes, $color) = @_;
+
+	return $self;
+}
+
+sub draw_arc {
+	my ( $self, $vector, $radius, $start, $end, $color ) = @_;
+
+	return $self;
+}
+
+sub draw_ellipse {
+	my ( $self, $center, $radius, $color, $antialias ) = @_;
+
+	return $self;
+}
+
+sub draw_polygon {
+	my ( $self, $vector, $color ) = @_;
+
+	return $self;
+
+}
+
+sub draw_bezier {
+	my ($self, $vector, $smooth, $color) = @_;
+
+}
+
+
+sub draw_gfx_text {
+	my ($self, $vector, $color, $text, $font ) = @_;
+
+  unless ( SDL::Config->has('SDL_gfx_primitives') ) {
+		Carp::carp("SDL_gfx_primitives support has not been compiled");
+		return;
+	}
+
+  if( $font )
+  {
+  if( ref($font) eq 'HASH' && exists $font->{data} && exists $font->{cw} && exists $font->{ch} )
+  {
+      SDL::GFX::Primitives::set_font( $font->{data}, $font->{cw}, $font->{ch} );
+  }
+  else
+  {
+     Carp::carp "Set font data as a hash of type \n \$font = {data => \$data, cw => \$cw,  ch => \$ch}. \n Refer to perldoc SDL::GFX::Primitives set_font for initializing this variables.";
+  }
+  }
+  Carp::croak "vector needs to be an array ref of size 2. [x,y] " unless(  ref($vector) eq 'ARRAY' && scalar(@$vector) == 2 );
+
+ 
+  my $result;
+  if ( Scalar::Util::looks_like_number($color) ) {
+			$result = SDL::GFX::Primitives::string_color(
+				$self->surface, $vector->[0], $vector->[1], $text,
+				$color
+			);
+	} elsif ( ref($color) eq 'ARRAY' && scalar(@$color) >= 4 ) {
+
+			$result = SDL::GFX::Primitives::string_RGBA(
+				$self->surface, $vector->[0], $vector->[1], $text, 
+				@$color
+			);
+	}
+
+
+  	Carp::croak "Error drawing text: " . SDL::get_error() if ( $result == -1 );
+
+	  return $self;
+}
+
 
 1;

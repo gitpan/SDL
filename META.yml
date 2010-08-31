@@ -15,7 +15,9 @@ configure_requires:
   ExtUtils::CBuilder: 0.260301
   File::Find: 0
   File::ShareDir: 0
+  IO::CaptureOutput: 0
   Module::Build: 0.36
+  Tie::Simple: 0
 generated_by: 'Module::Build version 0.3603'
 license: lgpl
 meta-spec:
@@ -25,7 +27,7 @@ name: SDL
 provides:
   SDL:
     file: lib/SDL.pm
-    version: 2.511
+    version: 2.512
   SDL::Audio:
     file: lib/SDL/Audio.pm
   SDL::AudioCVT:
@@ -144,6 +146,10 @@ provides:
     file: lib/SDLx/App.pm
   SDLx::Controller:
     file: lib/SDLx/Controller.pm
+  SDLx::Controller::Object:
+    file: lib/SDLx/Controller/Object.pm
+  SDLx::Controller::State:
+    file: lib/SDLx/Controller/State.pm
   SDLx::Controller::Timer:
     file: lib/SDLx/Controller/Timer.pm
   SDLx::FPS:
@@ -169,8 +175,10 @@ provides:
     file: lib/SDLx/Surface/TiedMatrixRow.pm
   SDLx::Validate:
     file: lib/SDLx/Validate.pm
+requires:
+  Tie::Simple: 0
 resources:
   bugtracker: http://sdlperl.ath.cx/projects/SDLPerl
   license: http://opensource.org/licenses/lgpl-license.php
   repository: http://github.com/kthakore/SDL_perl
-version: 2.511
+version: 2.512
