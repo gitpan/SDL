@@ -65,7 +65,7 @@ sub find_subsystems {
 		my $param;
 		for my $library ( @{ $subsystem->{libraries} } ) {
 			my $lib = $libraries->{$library}
-				or croak "Unknown library '$library' for '$name'\n";
+				or Carp::confess "Unknown library '$library' for '$name'\n";
 			my $h =
 				ref( $lib->{header} ) eq 'ARRAY'
 				? $lib->{header}
@@ -161,7 +161,7 @@ sub ACTION_build {
 		${ Alien::SDL::ConfigData->config('build_params') }{'title'} || 'n.a.'
 	);
 	$self->SUPER::ACTION_build;
-  $self->ACTION_bundle;
+	$self->ACTION_bundle;
 }
 
 # both special to MacOS/Darwin, somebody should review whether it is still necessary

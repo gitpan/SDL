@@ -12,7 +12,7 @@ examples/pixel_operations/starry.pl
 examples/pixel_operations/tie_matrix.pl
 examples/SDLx/app.pl
 examples/SDLx/pong.pl
-examples/SDLx/SDLx_C_Object.pl
+examples/SDLx/SDLx_C_Interface.pl
 examples/SDLx/SDLx_controller_two_squares.pl
 examples/SDLx/SDLx_LayerManager_Chess.pl
 examples/SDLx/SDLx_sprite.pl
@@ -77,6 +77,7 @@ lib/pods/SDL/Video.pod
 lib/pods/SDL/VideoInfo.pod
 lib/pods/SDLx/App.pod
 lib/pods/SDLx/Controller.pod
+lib/pods/SDLx/Controller/Interface.pod
 lib/pods/SDLx/Layer.pod
 lib/pods/SDLx/LayerManager.pod
 lib/pods/SDLx/Rect.pod
@@ -144,7 +145,7 @@ lib/SDL/VideoInfo.pm
 lib/SDL_perl.pm
 lib/SDLx/App.pm
 lib/SDLx/Controller.pm
-lib/SDLx/Controller/Object.pm
+lib/SDLx/Controller/Interface.pm
 lib/SDLx/Controller/State.pm
 lib/SDLx/Controller/Timer.pm
 lib/SDLx/FPS.pm
@@ -214,8 +215,8 @@ src/Pango/objects/Context.xs
 src/Pango/Pango.xs
 src/ppport.h
 src/SDL.xs
-src/SDLx/Controller/Object.h
-src/SDLx/Controller/Object.xs
+src/SDLx/Controller/Interface.h
+src/SDLx/Controller/Interface.xs
 src/SDLx/Controller/State.xs
 src/SDLx/Layer.h
 src/SDLx/Layer.xs
@@ -265,7 +266,6 @@ t/gfx_primitives2.t
 t/gfx_rotozoom.t
 t/image.t
 t/image_xpm_array.t
-t/intergation1.t
 t/lib/SDL/TestTool.pm
 t/mixer.t
 t/mixer_channels.t
@@ -280,7 +280,7 @@ t/pango.t
 t/sdlgamerect.t
 t/sdlx_app.t
 t/sdlx_controller.t
-t/sdlx_controller_object.t
+t/sdlx_controller_interface.t
 t/sdlx_layermanager.t
 t/sdlx_sfont.t
 t/sdlx_sprite.t

@@ -6,10 +6,12 @@ use Time::HiRes qw( time sleep );
 use SDL;
 use SDL::Event;
 use SDL::Events;
+use SDL::Video;
 use SDLx::Controller::Timer;
 use Scalar::Util 'refaddr';
-use SDLx::Controller::Object;
+use SDLx::Controller::Interface;
 use SDLx::Controller::State;
+
 # inside out, so this can work as the superclass of another
 # SDL::Surface subclass
 my %_delta;
@@ -53,53 +55,32 @@ sub DESTROY {
 }
 
 sub run {
-	my $self = shift;
-	$_quit{ refaddr $self} = 0;
-	my $accumulator = 0;
-	while ( !$_quit{ refaddr $self} ) {
-		$self->_event;
-		my $delta_time = $_delta{ refaddr $self}->get_ticks();
-		$accumulator += $delta_time;
-
-		while ( $accumulator >= $_dt{ refaddr $self} && !$_quit{ refaddr $self} ) {
-			$self->_move( $_dt{ refaddr $self} );
-			$accumulator -= $_dt{ refaddr $self};
-
-			#update how much real time we have animated
-		}
-		$_delta{ refaddr $self}->start();
-		$self->_show($delta_time);
-	}
-}
-
-sub run_test {
-	my $self = shift;
-	my $quit = 0; 
+	my $self         = shift;
+	my $quit         = 0;
 	my $t            = 0.0;
 	my $dt           = $_dt{ refaddr $self};
 	my $current_time = 0.0;
 	my $accumulator  = 0.0;
-    while ( !$_quit{ refaddr $self} ) {
+	while ( !$_quit{ refaddr $self} ) {
 		$self->_event;
 
-    my $new_time   = time;
-    my $delta_time = $new_time - $current_time;
-    $current_time = $new_time;
-    $delta_time = 0.25 if ( $delta_time > 0.25 );
-    $accumulator += $delta_time;
-    while ( $accumulator >= $dt ) {
-        $accumulator -= $dt;
-        $self->_move( $dt, $t );
-        $t += $dt;
-    }
-    $self->_show( $accumulator / $dt );
-   }
+		my $new_time   = time;
+		my $delta_time = $new_time - $current_time;
+		$current_time = $new_time;
+		$delta_time = 0.25 if ( $delta_time > 0.25 );
+		$accumulator += $delta_time;
+		while ( $accumulator >= $dt ) {
+			$accumulator -= $dt;
+			$self->_move( $dt, $t );
+			$t += $dt;
+		}
+		$self->_show( $accumulator / $dt );
+	}
 
 }
 
 sub _event {
 	my $self = shift;
-
 	$_event{ refaddr $self} = SDL::Event->new() unless $_event{ refaddr $self};
 	while ( SDL::Events::poll_event( $_event{ refaddr $self} ) ) {
 		SDL::Events::pump_events();
@@ -112,9 +93,9 @@ sub _event {
 sub _move {
 	my $self        = shift;
 	my $delta_ticks = shift;
-	my $t 		= shift;
+	my $t           = shift;
 	foreach my $move_handler ( @{ $_move_handlers{ refaddr $self} } ) {
-		$move_handler->($delta_ticks, $t);
+		$move_handler->( $delta_ticks, $t );
 	}
 }
 
@@ -128,26 +109,7 @@ sub _show {
 
 sub quit { $_quit{ refaddr $_[0] } = 1 }
 
-sub add_object {
-	my ($self, $obj, $render, @params ) = @_;
 
-	croak "Object is needed" unless $obj && $obj->isa('SDLx::Controller::Object');
-	my $move = sub { $obj->update( $_[1], $_[0] ) } ;
-	$self->add_move_handler( $move  );
-	
-	if( $render )
-	{
-	my $show = sub { my $state = $obj->interpolate( $_[0] );  $render->($state, @params);  };
-	$self->add_show_handler( $show 	);
-	}
-	else
-	{
-		carp "Render callback not provide" ;
-	
-	}
-
-
-}
 
 sub _add_handler {
 	my ( $arr_ref, $handler ) = @_;
@@ -161,6 +123,8 @@ sub add_move_handler {
 }
 
 sub add_event_handler {
+	Carp::confess 'SDLx::App or a Display (SDL::Video::get_video_mode) must be made'
+		unless SDL::Video::get_video_surface();
 	$_[0]->remove_all_event_handlers if !$_event_handlers{ refaddr $_[0] };
 	return _add_handler( $_event_handlers{ refaddr $_[0] }, $_[1] );
 }
@@ -179,7 +143,7 @@ sub _remove_handler {
 				} 0 .. $#{$handlers_ref}
 		)[0];                               #only the first coderef
 		if ( !defined $id ) {
-			Carp::carp("$id is not currently a handler of this type");
+			Carp::cluck("$id is not currently a handler of this type");
 			return;
 		}
 	}

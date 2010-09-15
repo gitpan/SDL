@@ -32,11 +32,14 @@ my %_direction;
 sub new {
 	my ( $class, %options ) = @_;
 
-	if ( exists $options{rect} ) {
-		$options{width}  = $options{rect}->w;
-		$options{height} = $options{rect}->h;
+	my ( $w, $h );
+	if ( exists $options{clip} ) {
+		( $w, $h ) = ( $options{clip}->w, $options{clip}->h );
+	} elsif ( exists $options{rect} ) {
+		( $w, $h ) = ( $options{rect}->w, $options{rect}->h );
+	} elsif ( exists $options{width} && $options{height} ) {
+		( $w, $h ) = ( $options{width}, $options{height} );
 	}
-	my ( $w, $h ) = ( $options{width}, $options{height} );
 
 	my $self = $class->SUPER::new(%options);
 
@@ -198,21 +201,22 @@ sub set_sequences {
 
 sub sequence {
 	my ( $self, $sequence ) = @_;
+	my $me = refaddr $self;
 
 	if ($sequence) {
 
-		if ( !defined( $_sequences{ refaddr $self}{$sequence} ) ) {
+		if ( !defined( $_sequences{ $me }{$sequence} ) ) {
 			warn 'Unknown sequence: ', $sequence;
 			return;
 		}
-		$_sequence{ refaddr $self}      = $sequence;
-		$_current_frame{ refaddr $self} = 1;
-		$_current_loop{ refaddr $self}  = 1;
-		$_direction{ refaddr $self}     = 1;
+		$_sequence{ $me }      = $sequence;
+		$_current_frame{ $me } = 1;
+		$_current_loop{ $me }  = 1;
+		$_direction{ $me }     = 1;
 		$self->_update_clip;
 	}
 
-	return $_sequence{ refaddr $self};
+	return $_sequence{ $me };
 }
 
 sub _sequence {
@@ -227,28 +231,29 @@ sub _frame {
 
 sub next {
 	my $self = shift;
+	my $me = refaddr $self;
 
 	return if @{ $self->_sequence } == 1;
 
-	return if $_max_loops{ refaddr $self} && $_current_loop{ refaddr $self } > $_max_loops{ refaddr $self};
+	return if $_max_loops{ $me } && $_current_loop{ $me } > $_max_loops{ $me };
 
-	my $next_frame = ( $_current_frame{ refaddr $self} - 1 + $_direction{ refaddr $self} ) % @{ $self->_sequence };
+	my $next_frame = ( $_current_frame{ $me } - 1 + $_direction{ $me } ) % @{ $self->_sequence };
 
 	if ( $next_frame == 0 ) {
-		$_current_loop{ refaddr $self}++ if $_type{ refaddr $self} eq 'circular';
+		$_current_loop{ $me }++ if $_type{ $me } eq 'circular';
 
-		if ( $_type{ refaddr $self} eq 'reverse' ) {
+		if ( $_type{ $me } eq 'reverse' ) {
 
-			if ( $_direction{ refaddr $self} == 1 ) {
+			if ( $_direction{ $me } == 1 ) {
 				$next_frame = @{ $self->_sequence } - 2;
 			} else {
-				$_current_loop{ refaddr $self}++;
+				$_current_loop{ $me }++;
 			}
 
-			$_direction{ refaddr $self} *= -1;
+			$_direction{ $me } *= -1;
 		}
 	}
-	$_current_frame{ refaddr $self} = $next_frame + 1;
+	$_current_frame{ $me } = $next_frame + 1;
 
 	$self->_update_clip;
 
@@ -288,6 +293,7 @@ sub reset {
 
 	$self->stop;
 	$_current_frame{ refaddr $self} = 1;
+	$self->_update_clip;
 
 	return $self;
 }

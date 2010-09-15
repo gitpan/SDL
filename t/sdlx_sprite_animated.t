@@ -158,9 +158,30 @@ is( $rect->y, 0,  'rect->y after third next' );
 is( $rect->w, 48, 'rect->w after third next' );
 is( $rect->h, 48, 'rect->h after third next' );
 
-is( $sprite->next,     $sprite, 'next() returns the object' );
+is( $sprite->next, $sprite, 'next() returns the object' );
+
+is( $sprite->current_frame, 2, 'sprite->current_frame after next' );
+
 is( $sprite->previous, $sprite, 'previous() returns the object' );
-is( $sprite->reset,    $sprite, 'reset() returns the object' );
+
+is( $sprite->current_frame, 1, 'sprite->current_frame after previous' );
+
+$sprite->next;
+is( $sprite->current_frame, 2, 'sprite->current_frame before reset' );
+
+is( $clip->x, 48, 'clip->x before reset' );
+is( $clip->y, 48, 'clip->y before reset' );
+is( $clip->w, 48, 'clip->w before reset' );
+is( $clip->h, 48, 'clip->h before reset' );
+
+is( $sprite->reset, $sprite, 'reset() returns the object' );
+
+is( $sprite->current_frame, 1, 'sprite->current_frame after reset' );
+
+is( $clip->x, 48, 'clip->x after reset' );
+is( $clip->y, 0,  'clip->y after reset' );
+is( $clip->w, 48, 'clip->w after reset' );
+is( $clip->h, 48, 'clip->h after reset' );
 
 $sprite = SDLx::Sprite::Animated->new(
 	image => 'test/data/hero.bmp',
@@ -168,16 +189,33 @@ $sprite = SDLx::Sprite::Animated->new(
 );
 
 $clip = $sprite->clip;
-is( $clip->x, 0,  'clip->x after new with image' );
-is( $clip->y, 0,  'clip->y after new with image' );
-is( $clip->w, 48, 'clip->w after new with image' );
-is( $clip->h, 48, 'clip->h after new with image' );
+is( $clip->x, 0,  'clip->x after new with image and rect' );
+is( $clip->y, 0,  'clip->y after new with image and rect' );
+is( $clip->w, 48, 'clip->w after new with image and rect' );
+is( $clip->h, 48, 'clip->h after new with image and rect' );
 
 $rect = $sprite->rect;
-is( $rect->x, 40, 'rect->x after new with image' );
-is( $rect->y, 50, 'rect->y after new with image' );
-is( $rect->w, 48, 'rect->w after new with image' );
-is( $rect->h, 48, 'rect->h after new with image' );
+is( $rect->x, 40, 'rect->x after new with image and rect' );
+is( $rect->y, 50, 'rect->y after new with image and rect' );
+is( $rect->w, 48, 'rect->w after new with image and rect' );
+is( $rect->h, 48, 'rect->h after new with image and rect' );
+
+$sprite = SDLx::Sprite::Animated->new(
+	image => 'test/data/hero.bmp',
+	clip  => SDL::Rect->new( 0, 0, 48, 48 ),
+);
+
+$clip = $sprite->clip;
+is( $clip->x, 0,  'clip->x after new with image and clip' );
+is( $clip->y, 0,  'clip->y after new with image and clip' );
+is( $clip->w, 48, 'clip->w after new with image and clip' );
+is( $clip->h, 48, 'clip->h after new with image and clip' );
+
+$rect = $sprite->rect;
+is( $rect->x, 0,  'rect->x after new with image and clip' );
+is( $rect->y, 0,  'rect->y after new with image and clip' );
+is( $rect->w, 48, 'rect->w after new with image and clip' );
+is( $rect->h, 48, 'rect->h after new with image and clip' );
 
 $sprite = SDLx::Sprite::Animated->new(
 	image  => 'test/data/hero.bmp',
@@ -362,7 +400,7 @@ is( $clip->y,               0, 'clip->y after seventh previous' );
 is( $sprite->current_frame, 1, 'sprite->current_frame after seventh previous' );
 
 $sprite = SDLx::Sprite::Animated->new(
-	image     => 'test/data/hero.png',
+	image     => 'test/data/hero.bmp',
 	rect      => SDL::Rect->new( 40, 50, 48, 48 ),
 	clip      => SDL::Rect->new( 48, 48, 48, 48 ),
 	sequences => { up => [ [ 0, 0 ], [ 0, 1 ] ] },
@@ -381,7 +419,7 @@ is( $clip->x, 48, 'clip->x after second next' );
 is( $clip->y, 48, 'clip->y after second next' );
 
 $sprite = SDLx::Sprite::Animated->new(
-	image => 'test/data/hero.png',
+	image => 'test/data/hero.bmp',
 	rect  => SDL::Rect->new( 40, 50, 48, 48 ),
 );
 $clip = $sprite->clip;

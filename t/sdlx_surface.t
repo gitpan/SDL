@@ -7,6 +7,7 @@ use SDL::Rect;
 use SDLx::Surface;
 use SDL::PixelFormat;
 use SDL::Video;
+use Data::Dumper;
 use lib 't/lib';
 use SDL::TestTool;
 
@@ -85,10 +86,15 @@ push @surfs,
 	SDLx::Surface->new(
 	w     => 1,
 	h     => 1,
-	color => 1,
+	color => 0x204080FF,
 	);
 
-is( $surfs[-1]->[0][0], 1, 'Fill color worked' );
+my $fill = SDL::Video::get_RGBA( $surfs[-1]->surface()->format(), $surfs[-1]->[0][0] );
+
+is( $fill->[0], 0x20, 'Fill color red worked' );
+is( $fill->[1], 0x40, 'Fill color green worked' );
+is( $fill->[2], 0x80, 'Fill color blue worked' );
+is( $fill->[3], 0xFF, 'Fill color alpha worked' );
 
 $surfs[1]->flip();
 
@@ -101,37 +107,68 @@ pass 'Single rect update';
 $surfs[0]->update( [ SDL::Rect->new( 0, 1, 2, 3 ), SDL::Rect->new( 2, 4, 5, 6 ) ] );
 pass 'SDL::Rect array update';
 
+my @colors = (
+	[ 0xFF, 0xFF, 0xFF, 0xFF ],
+	[ 0xFF, 0xFF, 0x00, 0xFF ],
+	[ 0xFF, 0x00, 0xFF, 0xFF ],
+	[ 0x00, 0xFF, 0xFF, 0xFF ],
+	[ 0xFF, 0x00, 0x00, 0xFF ],
+	[ 0x00, 0xFF, 0x00, 0xFF ],
+	[ 0x00, 0x00, 0xFF, 0xFF ],
+	[ 0x00, 0x00, 0x00, 0xFF ],
+	[ 0x20, 0x40, 0x80, 0xFF ],
+	[ 0x80, 0x20, 0x40, 0xFF ],
+	[ 0x40, 0x80, 0x20, 0xFF ],
+);
+
+foreach my $c (@colors) {
+	my $color = ( $c->[0] << 24 ) + ( $c->[1] << 16 ) + ( $c->[2] << 8 ) + $c->[3];
+	$surfs[0]->draw_rect( [ 0, 0, 10, 20 ], $c );
+
+	my $num = sprintf( '0x%08x', $color );
+
+	my $rgba = SDL::Video::get_RGBA( $surfs[0]->surface()->format(), $surfs[0]->[0][0] );
+
+	is( $rgba->[0], $c->[0], "draw_rect uses correct red for $num" );
+	is( $rgba->[1], $c->[1], "draw_rect uses correct green for $num" );
+	is( $rgba->[2], $c->[2], "draw_rect uses correct blue for $num" );
+	is( $rgba->[3], $c->[3], "draw_rect uses correct alpha for $num" );
+}
 $surfs[0]->draw_rect( [ 0, 0, 10, 20 ], 0xFF00FFFF );
 pass 'draw_rect works';
-
 SKIP:
 {
-    skip ('SDL_gfx_primitives needed', 2) unless SDL::Config->has('SDL_gfx_primitives');
-$surfs[1]->draw_line( [ 0, 10 ], [ 20, 10 ], 0xff00ff );
-$surfs[1]->draw_line( [ 0, 10 ], [ 20, 10 ], 0xff00ffff );
-$surfs[1]->draw_line( [ 0, 10 ], [ 20, 10 ], 0xff00ffff, 1 );
-$surfs[1]->draw_line( [ 0, 10 ], [ 20, 10 ], [ 255, 255, 0, 255 ] );
-$surfs[1]->draw_line( [ 0, 10 ], [ 20, 10 ], [ 255, 255, 0, 255 ], 1 );
-pass 'draw_line works';
+	skip( 'SDL_gfx_primitives needed', 2 ) unless SDL::Config->has('SDL_gfx_primitives');
+	$surfs[1]->draw_line( [ 0, 10 ], [ 20, 10 ], 0xff00ff );
+	$surfs[1]->draw_line( [ 0, 10 ], [ 20, 10 ], 0xff00ffff );
+	$surfs[1]->draw_line( [ 0, 10 ], [ 20, 10 ], 0xff00ffff, 1 );
+	$surfs[1]->draw_line( [ 0, 10 ], [ 20, 10 ], [ 255, 255, 0, 255 ] );
+	$surfs[1]->draw_line( [ 0, 10 ], [ 20, 10 ], [ 255, 255, 0, 255 ], 1 );
+	pass 'draw_line works';
 
-$surfs[1]->draw_gfx_text( [0,0], 0xffffffff, "fooo");
-$surfs[1]->draw_gfx_text( [10,10], [20,20,20,20], "fooo");
-my $f = '';
-open( my $FH, '<', 'test/data/5x7.fnt');
-binmode ($FH);
-read($FH, $f, 4096);
-close ($FH);
-my $font =  {data=>$f, cw => 5, ch => 7};
-$surfs[1]->draw_gfx_text( [0,0], 0xffffffff, "fooo", $font );
-pass 'draw_gfx_text works';
+	$surfs[1]->draw_gfx_text( [ 0, 0 ], 0xffffffff, "fooo" );
+	$surfs[1]->draw_gfx_text( [ 10, 10 ], [ 20, 20, 20, 20 ], "fooo" );
+	my $f = '';
+	open( my $FH, '<', 'test/data/5x7.fnt' );
+	binmode($FH);
+	read( $FH, $f, 4096 );
+	close($FH);
+	my $font = { data => $f, cw => 5, ch => 7 };
+	$surfs[1]->draw_gfx_text( [ 0, 0 ], 0xffffffff, "fooo", $font );
+	pass 'draw_gfx_text works';
+	my @colors_t = ( [ 255, 0, 0, 255 ], 0xFF0000FF, 0xFF00FF, [ 255, 0, 255 ] );
+
+	foreach my $cir_color (@colors_t) {
+		my $cir_color = [ 255, 0, 0, 255 ];
+		$surfs[0]->draw_circle( [ 100, 10 ], 20, $cir_color ); #no fill
+		$surfs[0]->draw_circle_filled( [ 100, 10 ], 20, $cir_color ); #fill
+		isnt( $surfs[0]->[100][10], 0 );
+		pass 'draw_circle works';
+		pass 'draw_circle_filled works';
+	}
+
 }
 
-
-my $cir_color = [255,0,0,255];
-$surfs[0]->draw_circle( [ 100, 10 ], 20, $cir_color ); #no fill
-$surfs[0]->draw_circle_filled( [ 100, 10 ], 20, $cir_color ); #fill
-
-isnt( $surfs[0]->[100][10], 0 );
 
 my $surf_dup = SDLx::Surface::duplicate( $surfs[1] );
 

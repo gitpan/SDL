@@ -71,7 +71,7 @@ sub init {
 
 	# Initing video
 	# Die here if we cannot make video init
-	croak 'Cannot init  ' . SDL::get_error()
+	Carp::confess 'Cannot init  ' . SDL::get_error()
 		if ( SDL::init(SDL_INIT_VIDEO) == -1 );
 
 	# Create our display window
@@ -81,18 +81,18 @@ sub init {
 		SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_HWACCEL
 	);
 
-	croak 'Cannot init video mode 800x600x32: ' . SDL::get_error()
+	Carp::confess 'Cannot init video mode 800x600x32: ' . SDL::get_error()
 		unless $a;
 
 	return $a;
 }
 
-my $game = SDLx::Controller->new( dt => 0.1 );
+my $game = SDLx::Controller->new( dt => 0.002 );
 
 sub on_move {
-	my $t = shift;
 	my $dt = shift;
-	$dt = $dt / 1000;
+
+	#$dt = $dt / 1000;
 	paddle_confine( $paddle,  $dt, $app->h );
 	paddle_confine( $paddle2, $dt, $app->h );
 
