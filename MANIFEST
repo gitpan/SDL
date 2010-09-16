@@ -15,6 +15,7 @@ examples/SDLx/pong.pl
 examples/SDLx/SDLx_C_Interface.pl
 examples/SDLx/SDLx_controller_two_squares.pl
 examples/SDLx/SDLx_LayerManager_Chess.pl
+examples/SDLx/SDLx_Sound.pl
 examples/SDLx/SDLx_sprite.pl
 examples/SDLx/SDLx_sprite_animated.pl
 inc/My/Builder.pm
@@ -82,6 +83,7 @@ lib/pods/SDLx/Layer.pod
 lib/pods/SDLx/LayerManager.pod
 lib/pods/SDLx/Rect.pod
 lib/pods/SDLx/SFont.pod
+lib/pods/SDLx/Sound.pod
 lib/pods/SDLx/Sprite.pod
 lib/pods/SDLx/Sprite/Animated.pod
 lib/pods/SDLx/Surface.pod
@@ -153,11 +155,13 @@ lib/SDLx/Layer.pm
 lib/SDLx/LayerManager.pm
 lib/SDLx/Rect.pm
 lib/SDLx/SFont.pm
+lib/SDLx/Sound.pm
 lib/SDLx/Sprite.pm
 lib/SDLx/Sprite/Animated.pm
 lib/SDLx/Surface.pm
 lib/SDLx/Surface/TiedMatrix.pm
 lib/SDLx/Surface/TiedMatrixRow.pm
+lib/SDLx/TTF.pm
 lib/SDLx/Validate.pm
 MacOSX/Info.plist
 MacOSX/main.c
@@ -283,6 +287,7 @@ t/sdlx_controller.t
 t/sdlx_controller_interface.t
 t/sdlx_layermanager.t
 t/sdlx_sfont.t
+t/sdlx_sound.t
 t/sdlx_sprite.t
 t/sdlx_sprite_animated.t
 t/sdlx_surface.t

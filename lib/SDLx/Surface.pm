@@ -71,11 +71,6 @@ sub new {
 	return $self;
 }
 
-sub DESTROY {
-	my $self = shift;
-	delete $_tied_array{$$self};
-}
-
 sub display {
 	my $disp = SDL::Video::get_video_surface;
 	return SDLx::Surface->new( surface => $disp ) if $disp;
@@ -384,5 +379,9 @@ sub draw_gfx_text {
 	return $self;
 }
 
+sub DESTROY {
+	my $self = shift;
+	delete $_tied_array{$$self};
+}
 
 1;

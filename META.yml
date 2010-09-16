@@ -27,7 +27,7 @@ name: SDL
 provides:
   SDL:
     file: lib/SDL.pm
-    version: 2.514
+    version: 2.515
   SDL::Audio:
     file: lib/SDL/Audio.pm
   SDL::AudioCVT:
@@ -163,6 +163,8 @@ provides:
     version: 0.01
   SDLx::SFont:
     file: lib/SDLx/SFont.pm
+  SDLx::Sound:
+    file: lib/SDLx/Sound.pm
   SDLx::Sprite:
     file: lib/SDLx/Sprite.pm
   SDLx::Sprite::Animated:
@@ -173,6 +175,8 @@ provides:
     file: lib/SDLx/Surface/TiedMatrix.pm
   SDLx::Surface::TiedMatrixRow:
     file: lib/SDLx/Surface/TiedMatrixRow.pm
+  SDLx::TTF:
+    file: lib/SDLx/TTF.pm
   SDLx::Validate:
     file: lib/SDLx/Validate.pm
 requires:
@@ -182,4 +186,4 @@ resources:
   bugtracker: http://sdlperl.ath.cx/projects/SDLPerl
   license: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt
   repository: http://github.com/PerlGameDev/SDL
-version: 2.514
+version: 2.515
