@@ -3,19 +3,19 @@ abstract: 'SDL bindings to Perl'
 author:
   - 'Kartik Thakore <KTHAKORE@cpan.org>'
 build_requires:
-  Alien::SDL: 1.413
+  Alien::SDL: 1.414
+  Capture::Tiny: 0
   ExtUtils::CBuilder: 0
   File::ShareDir: 0
-  IO::CaptureOutput: 0
   Test::Most: 0.21
   Test::Simple: 0.88
   Tie::Simple: 0
 configure_requires:
-  Alien::SDL: 1.413
+  Alien::SDL: 1.414
+  Capture::Tiny: 0
   ExtUtils::CBuilder: 0.260301
   File::Find: 0
   File::ShareDir: 0
-  IO::CaptureOutput: 0
   Module::Build: 0.36
   Tie::Simple: 0
 generated_by: 'Module::Build version 0.3603'
@@ -27,7 +27,7 @@ name: SDL
 provides:
   SDL:
     file: lib/SDL.pm
-    version: 2.517
+    version: 2.518
   SDL::Audio:
     file: lib/SDL/Audio.pm
   SDL::AudioCVT:
@@ -186,4 +186,4 @@ resources:
   bugtracker: http://sdlperl.ath.cx/projects/SDLPerl
   license: http://opensource.org/licenses/lgpl-license.php
   repository: http://github.com/PerlGameDev/SDL
-version: 2.517
+version: 2.518

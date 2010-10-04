@@ -554,17 +554,17 @@ my $build = $package->new(
 	dist_version_from  => 'lib/SDL.pm',
 	configure_requires => {
 		'ExtUtils::CBuilder' => '0.260301',
-		'Alien::SDL'         => '1.413',
+		'Alien::SDL'         => '1.414',
 		'File::Find'         => '0',
 		'File::ShareDir'     => '0',
 		'Tie::Simple'        => '0',
-		'IO::CaptureOutput'  => '0',
+		'Capture::Tiny'      => '0',
 	},
 	build_requires => {
 		'Test::Simple'      => '0.88',
-		'IO::CaptureOutput' => '0',
+		'Capture::Tiny'     => '0',
 		'Test::Most'        => '0.21',
-		'Alien::SDL'        => '1.413',
+		'Alien::SDL'        => '1.414',
 		'File::ShareDir'    => '0',
 		'Tie::Simple'       => '0'
 	},
