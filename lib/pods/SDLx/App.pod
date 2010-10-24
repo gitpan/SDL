@@ -36,6 +36,7 @@ This is the manual way of doing things
     }
 
 An alternative to the manual Event processing is through the L<SDLx::Controller> module. L<SDLx::App> is a Controller so see the CALLBACKS section below.
+
 =head1 DESCRIPTION
 
 L<SDLx::App> controls the root window of the of your SDL based application.
@@ -75,6 +76,9 @@ Any flags you want to pass to L<SDL::Video> upon initialization. Defaults to SDL
 
 =item * resizeable
 Set this to a true value to make the window resizeable by the user. Default is off.
+
+=item * exit_on_quit
+Set this to a true value to make the app exit if a SDL_QUIT event is triggered. Shortcut: 'eoq'.
 
 =back
 
