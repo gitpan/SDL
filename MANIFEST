@@ -79,7 +79,6 @@ lib/pods/SDL/VideoInfo.pod
 lib/pods/SDLx/App.pod
 lib/pods/SDLx/Controller.pod
 lib/pods/SDLx/Controller/Interface.pod
-lib/pods/SDLx/Controller/State.pod
 lib/pods/SDLx/Layer.pod
 lib/pods/SDLx/LayerManager.pod
 lib/pods/SDLx/Rect.pod
@@ -162,7 +161,6 @@ lib/SDLx/Sprite/Animated.pm
 lib/SDLx/Surface.pm
 lib/SDLx/Surface/TiedMatrix.pm
 lib/SDLx/Surface/TiedMatrixRow.pm
-lib/SDLx/Text.pm
 lib/SDLx/TTF.pm
 lib/SDLx/Validate.pm
 MacOSX/Info.plist
@@ -170,7 +168,6 @@ MacOSX/main.c
 MacOSX/Makefile.test
 MacOSX/SDLPerl.icns
 MANIFEST			This list of files
-META.yml
 README
 src/Core/Audio.xs
 src/Core/CDROM.xs
@@ -233,8 +230,6 @@ src/SDLx/SFont.xs
 src/SDLx/Surface.xs
 src/SDLx/Timer.h
 src/SDLx/Timer.xs
-src/SDLx/Validate.h
-src/SDLx/Validate.xs
 src/SMPEG.xs
 src/support/darwin_support.h
 src/support/darwin_support.m
@@ -328,3 +323,4 @@ test/data/wood_dark.png
 test/data/wood_light.png
 TODO
 typemap
+META.yml

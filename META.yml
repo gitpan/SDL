@@ -6,6 +6,7 @@ build_requires:
   Alien::SDL: 1.419
   Capture::Tiny: 0
   ExtUtils::CBuilder: 0
+  File::Find: 0
   File::ShareDir: 0
   Test::Most: 0.21
   Test::Simple: 0.88
@@ -18,7 +19,7 @@ configure_requires:
   File::ShareDir: 0
   Module::Build: 0.36
   Tie::Simple: 0
-generated_by: 'Module::Build version 0.3603'
+generated_by: 'Module::Build version 0.3607'
 license: lgpl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -27,7 +28,7 @@ name: SDL
 provides:
   SDL:
     file: lib/SDL.pm
-    version: 2.520_3
+    version: 2.520
   SDL::Audio:
     file: lib/SDL/Audio.pm
   SDL::AudioCVT:
@@ -177,8 +178,6 @@ provides:
     file: lib/SDLx/Surface/TiedMatrixRow.pm
   SDLx::TTF:
     file: lib/SDLx/TTF.pm
-  SDLx::Text:
-    file: lib/SDLx/Text.pm
   SDLx::Validate:
     file: lib/SDLx/Validate.pm
 requires:
@@ -186,6 +185,6 @@ requires:
   Tie::Simple: 0
 resources:
   bugtracker: http://sdlperl.ath.cx/projects/SDLPerl
-  license: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt
+  license: http://opensource.org/licenses/lgpl-license.php
   repository: http://github.com/PerlGameDev/SDL
-version: 2.520_3
+version: 2.520
