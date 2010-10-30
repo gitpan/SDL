@@ -3,7 +3,7 @@ abstract: 'SDL bindings to Perl'
 author:
   - 'Kartik Thakore <KTHAKORE@cpan.org>'
 build_requires:
-  Alien::SDL: 1.419
+  Alien::SDL: 1.421
   Capture::Tiny: 0
   ExtUtils::CBuilder: 0
   File::Find: 0
@@ -12,7 +12,7 @@ build_requires:
   Test::Simple: 0.88
   Tie::Simple: 0
 configure_requires:
-  Alien::SDL: 1.419
+  Alien::SDL: 1.421
   Capture::Tiny: 0
   ExtUtils::CBuilder: 0.260301
   File::Find: 0
@@ -28,7 +28,7 @@ name: SDL
 provides:
   SDL:
     file: lib/SDL.pm
-    version: 2.520
+    version: 2.521
   SDL::Audio:
     file: lib/SDL/Audio.pm
   SDL::AudioCVT:
@@ -178,6 +178,8 @@ provides:
     file: lib/SDLx/Surface/TiedMatrixRow.pm
   SDLx::TTF:
     file: lib/SDLx/TTF.pm
+  SDLx::Text:
+    file: lib/SDLx/Text.pm
   SDLx::Validate:
     file: lib/SDLx/Validate.pm
 requires:
@@ -187,4 +189,4 @@ resources:
   bugtracker: http://sdlperl.ath.cx/projects/SDLPerl
   license: http://opensource.org/licenses/lgpl-license.php
   repository: http://github.com/PerlGameDev/SDL
-version: 2.520
+version: 2.521
