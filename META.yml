@@ -28,7 +28,7 @@ name: SDL
 provides:
   SDL:
     file: lib/SDL.pm
-    version: 2.521
+    version: 2.522
   SDL::Audio:
     file: lib/SDL/Audio.pm
   SDL::AudioCVT:
@@ -189,4 +189,4 @@ resources:
   bugtracker: http://sdlperl.ath.cx/projects/SDLPerl
   license: http://opensource.org/licenses/lgpl-license.php
   repository: http://github.com/PerlGameDev/SDL
-version: 2.521
+version: 2.522
