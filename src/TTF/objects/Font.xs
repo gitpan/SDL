@@ -2,6 +2,7 @@
 #include "perl.h"
 #include "XSUB.h"
 #include "ppport.h"
+#include "helper.h"
 
 #ifndef aTHX_
 #define aTHX_
@@ -11,6 +12,10 @@
 #include <SDL.h>
 #ifdef HAVE_SDL_TTF
 #include <SDL_ttf.h>
+void _free_font(void *object)
+{
+    TTF_CloseFont((TTF_Font *)object);
+}
 #endif
 
 
@@ -31,16 +36,14 @@ ttf_font_new(CLASS, file, ptsize, index = 0)
 	int ptsize
 	long index
 	CODE:
-		RETVAL = safemalloc(sizeof(TTF_Font *));
 		RETVAL = TTF_OpenFontIndex(file, ptsize, index);
 	OUTPUT:
 		RETVAL
 
-
 void
-ttf_font_DESTROY(ttf_font)
-	TTF_Font *ttf_font
+ttf_font_DESTROY(bag)
+	SV *bag
 	CODE:
-		TTF_CloseFont(ttf_font);
+		objDESTROY(bag, _free_font);
 
 #endif

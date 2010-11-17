@@ -2,6 +2,7 @@
 #include "perl.h"
 #include "XSUB.h"
 #include "ppport.h"
+#include "helper.h"
 
 #ifndef aTHX_
 #define aTHX_
@@ -185,7 +186,7 @@ surfacex_draw_rect ( surface, rt, color )
 	if( SvOK(rt) )
 	{
 		int newly_created_rect = 0;
-		SDL_Rect* v_rect = (SDL_Rect*)bag_to_obj(rect( rt, &newly_created_rect ));
+		SDL_Rect* v_rect = (SDL_Rect*)bag2obj(rect( rt, &newly_created_rect ));
 		r_rect.x = v_rect->x;
 		r_rect.y = v_rect->y;
 		r_rect.w = v_rect->w;
@@ -194,22 +195,22 @@ surfacex_draw_rect ( surface, rt, color )
 	}
     SDL_FillRect(surface, &r_rect, m_color);
 
-SV *
+void
 surfacex_blit( src, dest, ... )
     SV *src
     SV *dest
     CODE:
         src  = surface(src);
         dest = surface(dest);
-        SDL_Surface *_src  = (SDL_Surface *)bag_to_obj(src);
-        SDL_Surface *_dest = (SDL_Surface *)bag_to_obj(dest);
+        SDL_Surface *_src  = (SDL_Surface *)bag2obj(src);
+        SDL_Surface *_dest = (SDL_Surface *)bag2obj(dest);
 
         SDL_Rect _src_rect;
         SDL_Rect _dest_rect;
         int newly_created_rect = 0;
         
         if( items > 2 && SvOK(ST(2)) )
-            _src_rect = *(SDL_Rect *)bag_to_obj( rect(ST(2), &newly_created_rect) );
+            _src_rect = *(SDL_Rect *)bag2obj( rect(ST(2), &newly_created_rect) );
         else
         {
             _src_rect.x = 0;
@@ -219,7 +220,7 @@ surfacex_blit( src, dest, ... )
         }
         
         if( items > 3 && SvOK(ST(3)) )
-            _dest_rect = *(SDL_Rect *)bag_to_obj( rect(ST(3), &newly_created_rect) );
+            _dest_rect = *(SDL_Rect *)bag2obj( rect(ST(3), &newly_created_rect) );
         else
         {
             _dest_rect.x = 0;
@@ -229,5 +230,4 @@ surfacex_blit( src, dest, ... )
         }
         
         SDL_BlitSurface( _src, &_src_rect, _dest, &_dest_rect );
-    OUTPUT:
-        src
+   

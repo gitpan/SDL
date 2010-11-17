@@ -2,6 +2,7 @@
 #include "perl.h"
 #include "XSUB.h"
 #include "ppport.h"
+#include "helper.h"
 
 #ifndef aTHX_
 #define aTHX_
@@ -58,8 +59,7 @@ version_patch ( version, ... )
 		RETVAL
 
 void
-version_DESTROY ( version, ... )
-	SDL_version *version
+version_DESTROY ( bag )
+	SV *bag
 	CODE:
-		if( version != NULL)
-			safefree(version);
+		objDESTROY(bag, safefree);

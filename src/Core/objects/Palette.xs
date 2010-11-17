@@ -2,6 +2,7 @@
 #include "perl.h"
 #include "XSUB.h"
 #include "ppport.h"
+#include "helper.h"
 
 #ifndef aTHX_
 #define aTHX_
@@ -41,8 +42,7 @@ palette_colors ( palette )
 			av_push(RETVAL,newSViv( PTR2IV( palette->colors + i ) ) );
 		}
 	OUTPUT:
-		RETVAL		
-
+		RETVAL
 
 SDL_Color *
 palette_color_index ( palette, index )
@@ -55,5 +55,8 @@ palette_color_index ( palette, index )
 	OUTPUT:
 		RETVAL
 
-
-
+void
+palette_DESTROY ( bag )
+	SV *bag
+	CODE:
+		objDESTROY(bag, safefree);

@@ -189,7 +189,14 @@ sub load {
 				or Carp::confess "error loading image $filename: " . SDL::get_error;
 		}
 	}
-	return SDLx::Surface->new( surface => $surface );
+
+	my $formated_surface = $surface;
+	if( SDL::Video::get_video_surface )
+	{
+		#Reduces memory usage for loaded images
+		$formated_surface = SDL::Video::display_format_alpha($surface);	
+	}
+	return SDLx::Surface->new( surface => $formated_surface );
 }
 
 #EXTENSTIONS
@@ -368,6 +375,7 @@ sub draw_gfx_text {
 sub DESTROY {
 	my $self = shift;
 	delete $_tied_array{$$self};
+	SDL::Surface::DESTROY($self);
 }
 
 1;

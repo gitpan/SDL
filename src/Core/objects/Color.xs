@@ -2,6 +2,7 @@
 #include "perl.h"
 #include "XSUB.h"
 #include "ppport.h"
+#include "helper.h"
 
 #ifndef aTHX_
 #define aTHX_
@@ -66,7 +67,7 @@ color_b ( color, ... )
 		RETVAL
 
 void
-color_DESTROY ( color )
-	SDL_Color *color
+color_DESTROY ( bag )
+	SV *bag
 	CODE:
-		safefree(color);
+		objDESTROY(bag, safefree);

@@ -4,12 +4,18 @@
 #define NEED_newRV_noinc_GLOBAL
 #define NEED_newSV_type_GLOBAL
 #include "ppport.h"
+#include "helper.h"
 
 #ifndef aTHX_
 #define aTHX_
 #endif
 
 #include <SDL.h>
+
+void _free_surface(void *object)
+{
+	SDL_FreeSurface((SDL_Surface *)object);
+}
 
 MODULE = SDL::Surface 	PACKAGE = SDL::Surface    PREFIX = surface_
 
@@ -70,13 +76,13 @@ surface_new_from (CLASS, pixels, width, height, depth, pitch, Rmask = 0xFF000000
 		RETVAL
 
 
-SDL_PixelFormat *
+SV *
 surface_format ( surface )
 	SDL_Surface *surface
 	PREINIT:
 		char* CLASS = "SDL::PixelFormat";
 	CODE:
-		RETVAL = surface->format;
+		RETVAL = cpy2bag( surface->format, sizeof(SDL_PixelFormat *), sizeof(SDL_PixelFormat), "SDL::PixelFormat" );
 	OUTPUT:
 		RETVAL
 
@@ -176,17 +182,4 @@ void
 surface_DESTROY(bag)
 	SV* bag
 	CODE:
-               if( sv_isobject(bag) && (SvTYPE(SvRV(bag)) == SVt_PVMG) ) {
-                   void** pointers = (void**)(SvIV((SV*)SvRV( bag ))); 
-                   SDL_Surface* surface = (SDL_Surface*)(pointers[0]);
-                   if (PERL_GET_CONTEXT == pointers[1]) {
-                       /*warn("Freed surface %p and pixels %p \n", surface, surface->pixels); */
-                       pointers[0] = NULL;
-                       SDL_FreeSurface(surface);
-                   }
-               } else if (bag == 0) {
-                   XSRETURN(0);
-               } else {
-                   XSRETURN_UNDEF;
-               }
-		
+		objDESTROY(bag, _free_surface);

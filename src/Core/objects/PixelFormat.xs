@@ -2,6 +2,7 @@
 #include "perl.h"
 #include "XSUB.h"
 #include "ppport.h"
+#include "helper.h"
 
 #ifndef aTHX_
 #define aTHX_
@@ -28,13 +29,16 @@ SDL_PixelFormat -- Stores surface format information
 
 =cut
 
-SDL_Palette*
+SV *
 pixelformat_palette( pixelformat )
 	SDL_PixelFormat *pixelformat
 	PREINIT:
 		char* CLASS = "SDL::Palette";
 	CODE:
-                RETVAL = pixelformat->palette;
+		if(pixelformat->palette)
+			RETVAL = cpy2bag( pixelformat->palette, sizeof(SDL_Palette *), sizeof(SDL_Palette), "SDL::Palette" );
+		else
+			XSRETURN_UNDEF;
 	OUTPUT:
 		RETVAL
 
@@ -166,3 +170,9 @@ pixelformat_alpha( pixelformat )
 		RETVAL = pixelformat->alpha;
 	OUTPUT:
 		RETVAL
+
+void
+pixelformat_DESTROY ( bag )
+	SV *bag
+	CODE:
+		objDESTROY(bag, safefree);

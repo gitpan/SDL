@@ -207,6 +207,7 @@ src/GFX/ImageFilter.xs
 src/GFX/Primitives.xs
 src/GFX/README
 src/GFX/Rotozoom.xs
+src/helper.h
 src/Image.xs
 src/Mixer/Channels.xs
 src/Mixer/Effects.xs
