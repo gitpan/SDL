@@ -29,6 +29,9 @@ BEGIN {
 use SDL::Mixer;
 use SDL::Mixer::Channels;
 use SDL::Mixer::Samples;
+use threads;
+use threads::shared;
+
 
 is( SDL::Mixer::open_audio( 44100, SDL::Audio::AUDIO_S16SYS, 2, 4096 ),
 	0, '[open_audio] ran'
@@ -38,9 +41,10 @@ is( SDL::Mixer::Channels::allocate_channels(4),
 	4, "[allocate_channels] 4 channels allocated"
 );
 
-my $finished = 0;
+my $finished :shared = 0;
 my $callback = sub {
-	printf( "[channel_finished] callback called for channel %d\n", shift );
+	my $channel = shift;
+	printf( "[channel_finished] callback called for channel %d\n", $channel);
 	$finished++;
 };
 SDL::Mixer::Channels::channel_finished($callback);
