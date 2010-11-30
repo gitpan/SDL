@@ -569,7 +569,7 @@ my $build = $package->new(
 	},
 	build_requires => {
 		'Test::Simple'      => '0.88',
-		'Capture::Tiny'     => '0',
+   		'Capture::Tiny'     => '0',
 		'Test::Most'        => '0.21',
 		'Alien::SDL'        => '1.421',
 		'File::Find'        => '0',

@@ -1,6 +1,7 @@
 use strict;
 use warnings;
 use Test::Most 'bail';
+use File::Spec 'catfile';
 
 BEGIN {
 	my @modules = qw /
@@ -68,10 +69,46 @@ BEGIN {
 		SDLx::Controller::State
 		SDLx::Controller::Timer
 
-    SDLx::Sound
+		SDLx::Sound
 
 		/;
-	plan tests => scalar @modules;
 
-	use_ok $_ foreach @modules;
+	my $tests = scalar @modules;
+
+	my $load_test_strict = 0;
+
+	if( $ENV{RELEASE_TESTING})
+	{
+
+		eval 'require Test::Strict';
+		$load_test_strict = 1 unless $@;
+	}
+	foreach( @modules )
+	{
+		use_ok $_ ;
+		if( $load_test_strict )
+		{
+
+
+			my $file = $_;
+
+			my @files = split /::/, $file;
+
+			$file = File::Spec->catfile( 'lib', @files );
+
+			$file = $file.'.pm';
+
+			eval 'Test::Strict::syntax_ok $file';
+			pass unless $@;	
+			eval 'Test::Stict::strict_ok $file';
+			pass unless $@;
+			eval 'Test::Strict::warnings_ok $file';
+			pass unless $@;
+
+		}
+	}
+
+
 }
+
+done_testing();

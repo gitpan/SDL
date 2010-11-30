@@ -3,6 +3,10 @@
 #include "XSUB.h"
 #include "ppport.h"
 
+#ifndef SDL_PERL_DEFINES_H
+#include "defines.h"
+#endif
+
 #include <SDL.h>
 
 #ifdef HAVE_SDL_MIXER
@@ -10,8 +14,7 @@
 
 #define MAX_EFFECTS 31
 
-PerlInterpreter *perl    = NULL;
-PerlInterpreter *perl_cb = NULL;
+PerlInterpreter *context = NULL;
 int registered_effects   = 0;
 
 void** effects = NULL;
@@ -22,7 +25,7 @@ char* effect_func_done_cb = NULL;
 
 void effect_func(int chan, void *stream, int len, void *udata)
 {
-	PERL_SET_CONTEXT(perl_cb);
+	ENTER_TLS_CONTEXT;
 	Sint16 *buf = (Sint16 *)stream;
 
 	len /= 2;            /* 2 bytes ber sample */
@@ -65,6 +68,7 @@ void effect_func(int chan, void *stream, int len, void *udata)
 
 	FREETMPS;                                  /* free that return value            */
 	LEAVE;                                     /* ...and the XPUSHed "mortal" args. */
+	LEAVE_TLS_CONTEXT;
 }
 
 void effect_pm_func(void *udata, Uint8 *stream, int len)
@@ -74,7 +78,7 @@ void effect_pm_func(void *udata, Uint8 *stream, int len)
 
 void effect_done(int chan, void *udata)
 {
-	/*PERL_SET_CONTEXT(perl_cb); */
+	ENTER_TLS_CONTEXT;
 
 	dSP;     /* initialize stack pointer          */
 	PUSHMARK(SP);                              /* remember the stack pointer        */
@@ -84,7 +88,7 @@ void effect_done(int chan, void *udata)
 	
         call_pv(effect_func_done_cb, G_DISCARD|G_VOID);   /* call the function                 */
         
-	
+	LEAVE_TLS_CONTEXT;
 }
 
 #endif
@@ -110,12 +114,8 @@ mixeff_register(channel, func, done, arg)
 		{
 			effects_done = safemalloc(MAX_EFFECTS* sizeof(void*));
 		}
-		if(perl_cb == NULL)
-		{
-			perl    = PERL_GET_CONTEXT;
-			perl_cb = perl_clone(perl, CLONEf_KEEP_PTR_TABLE);
-			PERL_SET_CONTEXT(perl);
-		}
+
+		GET_TLS_CONTEXT;
 
 		effect_func_cb = func;
 		effect_func_done_cb = done;
@@ -238,12 +238,7 @@ mixeff_set_post_mix(func = NULL, arg = NULL)
 	SV *func
 	SV *arg
 	CODE:
-		if(perl_cb == NULL)
-		{
-			perl    = PERL_GET_CONTEXT;
-			perl_cb = perl_clone(perl, CLONEf_KEEP_PTR_TABLE);
-			PERL_SET_CONTEXT(perl);
-		}
+		GET_TLS_CONTEXT;
 
 		if(func != (SV *)NULL)
 		{
