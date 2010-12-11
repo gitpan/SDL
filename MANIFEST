@@ -23,6 +23,7 @@ inc/My/Builder/Darwin.pm
 inc/My/Builder/Unix.pm
 inc/My/Builder/Windows.pm
 INSTALL
+lib/Module/Build/SDL.pm
 lib/pods/SDL.pod
 lib/pods/SDL/Audio.pod
 lib/pods/SDL/AudioCVT.pod
@@ -172,6 +173,13 @@ MacOSX/SDLPerl.icns
 MANIFEST			This list of files
 META.yml
 README
+scripts/auto_constants.pl
+scripts/const.pl
+scripts/gl_const.pl
+scripts/MultiThreadPOC.pl
+scripts/sdl_const.pl
+scripts/sdl_module_maker.pl
+scripts/SDLpp.pl
 src/Core/Audio.xs
 src/Core/CDROM.xs
 src/Core/Events.xs
