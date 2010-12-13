@@ -30,7 +30,7 @@ provides:
     file: lib/Module/Build/SDL.pm
   SDL:
     file: lib/SDL.pm
-    version: 2.525_2
+    version: 2.525_3
   SDL::Audio:
     file: lib/SDL/Audio.pm
   SDL::AudioCVT:
@@ -191,4 +191,4 @@ resources:
   bugtracker: http://sdlperl.ath.cx/projects/SDLPerl
   license: http://opensource.org/licenses/lgpl-license.php
   repository: http://github.com/PerlGameDev/SDL
-version: 2.525_2
+version: 2.525_3
