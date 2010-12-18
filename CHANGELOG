@@ -1,6 +1,6 @@
 Revision history for Perl extension SDL_perl.
 
-* 2.525_3
+* 2.525_4
 	- Fixed bug with SDL::Mixer::Music::hook_music, arg was freed too early [FROGGS]
 	- Added Module::Build::SDL, a helper for creating SDL based modules [kthakore]
 	- AudioSpec callbacks are using *_TLS_CONTEXT macros [FROGGS]
@@ -8,6 +8,7 @@ Revision history for Perl extension SDL_perl.
 	- Fixed typo in MANIFEST.SKIP file, scripts-folder is now in dist [FROGGS]
 	- Setting LD_LIBRARY_PATH to Alien::SDL's libdir for OpenBSD [FROGGS]
 	- Using UV instead of IV for SDL::Event attributes [kthakore]
+	- (experimental) Changing *_TLS_CONTEXT to parent perls context in SDL::Mixer::Channels [FROGGS]
 
 * 2.524
 	- Fix for t/mixer_channels.t.bak 
