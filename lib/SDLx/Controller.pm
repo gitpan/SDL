@@ -32,102 +32,107 @@ sub new {
 		$self = bless \$a, $self;
 	}
 	
-	$_dt{ refaddr $self}                 = defined $args{dt}    ? $args{dt}    : 0.1;
-	$_min_t{ refaddr $self}              = defined $args{min_t} ? $args{min_t} : 1 / 60;
-#	$_current_time{ refaddr $self}       = $args{current_time} || 0; #no point
-	$_stop{ refaddr $self}               = $args{stop};
-	$_event{ refaddr $self}              = $args{event} || SDL::Event->new();
-	$_event_handlers{ refaddr $self}     = $args{event_handlers};
-	$_move_handlers{ refaddr $self}      = $args{move_handlers};
-	$_show_handlers{ refaddr $self}      = $args{show_handlers};
+	my $ref = refaddr $self;
+	
+	$_dt{ $ref }                 = defined $args{dt}    ? $args{dt}    : 0.1;
+	$_min_t{ $ref }              = defined $args{min_t} ? $args{min_t} : 1 / 60;
+#	$_current_time{ $ref }       = $args{current_time} || 0; #no point
+	$_stop{ $ref }               = $args{stop};
+	$_event{ $ref }              = $args{event} || SDL::Event->new();
+	$_event_handlers{ $ref }     = $args{event_handlers};
+	$_move_handlers{ $ref }      = $args{move_handlers};
+	$_show_handlers{ $ref }      = $args{show_handlers};
 
 	return $self;
 }
 
 sub DESTROY {
 	my $self = shift;
+	my $ref = refaddr $self;
 
-	delete $_dt{ refaddr $self};
-	delete $_min_t{ refaddr $self};
-	delete $_current_time{ refaddr $self};
-	delete $_stop{ refaddr $self};
-	delete $_event{ refaddr $self};
-	delete $_event_handlers{ refaddr $self};
-	delete $_move_handlers{ refaddr $self};
-	delete $_show_handlers{ refaddr $self};
+	delete $_dt{ $ref};
+	delete $_min_t{ $ref};
+	delete $_current_time{ $ref};
+	delete $_stop{ $ref};
+	delete $_event{ $ref};
+	delete $_event_handlers{ $ref};
+	delete $_move_handlers{ $ref};
+	delete $_show_handlers{ $ref};
 }
 
 sub run {
 	my ($self)       = @_;
-	my $dt           = $_dt{ refaddr $self};
-	my $min_t        = $_min_t{ refaddr $self};
+	my $ref          = refaddr $self; 
+	my $dt           = $_dt{ $ref };
+	my $min_t        = $_min_t{ $ref };
 	my $t            = 0.0;
 
 	#Allows us to do stop and run 
-	$_stop{ refaddr $self} = 0;	
+	$_stop{ $ref } = 0;	
 
-	$_current_time{ refaddr $self} = Time::HiRes::time;
-	while ( !$_stop{ refaddr $self} ) {
-		$self->_event;
+	$_current_time{ $ref } = Time::HiRes::time;
+	while ( !$_stop{ $ref } ) {
+		$self->_event($ref);
 
 		my $new_time   = Time::HiRes::time;
-		my $delta_time = $new_time - $_current_time{ refaddr $self};
+		my $delta_time = $new_time - $_current_time{ $ref };
 		next if $delta_time < $min_t;
-		$_current_time{ refaddr $self} = $new_time;
+		$_current_time{ $ref} = $new_time;
 		my $delta_copy = $delta_time;
 
 		while ( $delta_copy > $dt ) {
-			$self->_move( 1, $t ); #a full move
+			$self->_move( $ref, 1, $t ); #a full move
 			$delta_copy -= $dt;
 			$t += $dt;
 		}
 		my $step = $delta_copy / $dt;
-		$self->_move( $step, $t ); #a partial move
+		$self->_move( $ref, $step, $t ); #a partial move
 		$t += $dt * $step;
 		
-		$self->_show( $delta_time );
+		$self->_show( $ref, $delta_time );
 		
-		$dt    = $_dt{ refaddr $self};    #these can change
-		$min_t = $_min_t{ refaddr $self}; #during the cycle
+		$dt    = $_dt{ $ref};    #these can change
+		$min_t = $_min_t{ $ref}; #during the cycle
 	}
 
 }
 
 sub pause {
 	my ($self, $callback) = @_;
+	my $ref = refaddr $self;
 	$callback ||= sub {1};
 	my $event = SDL::Event->new();
 	while(1) {
 		SDL::Events::wait_event($event) or Carp::confess("pause failed waiting for an event");
 		if($callback->($event, $self)) {
-			$_current_time{ refaddr $self} = Time::HiRes::time; #so run doesn't catch up with the time paused
+			$_current_time{ $ref} = Time::HiRes::time; #so run doesn't catch up with the time paused
 			last;
 		}
 	}
 }
 
 sub _event {
-	my ($self) = shift;
-	while ( SDL::Events::poll_event( $_event{ refaddr $self} ) ) {
-		SDL::Events::pump_events();
-		foreach my $event_handler ( @{ $_event_handlers{ refaddr $self} } ) {
+	my ($self, $ref) = @_;
+	SDL::Events::pump_events();
+	while ( SDL::Events::poll_event( $_event{ $ref} ) ) {
+		foreach my $event_handler ( @{ $_event_handlers{ $ref} } ) {
 			next unless $event_handler;
-			$event_handler->( $_event{ refaddr $self}, $self );
+			$event_handler->( $_event{ $ref}, $self );
 		}
 	}
 }
 
 sub _move {
-	my ($self, $move_portion, $t) = @_;
-	foreach my $move_handler ( @{ $_move_handlers{ refaddr $self} } ) {
+	my ($self, $ref, $move_portion, $t) = @_;
+	foreach my $move_handler ( @{ $_move_handlers{ $ref} } ) {
 		next unless $move_handler;
 		$move_handler->( $move_portion, $self, $t );
 	}
 }
 
 sub _show {
-	my ($self, $delta_ticks) = @_;
-	foreach my $show_handler ( @{ $_show_handlers{ refaddr $self} } ) {
+	my ($self, $ref, $delta_ticks) = @_;
+	foreach my $show_handler ( @{ $_show_handlers{ $ref} } ) {
 		next unless $show_handler;
 		$show_handler->( $delta_ticks, $self );
 	}
@@ -142,20 +147,23 @@ sub _add_handler {
 }
 
 sub add_move_handler {
-	$_[0]->remove_all_move_handlers if !$_move_handlers{ refaddr $_[0] };
-	return _add_handler( $_move_handlers{ refaddr $_[0]}, $_[1] );
+	my $ref = refaddr $_[0];
+	$_[0]->remove_all_move_handlers if !$_move_handlers{ $ref };
+	return _add_handler( $_move_handlers{ $ref}, $_[1] );
 }
 
 sub add_event_handler {
+	my $ref = refaddr $_[0];
 	Carp::confess 'SDLx::App or a Display (SDL::Video::get_video_mode) must be made'
 		unless SDL::Video::get_video_surface();
-	$_[0]->remove_all_event_handlers if !$_event_handlers{ refaddr $_[0] };
-	return _add_handler( $_event_handlers{ refaddr $_[0]}, $_[1] );
+	$_[0]->remove_all_event_handlers if !$_event_handlers{ $ref };
+	return _add_handler( $_event_handlers{ $ref}, $_[1] );
 }
 
 sub add_show_handler {
-	$_[0]->remove_all_show_handlers if !$_show_handlers{ refaddr $_[0] };
-	return _add_handler( $_show_handlers{ refaddr $_[0]}, $_[1] );
+	my $ref = refaddr $_[0];
+	$_[0]->remove_all_show_handlers if !$_show_handlers{ $ref };
+	return _add_handler( $_show_handlers{ $ref}, $_[1] );
 }
 
 sub _remove_handler {
@@ -213,26 +221,26 @@ sub show_handlers  { $_show_handlers{ refaddr $_[0] } }
 
 sub dt {
 	my ($self, $arg) = @_;
+	my $ref = refaddr $self;	
+	$_dt{ $ref} = $arg if defined $arg;
 	
-	$_dt{ refaddr $self} = $arg if defined $arg;
-	
-	$_dt{ refaddr $self};
+	$_dt{ $ref};
 }
 
 sub min_t {
 	my ($self, $arg) = @_;
+	my $ref = refaddr $self;	
+	$_min_t{ $ref} = $arg if defined $arg;
 	
-	$_min_t{ refaddr $self} = $arg if defined $arg;
-	
-	$_min_t{ refaddr $self};
+	$_min_t{ $ref};
 }
 
 sub current_time {
 	my ($self, $arg) = @_;
+	my $ref = refaddr $self;	
+	$_current_time{ $ref} = $arg if defined $arg;
 	
-	$_current_time{ refaddr $self} = $arg if defined $arg;
-	
-	$_current_time{ refaddr $self};
+	$_current_time{ $ref};
 }
 
 1; #not 42 man!
