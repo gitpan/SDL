@@ -2,6 +2,7 @@
 #include "perl.h"
 #include "XSUB.h"
 #include "ppport.h"
+#include "helper.h"
 
 #ifndef aTHX_
 #define aTHX_
@@ -13,113 +14,16 @@
 #endif
 
 
+void smpeg_display_callback (SDL_Surface* s , int a, int b, unsigned int c, unsigned int d)
+{
 
-MODULE = SDL::SMPEG	PACKAGE = SDL::SMPEG
+}
+
+MODULE = SDL::SMPEG				PACKAGE = SDL::SMPEG
 PROTOTYPES : DISABLE
 
 
 #ifdef HAVE_SMPEG
-
-SMPEG_Info *
-NewSMPEGInfo()
-	CODE:	
-		RETVAL = (SMPEG_Info *) safemalloc (sizeof(SMPEG_Info));
-	OUTPUT:
-		RETVAL
-
-void
-FreeSMPEGInfo ( info )
-	SMPEG_Info *info
-	CODE:	
-		safefree(info);
-
-int
-SMPEGInfoHasAudio ( info )
-	SMPEG_Info* info
-	CODE:
-		RETVAL = info->has_audio;
-	OUTPUT:
-		RETVAL
-
-int
-SMPEGInfoHasVideo ( info )
-	SMPEG_Info* info
-	CODE:
-		RETVAL = info->has_video;
-	OUTPUT:
-		RETVAL
-
-int
-SMPEGInfoWidth ( info )
-	SMPEG_Info* info
-	CODE:
-		RETVAL = info->width;
-	OUTPUT:
-		RETVAL
-
-int
-SMPEGInfoHeight ( info )
-	SMPEG_Info* info
-	CODE:
-		RETVAL = info->height;
-	OUTPUT:
-		RETVAL
-
-int
-SMPEGInfoCurrentFrame ( info )
-	SMPEG_Info* info
-	CODE:
-		RETVAL = info->current_frame;
-	OUTPUT:
-		RETVAL
-
-double
-SMPEGInfoCurrentFPS ( info )
-	SMPEG_Info* info
-	CODE:
-		RETVAL = info->current_fps;
-	OUTPUT:
-		RETVAL
-
-int
-SMPEGInfoCurrentAudioFrame ( info )
-	SMPEG_Info* info
-	CODE:
-		RETVAL = info->audio_current_frame;
-	OUTPUT:
-		RETVAL
-
-int
-SMPEGInfoCurrentOffset ( info )
-	SMPEG_Info* info
-	CODE:
-		RETVAL = info->current_offset;
-	OUTPUT:
-		RETVAL
-
-int
-SMPEGInfoTotalSize ( info )
-	SMPEG_Info* info
-	CODE:
-		RETVAL = info->total_size;
-	OUTPUT:
-		RETVAL
-
-double
-SMPEGInfoCurrentTime ( info )
-	SMPEG_Info* info
-	CODE:
-		RETVAL = info->current_time;
-	OUTPUT:
-		RETVAL
-
-double
-SMPEGInfoTotalTime ( info )
-	SMPEG_Info* info
-	CODE:
-		RETVAL = info->total_time;
-	OUTPUT:
-		RETVAL
 
 char *
 SMPEGError ( mpeg )
@@ -134,20 +38,22 @@ NewSMPEG ( filename, info, use_audio )
 	char* filename
 	SMPEG_Info* info
 	int use_audio
+	PREINIT:
+		char* CLASS = "SDL::SMPEG";
 	CODE:	
-/*#ifdef HAVE_SDL_MIXER */
-/*		RETVAL = SMPEG_new(filename,info,0); */
-/*#else */
+#ifdef HAVE_SDL_MIXER
+		RETVAL = SMPEG_new(filename,info,0); 
+#else 
 		RETVAL = SMPEG_new(filename,info,use_audio);
-/*#endif */
+#endif 
 	OUTPUT:
 		RETVAL
 
 void
 FreeSMPEG ( mpeg )
-	SMPEG* mpeg
+	SV* mpeg
 	CODE:
-		SMPEG_delete(mpeg);
+		objDESTROY(mpeg, (void (*)(void *))SMPEG_delete);
 
 void
 SMPEGEnableAudio ( mpeg , flag )
@@ -174,12 +80,12 @@ SMPEGSetVolume ( mpeg , volume )
 		SMPEG_setvolume(mpeg,volume);
 
 void
-SMPEGSetDisplay ( mpeg, dest, surfLock )
+SMPEGSetDisplay ( mpeg, dest, callback )
 	SMPEG* mpeg
 	SDL_Surface* dest
-	SDL_mutex*  surfLock
+	SV* callback
 	CODE:
-		SMPEG_setdisplay(mpeg,dest,surfLock,NULL);
+		SMPEG_setdisplay(mpeg,dest,NULL,(void*)&smpeg_display_callback);
 
 void
 SMPEGScaleXY ( mpeg, w, h)
@@ -284,6 +190,8 @@ SMPEGRenderFrame ( mpeg, frame )
 SMPEG_Info *
 SMPEGGetInfo ( mpeg )
 	SMPEG* mpeg
+	PREINIT:
+		char* CLASS = "SDL::SMPEG::Info";
 	CODE:
 		RETVAL = (SMPEG_Info *) safemalloc (sizeof(SMPEG_Info));
 		SMPEG_getinfo(mpeg,RETVAL);

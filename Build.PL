@@ -17,7 +17,7 @@ This Release breaks back compatibility support with versions 2.4x and below
 **************************************************************************
 BROKENMSG
 
-### we need the platform-specific module
+### We need the platform-specific module
 my %platforms = (
 	MSWin32     => 'Windows',
 	MacOS       => 'Darwin',
@@ -31,13 +31,13 @@ my %platforms = (
 	solaris     => 'Unix',
 );
 my $package = 'My::Builder::' . ( $platforms{$^O} || 'Unix' );
-print "Gonna use '$package' class ...\n";
+print "Using '$package' class ...\n";
 eval "require $package" or Carp::confess "Require '$package' failed: $@\n";
 
-### subsystems to build
+### Subsystems to build
 #    <subsystem>
 #        <file> = hash of the following 2 values:
-#	     <from> = location of source file
+#            <from> = location of source file
 #            <to>   = location of build file to get name right
 #        <libraries> = list reqiured libraries, names the same as keys to hash %libraries
 my %subsystems = (
@@ -392,13 +392,20 @@ my %subsystems = (
 		libraries => [qw( SDL SDL_image )],
 	},
 
-	#	SMPEG => {
-	#		file	=> {
-	#			from => 'src/SMPEG.xs',
-	#			to   =>	'lib/SDL/SMPEG.xs',
-	#		},
-	#		libraries => [qw( SDL smpeg)],
-	#	},
+	SMPEG => {
+			file	=> {
+				from => 'src/SMPEG.xs',
+				to   =>	'lib/SDL/SMPEG.xs',
+			},
+			libraries => [qw( SDL smpeg)],
+		},
+	MPEG => {
+			file	=> {
+				from => 'src/SMPEG/Info.xs',
+				to   =>	'lib/SDL/SMPEG/Info.xs',
+			},
+			libraries => [qw( SDL smpeg)],
+		},
 	Pango => {
 		file => {
 			from => 'src/Pango/Pango.xs',
@@ -445,7 +452,7 @@ my %subsystems = (
 
 );
 
-### external libraries
+### External libraries
 #    <library name> = symbolic library name
 #        <define> = value that will be used as -D<value> option when compiling XS code
 #        <header> = header related to the library that will be used for avalability detection,
@@ -548,12 +555,13 @@ my %libraries = (
 	},
 );
 
-### mangle the compilable files into a format Module::Build can understand
+### Mangle the compilable files into a format Module::Build can understand
 my %xs =
 	map { $subsystems{$_}{file}{from} => $subsystems{$_}{file}{to} }
 	keys %subsystems;
 
-### stadard Module::Build stuff
+### Standard Module::Build stuff
+$My::Builder::config = $My::Builder::config; # Prevent a warning
 my $build = $package->new(
 	module_name        => 'SDL',
 	dist_name          => 'SDL',
@@ -606,24 +614,24 @@ my $build = $package->new(
 warn "###WARNING### Alien::SDL seems to be broken"
 	unless Alien::SDL->config('prefix');
 
-### see which subsystems can be built -- do we have headers for them?
-print "Gonna autodetect available libraries ...\n";
+### See which subsystems can be built -- do we have headers for them?
+print "Detecting available libraries ...\n";
 my $build_systems = $build->find_subsystems( \%subsystems, \%libraries );
 my $lib_translate = $build->translate_table( \%subsystems, \%libraries );
 
-### save info about available subsystems for future SDL::ConfigData
-print "Gonna write config_data ...\n";
+### Save info about available subsystems for future SDL::ConfigData
+print "Writing config_data ...\n";
 $build->config_data( 'SDL_cfg',           $build_systems );
 $build->config_data( 'SDL_lib_translate', $lib_translate );
 $build->config_data( 'subsystems',        \%subsystems );
 $build->config_data( 'libraries',         \%libraries );
 
-### something that was originally special to MacOS/Darwin
+### Something that was originally special to MacOS/Darwin
 # somebody MacOS/Darwin friendly should review whether it is still necessary
 $build->special_build_settings();
 
-### get some info into M::B notes
-print "Gonna save some info to 'notes' ...\n";
+### Get some info into M::B notes
+print "Saving some info to 'notes' ...\n";
 $build->notes( 'subsystems',    \%subsystems );
 $build->notes( 'libraries',     \%libraries );
 $build->notes( 'build_systems', $build_systems );

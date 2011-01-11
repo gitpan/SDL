@@ -30,7 +30,7 @@ provides:
     file: lib/Module/Build/SDL.pm
   SDL:
     file: lib/SDL.pm
-    version: 2.526
+    version: 2.526_1
   SDL::Audio:
     file: lib/SDL/Audio.pm
   SDL::AudioCVT:
@@ -75,8 +75,6 @@ provides:
     file: lib/SDL/Internal/Loader.pm
   SDL::Joystick:
     file: lib/SDL/Joystick.pm
-  SDL::MPEG:
-    file: lib/SDL/MPEG.pm
   SDL::Mixer:
     file: lib/SDL/Mixer.pm
   SDL::Mixer::Channels:
@@ -121,6 +119,8 @@ provides:
     file: lib/SDL/Rect.pm
   SDL::SMPEG:
     file: lib/SDL/SMPEG.pm
+  SDL::SMPEG::Info:
+    file: lib/SDL/SMPEG/Info.pm
   SDL::Surface:
     file: lib/SDL/Surface.pm
   SDL::TTF:
@@ -191,4 +191,4 @@ resources:
   bugtracker: http://sdlperl.ath.cx/projects/SDLPerl
   license: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt
   repository: http://github.com/PerlGameDev/SDL
-version: 2.526
+version: 2.526_1
