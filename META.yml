@@ -7,7 +7,7 @@ build_requires:
   Capture::Tiny: 0
   ExtUtils::CBuilder: 0
   File::Find: 0
-  File::ShareDir: 0
+  File::ShareDir: 1.0
   Test::Most: 0.21
   Test::Simple: 0.88
   Tie::Simple: 0
@@ -16,10 +16,10 @@ configure_requires:
   Capture::Tiny: 0
   ExtUtils::CBuilder: 0.260301
   File::Find: 0
-  File::ShareDir: 0
+  File::ShareDir: 1.0
   Module::Build: 0.36
   Tie::Simple: 0
-generated_by: 'Module::Build version 0.3607'
+generated_by: 'Module::Build version 0.3624'
 license: lgpl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -30,7 +30,7 @@ provides:
     file: lib/Module/Build/SDL.pm
   SDL:
     file: lib/SDL.pm
-    version: 2.530
+    version: 2.531
   SDL::Audio:
     file: lib/SDL/Audio.pm
   SDL::AudioCVT:
@@ -186,10 +186,11 @@ provides:
     file: lib/SDLx/Validate.pm
 requires:
   CPAN: 1.92
+  File::ShareDir: 1.0
   Tie::Simple: 0
   perl: 5.008009
 resources:
   bugtracker: http://sdlperl.ath.cx/projects/SDLPerl
   license: http://opensource.org/licenses/lgpl-license.php
   repository: http://github.com/PerlGameDev/SDL
-version: 2.530
+version: 2.531

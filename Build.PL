@@ -6,7 +6,6 @@
 
 use strict;
 use warnings;
-use 5.008009;
 use Carp;
 
 use lib 'inc';
@@ -562,7 +561,7 @@ my %xs =
 	keys %subsystems;
 
 ### Standard Module::Build stuff
-$My::Builder::config = $My::Builder::config; # Prevent a warning
+$My::Builder::config = $My::Builder::config;       # Prevent a warning
 my $build = $package->new(
 	module_name        => 'SDL',
 	dist_name          => 'SDL',
@@ -572,7 +571,7 @@ my $build = $package->new(
 		'ExtUtils::CBuilder' => '0.260301',
 		'Alien::SDL'         => '1.424',
 		'File::Find'         => '0',
-		'File::ShareDir'     => '0',
+		'File::ShareDir'     => '1.0',
 		'Tie::Simple'        => '0',
 		'Capture::Tiny'      => '0',
 	},
@@ -582,18 +581,19 @@ my $build = $package->new(
 		'Test::Most'        => '0.21',
 		'Alien::SDL'        => '1.424',
 		'File::Find'        => '0',
-		'File::ShareDir'    => '0',
-		'Tie::Simple'       => '0'
+		'File::ShareDir'    => '1.0',
+		'Tie::Simple'       => '0',
 	},
 	requires => {
-		'Tie::Simple' => '0',
-		'CPAN'        => '1.92',
-		'perl'		  => '5.008009'
+		'Tie::Simple'    => '0',
+		'File::ShareDir' => '1.0',
+		'CPAN'           => '1.92',
+		'perl'           => '5.008009',
 	},
+	share_dir => 'share',
 
 	build_recommends => {
-		'Pod::ToDemo' => '0.20'
-
+		'Pod::ToDemo' => '0.20',
 	},
 	config   => $My::Builder::config,
 	c_source => 'src',

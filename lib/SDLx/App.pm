@@ -18,6 +18,7 @@ use SDL::Surface;
 use SDL::PixelFormat;
 use SDLx::Surface;
 use Data::Dumper;
+use Scalar::Util 'refaddr';
 use base qw/SDLx::Surface SDLx::Controller/;
 
 sub new {
@@ -209,6 +210,13 @@ sub _exit_on_quit {
 
     $app->stop() if $event->type == SDL_QUIT;
 
+}
+
+my %_stash;
+sub stash :lvalue{	
+    my $ref = refaddr($_[0]);
+	$_stash{ $ref } = {} unless $_stash{ $ref };
+	return $_stash{ $ref } 
 }
 
 1;
