@@ -3,6 +3,7 @@ use SDL;
 use SDL::Video;
 use SDL::Config;
 use SDL::TTF;
+use SDL::TTF::Font;
 use SDLx::Validate;
 
 use Carp ();
@@ -126,8 +127,9 @@ sub text {
 		or Carp::croak 'TTF rendering error: ' . SDL::get_error;
 
 	$self->{surface} = $surface;
-	$self->{w} = $surface->w;
-	$self->{h} = $surface->h;
+	my $arr =  SDL::TTF::size_utf8( $self->{_font}, $text );
+	$self->{w} = $arr->[0];
+	$self->{h} = $arr->[1];
 
 	return $self;
 }
