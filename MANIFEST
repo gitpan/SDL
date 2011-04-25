@@ -11,6 +11,7 @@ examples/pixel_operations/sols/ch02.pl
 examples/pixel_operations/starry.pl
 examples/pixel_operations/tie_matrix.pl
 examples/SDLx/app.pl
+examples/SDLx/music.pl
 examples/SDLx/pong.pl
 examples/SDLx/SDLx_C_Interface.pl
 examples/SDLx/SDLx_controller_two_squares.pl
@@ -83,6 +84,7 @@ lib/pods/SDLx/Controller/Interface.pod
 lib/pods/SDLx/Controller/State.pod
 lib/pods/SDLx/Layer.pod
 lib/pods/SDLx/LayerManager.pod
+lib/pods/SDLx/Music.pod
 lib/pods/SDLx/Rect.pod
 lib/pods/SDLx/SFont.pod
 lib/pods/SDLx/Sound.pod
@@ -156,6 +158,9 @@ lib/SDLx/Controller/Timer.pm
 lib/SDLx/FPS.pm
 lib/SDLx/Layer.pm
 lib/SDLx/LayerManager.pm
+lib/SDLx/Music.pm
+lib/SDLx/Music/Data.pm
+lib/SDLx/Music/Default.pm
 lib/SDLx/Rect.pm
 lib/SDLx/SFont.pm
 lib/SDLx/Sound.pm
@@ -302,7 +307,9 @@ t/sdlgamerect.t
 t/sdlx_app.t
 t/sdlx_controller.t
 t/sdlx_controller_interface.t
+t/sdlx_fps.t
 t/sdlx_layermanager.t
+t/sdlx_music.t
 t/sdlx_sfont.t
 t/sdlx_sound.t
 t/sdlx_sprite.t
