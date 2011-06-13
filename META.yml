@@ -20,7 +20,7 @@ configure_requires:
   File::ShareDir: 1.0
   Module::Build: 0.36
   Tie::Simple: 0
-generated_by: 'Module::Build version 0.3603'
+generated_by: 'Module::Build version 0.3607'
 license: lgpl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -31,7 +31,7 @@ provides:
     file: lib/Module/Build/SDL.pm
   SDL:
     file: lib/SDL.pm
-    version: 2.533
+    version: 2.534_01
   SDL::Audio:
     file: lib/SDL/Audio.pm
   SDL::AudioCVT:
@@ -199,6 +199,6 @@ requires:
   perl: 5.008000
 resources:
   bugtracker: http://sdlperl.ath.cx/projects/SDLPerl
-  license: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt
+  license: http://opensource.org/licenses/lgpl-license.php
   repository: http://github.com/PerlGameDev/SDL
-version: 2.533
+version: 2.534_01
