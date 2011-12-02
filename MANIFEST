@@ -19,6 +19,11 @@ examples/SDLx/SDLx_LayerManager_Chess.pl
 examples/SDLx/SDLx_Sound.pl
 examples/SDLx/SDLx_sprite.pl
 examples/SDLx/SDLx_sprite_animated.pl
+examples/SDLx/SDLx_text.pl
+examples/SDLx/SDLx_text_shadow.pl
+examples/SDLx/SDLx_text_styles.pl
+examples/SDLx/SDLx_text_wordwrap.pl
+examples/SDLx/SDLx_text_zoom.pl
 inc/My/Builder.pm
 inc/My/Builder/Darwin.pm
 inc/My/Builder/Unix.pm
@@ -177,7 +182,6 @@ MacOSX/main.c
 MacOSX/Makefile.test
 MacOSX/SDLPerl.icns
 MANIFEST			This list of files
-META.yml
 OFL-FAQ.txt
 OFL.txt
 README
@@ -310,6 +314,7 @@ t/sdlx_controller_interface.t
 t/sdlx_fps.t
 t/sdlx_layermanager.t
 t/sdlx_music.t
+t/sdlx_rect.t
 t/sdlx_sfont.t
 t/sdlx_sound.t
 t/sdlx_sprite.t
@@ -349,4 +354,5 @@ test/data/wood_dark.png
 test/data/wood_light.png
 TODO
 typemap
+META.yml
 META.json

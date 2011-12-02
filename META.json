@@ -55,7 +55,7 @@
       },
       "SDL" : {
          "file" : "lib/SDL.pm",
-         "version" : "2.535_01"
+         "version" : "2.535_02"
       },
       "SDL::Audio" : {
          "file" : "lib/SDL/Audio.pm",
@@ -380,11 +380,11 @@
          "web" : "http://sdlperl.ath.cx/projects/SDLPerl"
       },
       "license" : [
-         "http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt"
+         "http://opensource.org/licenses/lgpl-license.php"
       ],
       "repository" : {
          "url" : "http://github.com/PerlGameDev/SDL"
       }
    },
-   "version" : "2.535_01"
+   "version" : "2.535_02"
 }

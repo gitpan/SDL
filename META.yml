@@ -1,5 +1,5 @@
 ---
-abstract: 'SDL bindings to Perl'
+abstract: SDL bindings to Perl
 author:
   - 'Kartik Thakore <KTHAKORE@cpan.org>'
 build_requires:
@@ -33,7 +33,7 @@ provides:
     version: 0
   SDL:
     file: lib/SDL.pm
-    version: 2.535_01
+    version: 2.535_02
   SDL::Audio:
     file: lib/SDL/Audio.pm
     version: 0
@@ -279,6 +279,6 @@ requires:
   perl: 5.008000
 resources:
   bugtracker: http://sdlperl.ath.cx/projects/SDLPerl
-  license: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt
+  license: http://opensource.org/licenses/lgpl-license.php
   repository: http://github.com/PerlGameDev/SDL
-version: 2.535_01
+version: 2.535_02
