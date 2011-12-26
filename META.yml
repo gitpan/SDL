@@ -1,5 +1,5 @@
 ---
-abstract: SDL bindings to Perl
+abstract: 'SDL bindings to Perl'
 author:
   - 'Kartik Thakore <KTHAKORE@cpan.org>'
 build_requires:
@@ -21,7 +21,7 @@ configure_requires:
   Module::Build: 0.38
   Tie::Simple: 0
 dynamic_config: 1
-generated_by: 'Module::Build version 0.38, CPAN::Meta::Converter version 2.110930'
+generated_by: 'Module::Build version 0.38, CPAN::Meta::Converter version 2.112150'
 license: open_source
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -33,7 +33,7 @@ provides:
     version: 0
   SDL:
     file: lib/SDL.pm
-    version: 2.535_03
+    version: 2.535_04
   SDL::Audio:
     file: lib/SDL/Audio.pm
     version: 0
@@ -281,4 +281,4 @@ resources:
   bugtracker: http://sdlperl.ath.cx/projects/SDLPerl
   license: http://opensource.org/licenses/lgpl-license.php
   repository: http://github.com/PerlGameDev/SDL
-version: 2.535_03
+version: 2.535_04

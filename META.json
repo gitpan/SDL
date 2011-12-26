@@ -4,7 +4,7 @@
       "Kartik Thakore <KTHAKORE@cpan.org>"
    ],
    "dynamic_config" : 1,
-   "generated_by" : "Module::Build version 0.38, CPAN::Meta::Converter version 2.110930",
+   "generated_by" : "Module::Build version 0.38, CPAN::Meta::Converter version 2.112150",
    "license" : [
       "open_source"
    ],
@@ -55,7 +55,7 @@
       },
       "SDL" : {
          "file" : "lib/SDL.pm",
-         "version" : "2.535_03"
+         "version" : "2.535_04"
       },
       "SDL::Audio" : {
          "file" : "lib/SDL/Audio.pm",
@@ -386,5 +386,5 @@
          "url" : "http://github.com/PerlGameDev/SDL"
       }
    },
-   "version" : "2.535_03"
+   "version" : "2.535_04"
 }

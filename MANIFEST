@@ -182,6 +182,7 @@ MacOSX/main.c
 MacOSX/Makefile.test
 MacOSX/SDLPerl.icns
 MANIFEST			This list of files
+META.yml
 OFL-FAQ.txt
 OFL.txt
 README
@@ -354,5 +355,4 @@ test/data/wood_dark.png
 test/data/wood_light.png
 TODO
 typemap
-META.yml
 META.json
