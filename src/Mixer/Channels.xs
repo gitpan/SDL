@@ -28,32 +28,20 @@ static SV * cb = (SV*)NULL;
 
 void callback(int channel)
 {
-	ENTER_TLS_CONTEXT;
+	PERL_SET_CONTEXT(parent_perl);
 	dSP;
 	ENTER;
 	SAVETMPS;
 
 	PUSHMARK(SP);
-	XPUSHs(sv_2mortal(newSViv(PERL_GET_CONTEXT == parent_perl ? channel : channel + 10)));
+	XPUSHs(sv_2mortal(newSViv(channel)));
 	PUTBACK;
 
 	if(cb)
-	{
-		if(PERL_GET_CONTEXT == parent_perl)
-			call_sv(cb, G_VOID);
-		else
-		{
-			CLONE_PARAMS clone_params;
-			clone_params.stashes = newAV();
-			clone_params.flags   = CLONEf_KEEP_PTR_TABLE;
-			call_sv(sv_dup(cb, &clone_params), G_VOID);
-		}
-	}
+		call_sv(cb, G_VOID);
 
 	FREETMPS;
 	LEAVE;
-
-	LEAVE_TLS_CONTEXT;
 }
 #endif
 

@@ -33,7 +33,7 @@ provides:
     version: 0
   SDL:
     file: lib/SDL.pm
-    version: 2.535_07
+    version: 2.536
   SDL::Audio:
     file: lib/SDL/Audio.pm
     version: 0
@@ -281,4 +281,4 @@ resources:
   bugtracker: http://sdlperl.ath.cx/projects/SDLPerl
   license: http://opensource.org/licenses/lgpl-license.php
   repository: http://github.com/PerlGameDev/SDL
-version: 2.535_07
+version: 2.536
