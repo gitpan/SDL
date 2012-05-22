@@ -70,6 +70,7 @@ lib/pods/SDL/Palette.pod
 lib/pods/SDL/Pango.pod
 lib/pods/SDL/Pango/Context.pod
 lib/pods/SDL/PixelFormat.pod
+lib/pods/SDL/Platform.pod
 lib/pods/SDL/Rect.pod
 lib/pods/SDL/RWOps.pod
 lib/pods/SDL/SMPEG.pod
@@ -347,7 +348,9 @@ test/data/picture.bmp
 test/data/picture.jpg
 test/data/picture.tif
 test/data/README
+test/data/sample.ogg
 test/data/sample.wav
+test/data/silence.ogg
 test/data/silence.wav
 test/data/test-mpeg.mpg
 test/data/tribe_i.wav
