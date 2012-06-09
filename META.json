@@ -34,7 +34,7 @@
             "ExtUtils::CBuilder" : "0.260301",
             "File::Find" : "0",
             "File::ShareDir" : "1.0",
-            "Module::Build" : "0.4",
+            "Module::Build" : "0",
             "Tie::Simple" : "0"
          }
       },
@@ -55,7 +55,7 @@
       },
       "SDL" : {
          "file" : "lib/SDL.pm",
-         "version" : "2.541_01"
+         "version" : "2.541_02"
       },
       "SDL::Audio" : {
          "file" : "lib/SDL/Audio.pm",
@@ -386,5 +386,5 @@
          "url" : "http://github.com/PerlGameDev/SDL"
       }
    },
-   "version" : "2.541_01"
+   "version" : "2.541_02"
 }
