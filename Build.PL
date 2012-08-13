@@ -229,7 +229,7 @@ my %subsystems = (
 			to   => 'lib/SDLx/Layer.xs',
 		},
 		libraries => [qw( SDL SDL_image )],
-		load_libs => [qw( png jpeg tiff )],
+		load_libs => [qw( z png jpeg tiff )],
 	},
 	AudioSpec => {
 		file => {
@@ -392,7 +392,7 @@ my %subsystems = (
 			to   => 'lib/SDL/Image.xs',
 		},
 		libraries => [qw( SDL SDL_image )],
-		load_libs => [qw( png jpeg tiff )],
+		load_libs => [qw( z png jpeg tiff )],
 	},
 	SFont => {
 		file => {
@@ -400,7 +400,7 @@ my %subsystems = (
 			to   => 'lib/SDLx/SFont.xs',
 		},
 		libraries => [qw( SDL SDL_image )],
-		load_libs => [qw( png jpeg tiff )],
+		load_libs => [qw( z png jpeg tiff )],
 	},
 
 	#	SMPEG => {
@@ -531,6 +531,11 @@ my %libraries = (
 		header => 'SDL_Pango.h',
 		lib    => 'SDL_Pango',
 	},
+	z => {
+		define => 'HAVE_Z',
+		header => 'zlib.h',
+		lib    => 'z',
+	},
 	png => {
 		define => 'HAVE_PNG',
 		header => 'png.h',
@@ -589,7 +594,7 @@ my $build = $package->new(
 	configure_requires => {
 		'Module::Build'      => '0',
 		'ExtUtils::CBuilder' => '0.260301',
-		'Alien::SDL'         => '1.437_2',
+		'Alien::SDL'         => '1.438',
 		'File::Find'         => '0',
 		'File::ShareDir'     => '1.0',
 		'Tie::Simple'        => '0',
@@ -599,7 +604,7 @@ my $build = $package->new(
 		'Test::Simple'   => '0.88',
 		'Capture::Tiny'  => '0',
 		'Test::Most'     => '0.21',
-		'Alien::SDL'     => '1.437_2',
+		'Alien::SDL'     => '1.438',
 		'File::Find'     => '0',
 		'File::ShareDir' => '1.0',
 		'Tie::Simple'    => '0',

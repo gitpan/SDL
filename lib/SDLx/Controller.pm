@@ -12,7 +12,7 @@ use SDLx::Controller::Interface;
 use SDLx::Controller::State;
 use Scalar::Util 'refaddr';
 
-our $VERSION = '2.541_09';
+our $VERSION = '2.541_10';
 $VERSION = eval $VERSION;
 
 # inside out, so this can work as the superclass of another class
@@ -165,11 +165,11 @@ sub _pause {
 		SDL::Events::pump_events(); # don't know if we need this
 		SDL::Events::wait_event($event) or Carp::confess("pause failed waiting for an event");
 		$stop_handler->( $event, $self ) if $stop_handler;
-		} until $_stop{$ref}        # stop set by stop_handler
-			or !$callback
-			or $callback->( $event, $self )
-			or $_stop{$ref}         # stop set by callback
-	;
+		} until $_stop{$ref} # stop set by stop_handler
+		or !$callback
+		or $callback->( $event, $self )
+		or $_stop{$ref}      # stop set by callback
+		;
 }
 
 sub pause {
@@ -278,15 +278,15 @@ sub remove_all_handlers {
 }
 
 sub remove_all_move_handlers {
-	$_move_handlers{ refaddr $_[0] } = [];
+	@{ $_move_handlers{ refaddr $_[0] } } = ();
 }
 
 sub remove_all_event_handlers {
-	$_event_handlers{ refaddr $_[0] } = [];
+	@{ $_event_handlers{ refaddr $_[0] } } = ();
 }
 
 sub remove_all_show_handlers {
-	$_show_handlers{ refaddr $_[0] } = [];
+	@{ $_show_handlers{ refaddr $_[0] } } = ();
 }
 
 sub move_handlers  { $_move_handlers{ refaddr $_[0] } }
