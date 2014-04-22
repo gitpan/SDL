@@ -70,23 +70,25 @@ const SDL_version *
 mixer_linked_version ()
 	PREINIT:
 		char* CLASS = "SDL::Version";
-		SDL_version *version, *version_dont_free;
+		SDL_version *version;
 	CODE:
-		version           = (SDL_version *)safemalloc( sizeof(SDL_version) );
-		version_dont_free = (SDL_version *)Mix_Linked_Version();
-		version->major    = version_dont_free->major;
-		version->minor    = version_dont_free->minor;
-		version->patch    = version_dont_free->patch;
-		RETVAL            = version;
+		version = (SDL_version *) safemalloc ( sizeof(SDL_version) );
+		SDL_version* version_dont_free = (SDL_version *)Mix_Linked_Version();
+
+		version->major = version_dont_free->major;
+		version->minor = version_dont_free->minor;
+		version->patch = version_dont_free->patch;
+		RETVAL = version;
 	OUTPUT:
 		RETVAL
+
 
 int
 mixer_open_audio ( frequency, format, channels, chunksize )
 	int frequency
 	Uint16 format
 	int channels
-	int chunksize
+	int chunksize	
 	CODE:
 		RETVAL = Mix_OpenAudio(frequency, format, channels, chunksize);
 	OUTPUT:
@@ -96,6 +98,8 @@ void
 mixer_close_audio ()
 	CODE:
 		Mix_CloseAudio();
+
+
 
 AV *
 mixer_query_spec ()

@@ -3,7 +3,7 @@ abstract: 'SDL bindings to Perl'
 author:
   - 'Kartik Thakore <KTHAKORE@cpan.org>'
 build_requires:
-  Alien::SDL: 1.438
+  Alien::SDL: 1.442
   Capture::Tiny: 0
   ExtUtils::CBuilder: 0
   File::Find: 0
@@ -13,15 +13,15 @@ build_requires:
   Test::Simple: 0.88
   Tie::Simple: 0
 configure_requires:
-  Alien::SDL: 1.438
+  Alien::SDL: 1.442
   Capture::Tiny: 0
   ExtUtils::CBuilder: 0.260301
   File::Find: 0
   File::ShareDir: 1.0
-  Module::Build: 0
+  Module::Build: 0.40
   Tie::Simple: 0
 dynamic_config: 1
-generated_by: 'Module::Build version 0.4, CPAN::Meta::Converter version 2.120921'
+generated_by: 'Module::Build version 0.4001, CPAN::Meta::Converter version 2.112621'
 license: open_source
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -30,247 +30,247 @@ name: SDL
 provides:
   Module::Build::SDL:
     file: lib/Module/Build/SDL.pm
-    version: 2.541_10
+    version: 0
   SDL:
     file: lib/SDL.pm
-    version: 2.541_10
+    version: 2.542
   SDL::Audio:
     file: lib/SDL/Audio.pm
-    version: 2.541_10
+    version: 0
   SDL::AudioCVT:
     file: lib/SDL/AudioCVT.pm
-    version: 2.541_10
+    version: 0
   SDL::AudioSpec:
     file: lib/SDL/AudioSpec.pm
-    version: 2.541_10
+    version: 0
   SDL::CD:
     file: lib/SDL/CD.pm
-    version: 2.541_10
+    version: 0
   SDL::CDROM:
     file: lib/SDL/CDROM.pm
-    version: 2.541_10
+    version: 0
   SDL::CDTrack:
     file: lib/SDL/CDTrack.pm
-    version: 2.541_10
+    version: 0
   SDL::Color:
     file: lib/SDL/Color.pm
-    version: 2.541_10
+    version: 0
   SDL::Config:
     file: lib/SDL/Config.pm
-    version: 2.541_10
+    version: 0
   SDL::Constants:
     file: lib/SDL/Constants.pm
-    version: 2.541_10
+    version: 0
   SDL::Cursor:
     file: lib/SDL/Cursor.pm
-    version: 2.541_10
+    version: 0
   SDL::Event:
     file: lib/SDL/Event.pm
-    version: 2.541_10
+    version: 0
   SDL::Events:
     file: lib/SDL/Events.pm
-    version: 2.541_10
+    version: 0
   SDL::GFX:
     file: lib/SDL/GFX.pm
-    version: 2.541_10
+    version: 0
   SDL::GFX::BlitFunc:
     file: lib/SDL/GFX/BlitFunc.pm
-    version: 2.541_10
+    version: 0
   SDL::GFX::FPSManager:
     file: lib/SDL/GFX/FPSManager.pm
-    version: 2.541_10
+    version: 0
   SDL::GFX::Framerate:
     file: lib/SDL/GFX/Framerate.pm
-    version: 2.541_10
+    version: 0
   SDL::GFX::ImageFilter:
     file: lib/SDL/GFX/ImageFilter.pm
-    version: 2.541_10
+    version: 0
   SDL::GFX::Primitives:
     file: lib/SDL/GFX/Primitives.pm
-    version: 2.541_10
+    version: 0
   SDL::GFX::Rotozoom:
     file: lib/SDL/GFX/Rotozoom.pm
-    version: 2.541_10
+    version: 0
   SDL::Image:
     file: lib/SDL/Image.pm
-    version: 2.541_10
+    version: 0
   SDL::Internal::Loader:
     file: lib/SDL/Internal/Loader.pm
-    version: 2.541_10
+    version: 0
   SDL::Joystick:
     file: lib/SDL/Joystick.pm
-    version: 2.541_10
+    version: 0
   SDL::Mixer:
     file: lib/SDL/Mixer.pm
-    version: 2.541_10
+    version: 0
   SDL::Mixer::Channels:
     file: lib/SDL/Mixer/Channels.pm
-    version: 2.541_10
+    version: 0
   SDL::Mixer::Effects:
     file: lib/SDL/Mixer/Effects.pm
-    version: 2.541_10
+    version: 0
   SDL::Mixer::Groups:
     file: lib/SDL/Mixer/Groups.pm
-    version: 2.541_10
+    version: 0
   SDL::Mixer::MixChunk:
     file: lib/SDL/Mixer/MixChunk.pm
-    version: 2.541_10
+    version: 0
   SDL::Mixer::MixMusic:
     file: lib/SDL/Mixer/MixMusic.pm
-    version: 2.541_10
+    version: 0
   SDL::Mixer::Music:
     file: lib/SDL/Mixer/Music.pm
-    version: 2.541_10
+    version: 0
   SDL::Mixer::Samples:
     file: lib/SDL/Mixer/Samples.pm
-    version: 2.541_10
+    version: 0
   SDL::Mouse:
     file: lib/SDL/Mouse.pm
-    version: 2.541_10
+    version: 0
   SDL::MultiThread:
     file: lib/SDL/MultiThread.pm
-    version: 2.541_10
+    version: 0
   SDL::Net:
     file: lib/SDL/Net.pm
-    version: 2.541_10
+    version: 0
   SDL::Net::IPaddress:
     file: lib/SDL/Net/IPaddress.pm
-    version: 2.541_10
+    version: 0
   SDL::Net::TCP:
     file: lib/SDL/Net/TCP.pm
-    version: 2.541_10
+    version: 0
   SDL::Net::UDP:
     file: lib/SDL/Net/UDP.pm
-    version: 2.541_10
+    version: 0
   SDL::Overlay:
     file: lib/SDL/Overlay.pm
-    version: 2.541_10
+    version: 0
   SDL::Palette:
     file: lib/SDL/Palette.pm
-    version: 2.541_10
+    version: 0
   SDL::Pango:
     file: lib/SDL/Pango.pm
-    version: 2.541_10
+    version: 0
   SDL::Pango::Context:
     file: lib/SDL/Pango/Context.pm
-    version: 2.541_10
+    version: 0
   SDL::PixelFormat:
     file: lib/SDL/PixelFormat.pm
-    version: 2.541_10
+    version: 0
   SDL::RWOps:
     file: lib/SDL/RWOps.pm
-    version: 2.541_10
+    version: 0
   SDL::Rect:
     file: lib/SDL/Rect.pm
-    version: 2.541_10
+    version: 0
   SDL::SMPEG:
     file: lib/SDL/SMPEG.pm
-    version: 2.541_10
+    version: 0
   SDL::SMPEG::Info:
     file: lib/SDL/SMPEG/Info.pm
-    version: 2.541_10
+    version: 0
   SDL::Surface:
     file: lib/SDL/Surface.pm
-    version: 2.541_10
+    version: 0
   SDL::TTF:
     file: lib/SDL/TTF.pm
-    version: 2.541_10
+    version: 0
   SDL::TTF::Font:
     file: lib/SDL/TTF/Font.pm
-    version: 2.541_10
+    version: 0
   SDL::TTFont:
     file: lib/SDL/TTFont.pm
-    version: 2.541_10
+    version: 0
   SDL::Time:
     file: lib/SDL/Time.pm
-    version: 2.541_10
+    version: 0
   SDL::Tutorial:
     file: lib/SDL/Tutorial.pm
-    version: 2.541_10
+    version: 0
   SDL::Tutorial::Animation:
     file: lib/SDL/Tutorial/Animation.pm
-    version: 2.541_10
+    version: 0
   SDL::Tutorial::LunarLander:
     file: lib/SDL/Tutorial/LunarLander.pm
-    version: 2.541_10
+    version: 0
   SDL::Version:
     file: lib/SDL/Version.pm
-    version: 2.541_10
+    version: 0
   SDL::Video:
     file: lib/SDL/Video.pm
-    version: 2.541_10
+    version: 0
   SDL::VideoInfo:
     file: lib/SDL/VideoInfo.pm
-    version: 2.541_10
+    version: 0
   SDL_perl:
     file: lib/SDL_perl.pm
-    version: 2.541_10
+    version: 0
   SDLx::App:
     file: lib/SDLx/App.pm
-    version: 2.541_10
+    version: 0
   SDLx::Controller:
     file: lib/SDLx/Controller.pm
-    version: 2.541_10
+    version: 0
   SDLx::Controller::Interface:
     file: lib/SDLx/Controller/Interface.pm
-    version: 2.541_10
+    version: 0
   SDLx::Controller::State:
     file: lib/SDLx/Controller/State.pm
-    version: 2.541_10
+    version: 0
   SDLx::Controller::Timer:
     file: lib/SDLx/Controller/Timer.pm
-    version: 2.541_10
+    version: 0
   SDLx::FPS:
     file: lib/SDLx/FPS.pm
-    version: 2.541_10
+    version: 0
   SDLx::Layer:
     file: lib/SDLx/Layer.pm
-    version: 2.541_10
+    version: 0
   SDLx::LayerManager:
     file: lib/SDLx/LayerManager.pm
-    version: 2.541_10
+    version: 0
   SDLx::Music:
     file: lib/SDLx/Music.pm
-    version: 2.541_10
+    version: 0
   SDLx::Music::Data:
     file: lib/SDLx/Music/Data.pm
-    version: 2.541_10
+    version: 0
   SDLx::Music::Default:
     file: lib/SDLx/Music/Default.pm
-    version: 2.541_10
+    version: 0
   SDLx::Rect:
     file: lib/SDLx/Rect.pm
-    version: 2.541_10
+    version: 0.01
   SDLx::SFont:
     file: lib/SDLx/SFont.pm
-    version: 2.541_10
+    version: 0
   SDLx::Sound:
     file: lib/SDLx/Sound.pm
-    version: 2.541_10
+    version: 0
   SDLx::Sprite:
     file: lib/SDLx/Sprite.pm
-    version: 2.541_10
+    version: 0
   SDLx::Sprite::Animated:
     file: lib/SDLx/Sprite/Animated.pm
-    version: 2.541_10
+    version: 0
   SDLx::Surface:
     file: lib/SDLx/Surface.pm
-    version: 2.541_10
+    version: 0
   SDLx::Surface::TiedMatrix:
     file: lib/SDLx/Surface/TiedMatrix.pm
-    version: 2.541_10
+    version: 0
   SDLx::Surface::TiedMatrixRow:
     file: lib/SDLx/Surface/TiedMatrixRow.pm
-    version: 2.541_10
+    version: 0
   SDLx::TTF:
     file: lib/SDLx/TTF.pm
-    version: 2.541_10
+    version: 0
   SDLx::Text:
     file: lib/SDLx/Text.pm
-    version: 2.541_10
+    version: 0
   SDLx::Validate:
     file: lib/SDLx/Validate.pm
-    version: 2.541_10
+    version: 0
 requires:
   CPAN: 1.92
   File::ShareDir: 1.0
@@ -281,4 +281,4 @@ resources:
   bugtracker: http://github.com/PerlGameDev/SDL/issues
   license: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt
   repository: http://github.com/PerlGameDev/SDL
-version: 2.541_10
+version: 2.542

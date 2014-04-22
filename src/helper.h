@@ -4,9 +4,6 @@
 
 #include <SDL.h>
 #include "SDL_thread.h"
-#ifndef Uint32
-#define Uint32 uint32_t
-#endif
 
 PerlInterpreter * perl = NULL;
 
@@ -25,15 +22,11 @@ void *bag2obj( SV *bag )
 
 SV *obj2bag( int size_ptr,  void *obj, char *CLASS )
 {
-    SV *   objref;
-    void** pointers;
-    Uint32 *threadid;
-
-    objref    = newSV( size_ptr );
-    pointers  = safemalloc(3 * sizeof(void*));
+    SV *   objref    = newSV( size_ptr );
+    void** pointers  = safemalloc(3 * sizeof(void*));
     pointers[0]      = (void*)obj;
     pointers[1]      = (void*)PERL_GET_CONTEXT;
-    threadid = (Uint32 *)safemalloc(sizeof(Uint32));
+    Uint32 *threadid = (Uint32 *)safemalloc(sizeof(Uint32));
     *threadid        = SDL_ThreadID();
     pointers[2]      = (void*)threadid;
     sv_setref_pv( objref, CLASS, (void *)pointers);
@@ -42,23 +35,17 @@ SV *obj2bag( int size_ptr,  void *obj, char *CLASS )
 
 SV *cpy2bag( void *object, int p_size, int s_size, char *package )
 {
-    void** pointers;
-    Uint32 *threadid;
-    SV* ref;
-    SV* a;
-    void *copy;
-    
-    ref  = newSV( p_size );
-    copy = safemalloc( s_size );
+    SV   *ref  = newSV( p_size );
+    void *copy = safemalloc( s_size );
     memcpy( copy, object, s_size );
 
-    pointers  = safemalloc(3 * sizeof(void*));
+    void** pointers  = safemalloc(3 * sizeof(void*));
     pointers[0]      = (void*)copy;
     pointers[1]      = (void*)PERL_GET_CONTEXT;
-    threadid = (Uint32 *)safemalloc(sizeof(Uint32));
+    Uint32 *threadid = (Uint32 *)safemalloc(sizeof(Uint32));
     *threadid        = SDL_ThreadID();
     pointers[2]      = (void*)threadid;
-    a            = sv_setref_pv(ref, package, (void *)pointers);
+    SV* a            = sv_setref_pv(ref, package, (void *)pointers);
     return a;
 }
 
@@ -84,20 +71,16 @@ void objDESTROY(SV *bag, void (* callback)(void *object))
 
 SV *_sv_ref( void *object, int p_size, int s_size, char *package )
 {
-    SV   *ref;
-    void *copy;
-    void** pointers;
-    Uint32 *threadid;
-
-    ref         = newSV( p_size );
-    copy        = safemalloc( s_size );
+    SV   *ref  = newSV( p_size );
+    void *copy = safemalloc( s_size );
     memcpy( copy, object, s_size );
-    pointers    = safemalloc(3 * sizeof(void*));
-    pointers[0] = (void*)copy;
-    pointers[1] = (void*)perl;
-    threadid    = (Uint32 *)safemalloc(sizeof(Uint32));
-    *threadid   = SDL_ThreadID();
-    pointers[2] = (void*)threadid;
+
+    void** pointers  = safemalloc(3 * sizeof(void*));
+    pointers[0]      = (void*)copy;
+    pointers[1]      = (void*)perl;
+    Uint32 *threadid = (Uint32 *)safemalloc(sizeof(Uint32));
+    *threadid        = SDL_ThreadID();
+    pointers[2]      = (void*)threadid;
 
     return sv_setref_pv(ref, package, (void *)pointers);
 }

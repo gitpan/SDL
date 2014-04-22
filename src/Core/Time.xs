@@ -10,27 +10,26 @@ Uint32 add_timer_cb (Uint32 interval, void* param )
 {
 	Uint32 ret_interval;
 	ENTER_TLS_CONTEXT;
-	{
-		dSP;
-		int count;
+	dSP;
 
-		ENTER;
-		SAVETMPS;
-		PUSHMARK(SP);
-		XPUSHs(sv_2mortal(newSViv(interval)));
-		PUTBACK;
+	int count;
 
-		count = call_pv(param,G_SCALAR);
+	ENTER;
+	SAVETMPS;
+	PUSHMARK(SP);
+	XPUSHs(sv_2mortal(newSViv(interval)));
+	PUTBACK;
 
-		SPAGAIN;
+	count = call_pv(param,G_SCALAR);
 
-		if (count != 1 ) croak("callback returned more than 1 value\n");	
-			ret_interval = POPi;
+	SPAGAIN;
 
-		PUTBACK;
-		FREETMPS;
-		LEAVE;
-	}
+	if (count != 1 ) croak("callback returned more than 1 value\n");	
+		ret_interval = POPi;
+
+	PUTBACK;
+	FREETMPS;
+	LEAVE;
 	LEAVE_TLS_CONTEXT;
 
 	return ret_interval;

@@ -1,12 +1,10 @@
 #!/usr/bin/perl -w
 use strict;
-use warnings;
 use SDL;
 use SDL::Config;
 use SDL::Version;
 use SDL::Image;
 use SDL::RWOps;
-use Alien::SDL;
 
 use Test::More;
 use lib 't/lib';
@@ -57,7 +55,7 @@ printf( "got version: %d.%d.%d\n", $lver->major, $lver->minor, $lver->patch );
 
 SKIP:
 {
-	skip( 'PNG support not compiled', 14 ) unless Alien::SDL->config('ld_shlib_map')->{png};
+	skip( 'PNG support not compiled', 14 ) unless SDL::Config->has('png');
 	isa_ok(
 		SDL::Image::load("test/data/highlight.png"),
 		"SDL::Surface", "[load] Gets Surface"
@@ -94,7 +92,7 @@ SKIP:
 
 SKIP:
 {
-	skip( 'JPEG support not compiled', 14 ) unless Alien::SDL->config('ld_shlib_map')->{'jpeg'};
+	skip( 'JPEG support not compiled', 14 ) unless SDL::Config->has('jpeg');
 	isa_ok(
 		SDL::Image::load("test/data/picture.jpg"),
 		"SDL::Surface", "[load] Gets Surface"
@@ -131,7 +129,7 @@ SKIP:
 
 SKIP:
 {
-	skip( 'TIFF support not compiled', 14 ) unless Alien::SDL->config('ld_shlib_map')->{'tiff'};
+	skip( 'TIFF support not compiled', 14 ) unless SDL::Config->has('tiff');
 	isa_ok(
 		SDL::Image::load("test/data/picture.tif"),
 		"SDL::Surface", "[load] Gets Surface"
@@ -177,26 +175,24 @@ SKIP:
 	skip( 'This is only for version >= 1.2.10', 2 ) if $lver < 1.2.10;
 	SKIP:
 	{
-		skip( 'JPEG support not compiled', 1 ) unless Alien::SDL->config('ld_shlib_map')->{'jpeg'};
-		cmp_ok(
-			SDL::Image::init(IMG_INIT_JPG), '&', IMG_INIT_JPG,
+		skip( 'JPEG support not compiled', 1 ) unless SDL::Config->has('jpeg');
+		is( SDL::Image::init(IMG_INIT_JPG), IMG_INIT_JPG,
 			'[init] Inited JPEG'
 		);
 	}
 
 	SKIP:
 	{
-		skip( 'TIFF support not compiled', 1 ) unless Alien::SDL->config('ld_shlib_map')->{'tiff'};
-		cmp_ok(
-			SDL::Image::init(IMG_INIT_TIF), '&', IMG_INIT_TIF,
+		skip( 'TIFF support not compiled', 1 ) unless SDL::Config->has('tiff');
+		is( SDL::Image::init(IMG_INIT_TIF), IMG_INIT_TIF,
 			'[init] Inited TIFF'
 		);
 	}
 
 	SKIP:
 	{
-		skip( 'PNG support not compiled', 1 ) unless Alien::SDL->config('ld_shlib_map')->{'png'};
-		cmp_ok( SDL::Image::init(IMG_INIT_PNG), '&', IMG_INIT_PNG, '[init] Inited PNG' );
+		skip( 'PNG support not compiled', 1 ) unless SDL::Config->has('png');
+		is( SDL::Image::init(IMG_INIT_PNG), IMG_INIT_PNG, '[init] Inited PNG' );
 	}
 
 	can_ok(

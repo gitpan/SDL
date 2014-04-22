@@ -183,7 +183,6 @@ MacOSX/main.c
 MacOSX/Makefile.test
 MacOSX/SDLPerl.icns
 MANIFEST			This list of files
-META.json
 META.yml
 OFL-FAQ.txt
 OFL.txt
@@ -310,7 +309,6 @@ t/mixer_mixmusic.t
 t/mixer_music.t
 t/mixer_samples.t
 t/pango.t
-t/release-pod-syntax.t
 t/sdlgamerect.t
 t/sdlx_app.t
 t/sdlx_controller.t
@@ -350,9 +348,7 @@ test/data/picture.bmp
 test/data/picture.jpg
 test/data/picture.tif
 test/data/README
-test/data/sample.ogg
 test/data/sample.wav
-test/data/silence.ogg
 test/data/silence.wav
 test/data/test-mpeg.mpg
 test/data/tribe_i.wav
@@ -360,3 +356,4 @@ test/data/wood_dark.png
 test/data/wood_light.png
 TODO
 typemap
+META.json

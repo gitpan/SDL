@@ -15,46 +15,45 @@ char *fcb = NULL;
 void mix_func(void *udata, Uint8 *stream, int len)
 {
 	PERL_SET_CONTEXT(parent_perl);
+	dSP;                                       /* initialize stack pointer          */
+	ENTER;                                     /* everything created after here     */
+	SAVETMPS;                                  /* ...is a temporary variable.       */
+
+	PUSHMARK(SP);                              /* remember the stack pointer        */
+	XPUSHs(sv_2mortal(newSViv(*(int*)udata))); /* push something onto the stack     */
+	XPUSHs(sv_2mortal(newSViv(len)));
+	*(int*)udata = *(int*)udata + len;
+	PUTBACK;                                   /* make local stack pointer global   */
+
+	if(cb != NULL)
 	{
-		dSP;                                       /* initialize stack pointer          */
-		ENTER;                                     /* everything created after here     */
-		SAVETMPS;                                  /* ...is a temporary variable.       */
-
-		PUSHMARK(SP);                              /* remember the stack pointer        */
-		XPUSHs(sv_2mortal(newSViv(*(int*)udata))); /* push something onto the stack     */
-		XPUSHs(sv_2mortal(newSViv(len)));
-		*(int*)udata = *(int*)udata + len;
-		PUTBACK;                                   /* make local stack pointer global   */
-
-		if(cb != NULL)
+		int count = call_pv(cb, G_ARRAY);      /* call the function                 */
+		SPAGAIN;                               /* refresh stack pointer             */
+		
+		if(count == len + 1)
 		{
-			int count = call_pv(cb, G_ARRAY);      /* call the function                 */
-			SPAGAIN;                               /* refresh stack pointer             */
-
-			if(count == len + 1)
-			{
-				int i;
-				for(i=0; i<len; i++)
-					stream[i] = POPi;              /* pop the return value from stack   */
-			}
-
-			PUTBACK;
+			int i;
+			
+			for(i=0; i<len; i++)
+				stream[i] = POPi;              /* pop the return value from stack   */
 		}
 
-		FREETMPS;                                  /* free that return value            */
-		LEAVE;                                     /* ...and the XPUSHed "mortal" args. */
+		PUTBACK;
 	}
+
+	FREETMPS;                                  /* free that return value            */
+	LEAVE;                                     /* ...and the XPUSHed "mortal" args. */
 }
 
 void mix_finished(void)
 {
 	PERL_SET_CONTEXT(parent_perl);
-	{
-		dSP;                                       /* initialize stack pointer          */
-		PUSHMARK(SP);                              /* remember the stack pointer        */
+	dSP;                                       /* initialize stack pointer          */
+	PUSHMARK(SP);                              /* remember the stack pointer        */
 
-		if(fcb != NULL)
-			call_pv(fcb, G_DISCARD|G_VOID);        /* call the function                 */
+	if(fcb != NULL)
+	{
+		call_pv(fcb, G_DISCARD|G_VOID);        /* call the function                 */
 	}
 }
 
@@ -115,8 +114,8 @@ mixmus_load_MUS( filename )
 	char *filename
 	PREINIT:
 		char * CLASS = "SDL::Mixer::MixMusic";
-		Mix_Music *mixmusic;
 	CODE:
+		Mix_Music * mixmusic;
 		mixmusic = Mix_LoadMUS(filename);
 		if (mixmusic == NULL)
 			fprintf(stderr, "Could not load %s\n", filename);
@@ -131,8 +130,8 @@ mixmus_load_MUS_RW( rw )
 	SDL_RWops *rw
 	PREINIT:
 		char * CLASS = "SDL::Mixer::MixMusic";
-		Mix_Music *mixmusic;
 	CODE:
+		Mix_Music * mixmusic;
 		mixmusic = Mix_LoadMUS_RW(rw);
 		if (mixmusic == NULL)
 			fprintf(stderr, "Could not load SDL::RWOp object\n");
@@ -165,21 +164,19 @@ void
 mixmus_hook_music( func = NULL, arg = 0 )
 	char *func
 	int arg
-	PREINIT:
-		void *arg2;
 	CODE:
 		if(func != NULL)
 		{
 			parent_perl  = PERL_GET_CONTEXT;
 			cb           = func;
-			arg2         = safemalloc(sizeof(int));
-			*(int *)arg2 = arg;
+			void *arg2   = safemalloc(sizeof(int));
+			*(int*) arg2 = arg;
 			Mix_HookMusic(&mix_func, arg2);
 		}
 		else
 		{
 			Mix_HookMusic(NULL, NULL);
-			arg2       = Mix_GetMusicHookData();
+			void *arg2 = Mix_GetMusicHookData();
 			if(arg2 != NULL)
 				safefree(arg2);
 		}
@@ -339,5 +336,6 @@ mixmus_DESTROY( music )
 	Mix_Music *music
 	CODE:
 		Mix_FreeMusic(music);
+
 
 #endif

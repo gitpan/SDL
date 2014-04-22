@@ -7,7 +7,6 @@ BEGIN { # http://wiki.cpantesters.org/wiki/CPANAuthorNotes
 	}
 }
 use strict;
-use warnings;
 use SDL;
 use SDL::Audio;
 use SDL::AudioSpec;

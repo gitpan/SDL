@@ -1,7 +1,5 @@
 # t/002_config.t - test config() functionality
 
-use strict;
-use warnings;
 use Test::More tests => 2;
 
 BEGIN { use_ok('SDL::Config'); }

@@ -9,7 +9,6 @@ BEGIN { # http://wiki.cpantesters.org/wiki/CPANAuthorNotes
 use threads;
 use threads::shared;
 use strict;
-use warnings;
 use SDL;
 use Test::More;
 use SDL::Time;

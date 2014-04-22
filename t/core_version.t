@@ -1,6 +1,5 @@
 #!/usr/bin/perl -w
 use strict;
-use warnings;
 use SDL;
 use SDL::Version;
 use Test::More tests => 8;

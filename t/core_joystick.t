@@ -1,6 +1,5 @@
 #!/usr/bin/perl -w
 use strict;
-use warnings;
 use SDL;
 use Test::More;
 use SDL::Joystick;
@@ -15,7 +14,7 @@ SKIP:
 {
 	skip "Need a joystick for below tests", 1
 		unless ( SDL::Joystick::num_joysticks() > 0 );
-
+	
 	my $joy = SDL::Joystick->new(0);
 	pass "[new] can open joystick";
 

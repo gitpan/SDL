@@ -1,8 +1,6 @@
 #!/usr/bin/perl -Iblib/lib -Iblib -Iblib/arch
 #
 
-use strict;
-use warnings;
 use SDL;
 use SDL::Config;
 use SDL::Rect;

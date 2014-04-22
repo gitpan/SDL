@@ -67,10 +67,8 @@ surface_new_from (CLASS, pixels, width, height, depth, pitch, Rmask = 0xFF000000
 	Uint32 Bmask
 	Uint32 Amask
 	SV* pixels
-	PREINIT:
-		int* pix;
 	CODE:
-		pix = (int *) SvRV ( (SV*) SvRV( pixels ) );
+		int* pix = (int *) SvRV ( (SV*) SvRV( pixels ) );
 		RETVAL = SDL_CreateRGBSurfaceFrom ( (void *)pix, width, height, depth, pitch, Rmask, Gmask, Bmask, Amask );
 		if( RETVAL == NULL)
 		croak ("SDL_CreateRGBSurfaceFrom failed: %s", SDL_GetError());
@@ -148,11 +146,9 @@ surface_get_pixel(surface, offset)
 SV *
 surface_get_pixels_ptr(surface)
 	SDL_Surface *surface
-	PREINIT:
-	  SV *sv;
 	CODE:
 	  if(!surface->pixels) croak("Incomplete surface");
-	  sv = newSV_type(SVt_PV);
+	  SV * sv = newSV_type(SVt_PV);
 	  SvPV_set(sv, surface->pixels);
 	  SvPOK_on(sv);
 	  SvREADONLY(sv);
