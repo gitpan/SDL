@@ -55,7 +55,7 @@
       },
       "SDL" : {
          "file" : "lib/SDL.pm",
-         "version" : "2.543_1"
+         "version" : "2.543_2"
       },
       "SDL::Audio" : {
          "file" : "lib/SDL/Audio.pm",
@@ -386,5 +386,5 @@
          "url" : "http://github.com/PerlGameDev/SDL"
       }
    },
-   "version" : "2.543_1"
+   "version" : "2.543_2"
 }
