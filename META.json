@@ -16,7 +16,7 @@
    "prereqs" : {
       "build" : {
          "requires" : {
-            "Alien::SDL" : "1.442",
+            "Alien::SDL" : "1.443_4",
             "Capture::Tiny" : 0,
             "ExtUtils::CBuilder" : 0,
             "File::Find" : 0,
@@ -55,7 +55,7 @@
       },
       "SDL" : {
          "file" : "lib/SDL.pm",
-         "version" : "2.543_3"
+         "version" : "2.543_4"
       },
       "SDL::Audio" : {
          "file" : "lib/SDL/Audio.pm",
@@ -386,5 +386,5 @@
          "url" : "http://github.com/PerlGameDev/SDL"
       }
    },
-   "version" : "2.543_3"
+   "version" : "2.543_4"
 }
