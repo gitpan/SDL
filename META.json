@@ -16,7 +16,7 @@
    "prereqs" : {
       "build" : {
          "requires" : {
-            "Alien::SDL" : "1.443_4",
+            "Alien::SDL" : "1.444",
             "Capture::Tiny" : 0,
             "ExtUtils::CBuilder" : 0,
             "File::Find" : 0,
@@ -29,7 +29,7 @@
       },
       "configure" : {
          "requires" : {
-            "Alien::SDL" : "1.443_4",
+            "Alien::SDL" : "1.444",
             "Capture::Tiny" : 0,
             "ExtUtils::CBuilder" : "0.260301",
             "File::Find" : 0,
@@ -55,7 +55,7 @@
       },
       "SDL" : {
          "file" : "lib/SDL.pm",
-         "version" : "2.543_4"
+         "version" : "2.544"
       },
       "SDL::Audio" : {
          "file" : "lib/SDL/Audio.pm",
@@ -374,7 +374,7 @@
          "version" : 0
       }
    },
-   "release_status" : "testing",
+   "release_status" : "stable",
    "resources" : {
       "bugtracker" : {
          "web" : "http://github.com/PerlGameDev/SDL/issues"
@@ -386,5 +386,5 @@
          "url" : "http://github.com/PerlGameDev/SDL"
       }
    },
-   "version" : "2.543_4"
+   "version" : "2.544"
 }
